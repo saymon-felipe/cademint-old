@@ -131,12 +131,13 @@ function newOs(val1, val2, val3, val4, val5) {
 function generateNumberOs() {
     let date = new Date();
     let year = date.getFullYear().toString().slice(-2);
-    let month = date.getMonth();
+    let month = date.getMonth() + 1;
     let numberOs;
     let mainArrayOs = getAllOs();
     if (month < 10) {
         month = "0" + month;
     }
+    
     if (mainArrayOs.length == 0) {
         numberOs = 1;
     } else {
@@ -151,11 +152,8 @@ function generateNumberOs() {
 
 function testIfIdExist(id) {
     let mainArrayOs = getAllOs();
-    console.log(mainArrayOs)
     for (let i in mainArrayOs) {
-        console.log(mainArrayOs[i].id)
         if (mainArrayOs[i].id == id) {
-            console.log("entrou")
             id++; 
         } ;
     };
