@@ -1,0 +1,234 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(230, 230, 230);
+    border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(214, 214, 214);
+}
+
+h5 {
+    margin: .4rem 0;
+}
+
+a {
+    color: black;
+}
+
+a:hover {
+    text-decoration: none;
+    color: black;
+}
+
+html, body {
+    height: 100vh;
+    overflow: hidden;
+    width: 100vw;
+}
+
+.steps h5 {
+    font-weight: 700;
+}
+
+.col-scrum {
+    height: calc(100vh - 95px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.col-p-30 {
+    padding-left: 30px;
+}
+
+.col-pr-30 {
+    padding-right: 30px;
+}
+
+.card-link {
+    width: 100%;
+    margin: 0!important;
+}
+
+.card-os {
+    background: rgb(242, 242, 242);
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    max-height: 15rem;
+    border-radius: 15px;
+    padding: 1rem;
+    margin: .6rem auto;
+}
+
+.card-os-header {
+    display: flex;
+    align-items: center;
+}
+
+.sponsor-name {
+    margin-left: 1rem;
+    font-weight: 700;
+}
+
+.priority-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    border-radius: 2.5rem;
+}
+
+.priority-container h6 {
+    margin: .2rem 0 .4rem;
+}
+
+.os-description {
+    overflow: hidden;
+    max-height: 7.5rem;
+    margin-bottom: .4rem;
+    position: relative;
+}
+
+.os-description::after {
+    content: '';
+    width: 2rem;
+    height: 1rem;
+    color: black;
+    background: rgb(242, 242, 242);
+    right: 0;
+    position: absolute;
+    bottom: 0;
+
+}
+
+.normal {
+    background: orange;
+}
+
+.priority {
+    background: red;
+}
+
+input {
+   padding-left: .5rem;
+}
+
+input, select {
+    background: rgb(248, 248, 248);
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+
+.description {
+    display: flex;
+}
+
+.form-os {
+    margin: 2rem 0;
+}
+
+label {
+    margin: 0;
+}
+
+.container-input {
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-input label {
+    margin-right: .5rem;
+}
+
+.description {
+    margin-top: 2rem;
+    font-weight: 600;
+}
+
+.description label {
+    margin-right: .5rem;
+}
+
+.description textarea {
+    width: 100%!important;
+    resize: none;
+    padding: .5rem;
+}
+
+.form-buttons {
+    margin: 2rem auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-buttons button {
+    margin: auto .5rem;
+}
+
+nav {
+    position: relative;
+}
+
+nav i {
+    color: white;
+    position: absolute;
+    font-size: 2rem;
+    left: 0;
+    margin-left: 1rem;
+    bottom: 23%
+}
+
+.new-os {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 85%;
+    margin: .5rem auto;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: .6rem 0;
+    color: rgb(72, 72, 72);
+}
+
+.new-os:hover {
+    background:rgb(228, 228, 228);
+}
+
+.new-os h6 {
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.new-os i {
+    margin-right: .5rem;
+    font-size: 1.5rem;
+}
+
+.response {
+    text-align: center;
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: red;
+}
+
+.os-list {
+    width: 100%;
+    max-height: 93%;
+    overflow-y: scroll;
+    margin: .5rem 0;
+}
