@@ -1,3 +1,17 @@
+:root {
+    --yellow: #FFCA37!important;
+    --blue: #00A2E8!important;
+}
+
+.bg-primary {
+    background: var(--yellow)!important;
+}
+
+.page-title {
+    color: var(--blue)!important;
+    margin: 0!important;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -182,12 +196,11 @@ nav {
 }
 
 nav i {
-    color: white;
+    color: var(--blue)!important;
     position: absolute;
     font-size: 2rem;
     left: 0;
     margin-left: 1rem;
-    bottom: 23%
 }
 
 .new-os {
