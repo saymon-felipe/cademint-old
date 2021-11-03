@@ -1,4 +1,4 @@
-const url_api = "http://localhost:3000"; //Ambiente de Teste = http://localhost:3000
+const url_api = "https://scrum-cademint-api.herokuapp.com"; //Ambiente de Teste = http://localhost:3000
                                          //Ambiente de Produção = https://scrum-cademint-api.herokuapp.com
 
 //Início da execução.
