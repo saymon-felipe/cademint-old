@@ -1,7 +1,4 @@
-
 let id_usuario = getUserIdInSessionStorage();
-
-let app_name = "/scrum-cademint";
 
 function getUserIdInSessionStorage() {
     let user_id = sessionStorage.getItem("user_id");
@@ -16,6 +13,7 @@ function getJwtFromSessionStorage() {
 
 //Função testará se usuário está logado para permitir sua entrada na página
 function checkIfUserIsAuthenticated() {
+    let app_name = "/scrum-cademint";
     let jwt = "Bearer " + getJwtFromSessionStorage();
     if (jwt == "Bearer undefined") { 
         if (window.location.pathname == "/scrum-cademint/login.html" || window.location.pathname == "/scrum-cademint/register.html") { return; };

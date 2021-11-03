@@ -386,10 +386,12 @@ if ($(".edit-os").length) {
 
 //Funções para tela de login
 if ($(".login").length) {
+    let currentEmail = $("#user").val();
     let email = getEmailInLocalStorage();
-    fillEmail(email);
+    if (email != undefined) {
+        fillEmail(email);
+    };
     $("#user").on("keyup", () => {
-        let currentEmail = $("#user").val();
         showRemember(email, currentEmail);
     });
     $("#login-form").on("submit", (e) => {
@@ -411,9 +413,10 @@ if ($(".login").length) {
             type: "POST",
             data: data,
             success: (res) => {
+                console.log(res.token)
                 setJwtInSessionStorage(res.token);
                 setUserIdInSessionStorage(res.id_usuario);
-                window.location.pathname = app_name + "/index.html"
+                //window.location.pathname = app_name + "/index.html"
             },
             error: (xhr) => {
                 let error;
