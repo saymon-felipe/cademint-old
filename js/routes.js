@@ -1,5 +1,3 @@
- //Ambiente de Teste = http://localhost:3000
-                                         //Ambiente de Produção = https://scrum-cademint-api.herokuapp.com
 
 let id_usuario = getUserIdInSessionStorage();
 
@@ -21,11 +19,11 @@ function checkIfUserIsAuthenticated() {
     let jwt = "Bearer " + getJwtFromSessionStorage();
     console.log(window.location.pathname)
     if (jwt == "Bearer undefined") { 
-        if (window.location.pathname == app_name + "/login.html" || window.location.pathname == app_name + "/register.html") { return; };
-        window.location.href = app_name + "/login.html";
+        if (window.location.pathname == "/scrum-cademint/login.html" || window.location.pathname == "/scrum-cademint/register.html") { return; };
+        window.location.pathname = app_name + "/login.html";
     } else {
         let id_usuario = getUserIdInSessionStorage();
-        if (window.location.pathname == app_name + "/login.html") {
+        if (window.location.pathname == "/scrum-cademint/login.html") {
             const url_api = "https://scrum-cademint-api.herokuapp.com";
             $.ajax({
                 url: url_api + "/usuarios/checkJWT/" + id_usuario,
@@ -38,7 +36,7 @@ function checkIfUserIsAuthenticated() {
                     $("#submit-button").attr("disabled", true);
                     $(".loading").show();
                     setTimeout(() => {
-                        window.location.href = app_name + "/index.html";
+                        window.location.pathname = app_name + "/index.html";
                     }, 2000);
                 },
                 error(xhr,status,error) {
