@@ -191,12 +191,12 @@ function loadOs() {
 
     //Vai para a tela de criar nova OS com status A FAZER.
     $("#new-os-1").on("click", () => {
-        window.location.pathname = app_name + `/os-editar.html?s=1`;
+        window.location.pathname = app_name + `/os-editar.html\?s=1`;
     });
 
     //Vai para a tela de criar nova OS com status FAZENDO.
     $("#new-os-2").on("click", () => {
-        window.location.pathname = app_name + `/os-editar.html?s=2`;
+        window.location.pathname = app_name + `/os-editar.html\?s=2`;
     });
 };
 
