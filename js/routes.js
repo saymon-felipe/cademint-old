@@ -17,7 +17,7 @@ function checkIfUserIsAuthenticated() {
     let jwt = "Bearer " + getJwtFromSessionStorage();
     if (jwt == "Bearer undefined") { 
         if (window.location.pathname == "/login.html" || window.location.pathname == "/register.html") { return; };
-        window.location.pathname = "/login.html";
+        window.location.href = "/login.html";
     } else {
         let id_usuario = getUserIdInSessionStorage();
         const url_api = "http://localhost:3000";
