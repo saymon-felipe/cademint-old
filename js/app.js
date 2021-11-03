@@ -413,10 +413,9 @@ if ($(".login").length) {
             type: "POST",
             data: data,
             success: (res) => {
-                console.log(res.token)
                 setJwtInSessionStorage(res.token);
                 setUserIdInSessionStorage(res.id_usuario);
-                //window.location.pathname = app_name + "/index.html"
+                window.location.pathname = app_name + "/index.html"
             },
             error: (xhr) => {
                 let error;
