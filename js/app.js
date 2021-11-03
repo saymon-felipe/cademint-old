@@ -49,7 +49,7 @@ function checkIfJwtIsValid() {
     let jwt = "Bearer " + getJwtFromSessionStorage();
     if (jwt == "Bearer undefined") { return; };
     let id_usuario = getUserIdInSessionStorage();
-    if (window.location.pathname == "/login.html") { return; };
+    if (window.location.href == "/login.html") { return; };
     $.ajax({
         url: url_api + "/usuarios/checkJWT/" + id_usuario,
         type: "GET",
@@ -448,7 +448,7 @@ function getUserIdInSessionStorage() {
 function logoutUser() {
     sessionStorage.removeItem("jwt_token");
     sessionStorage.removeItem("user_id");
-    window.location.pathname = "/login.html"
+    window.location.href = "/login.html"
 }
 
 function setEmailInLocalStorage(email) {
