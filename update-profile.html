@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="fontawesome/css/all.min.css" />
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <link rel="shortcut icon" href="img/scrum-icon.png" type="image/x-icon">
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/routes.js"></script>
+    <title>Crie seu perfil</title>
+</head>
+<body class="update-profile">
+    <nav class="bg-primary py-2 header">
+        <div class="container d-flex justify-content-center">
+            <a href="index.html"><i class="fas fa-arrow-circle-left return"></i></a>
+            <a href="index.html">
+                <h3 class="page-title">SCRUM Cademint</h3>
+            </a>
+        </div>
+        <div class="go-to-user-profile">
+            <div class="go-to-user-profile-inner">
+                <img class="avatar-p avatar-header">
+                <h6>Olá, <span class="user-name"></span></h6>
+                <i class="fas fa-chevron-down" id="profile-more-options"></i>
+                <div class="profile-more-options-container">
+                    <ul>
+                        <li><a href="update-profile.html">Alterar perfil</a></li>
+                        <li onclick="logoutUser()">Sair</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="update-profile-container">
+        <div class="update-profile-inner">
+            <div class="update-profile-header">
+                <h4>Alterar o perfil</h4>
+            </div>
+            <div class="update-profile-body">
+                <div id="update-profile-form">
+                    <div class="form-inputs">
+                        <div class="name-input">
+                            <label for="nome">Nome:</label>
+                            <input type="text" name="nome" id="nome" placeholder="Nome" required>
+                        </div>
+                        <div class="user-photo">
+                            <div class="user-photo-container">
+                                <div class="user-photo-inner">
+                                    <i class="fas fa-user user"></i>
+                                    <i class="fas fa-plus plus"></i>
+                                </div>
+                                <img id="user-image">
+                            </div>
+                            <div class="delete-image">
+                                <span>Excluir</span>
+                                <i class="fas fa-trash ml-2"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="photo-options">
+                            <ul>
+                                <li class="show-photo">Ver foto</li>
+                                <li class="upload-photo">Enviar foto</li>
+                            </ul>
+                        </div>
+                        <div class="photo-detail-container">
+                            <img class="photo-detail">
+                        </div>
+                        <div class="upload">
+                            <div class="send row">
+                                <form class="send-photo" method="post" enctype="multipart/form-data">
+                                    <div class="input-file-custom">
+                                        <label for="photo" id="upload-button">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                            Upload
+                                        </label>
+                                        <span>JPG, PNG</span>
+                                    </div>
+                                    <h6 class="file-name"></h6>
+                                    <input type="file" name="photo" id="photo" title="Envie uma foto nos formatos PNG ou JPG">
+                                    <button type="button" id="send-photo-button" class="save-button">Enviar foto</button>
+                                </form>
+                            </div>
+                            <div class="response font-small"></div>
+                            <div class="photo-preview">
+                                <img class="image-preview" alt="Pré-vizualização da foto">
+                            </div>
+                            <button>Remover foto</button>
+                            <div class="loading"></div>
+                        </div>
+                    </div>
+                    <button type="button" id="update-profile-button" class="save-button">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="overlay"></div>
+
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/app.js"></script>
+    
+</body>
+</html>

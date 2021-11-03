@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="fontawesome/css/all.min.css" />
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <link rel="shortcut icon" href="img/scrum-icon.png" type="image/x-icon">
+    <title>Registre-se</title>
+</head>
+<body class="login register">
+    
+    <div class="login-container">
+        <h4 class="header-text">Registre-se:</h4>
+        <form id="register-form" method="POST">
+            <input class="form-input" type="text" name="nome" id="name" placeholder="Nome" required>
+            <input class="form-input" type="text" name="email" id="user" placeholder="Email" required>
+            <input class="form-input" type="password" name="senha" id="password" placeholder="Senha" required>
+            
+            <button type="submit">Registrar</button>
+            <div class="response"></div>
+            <div class="loading"></div>
+        </form>
+        <div class="login-actions">
+            <h6 class="register">Ja é cadastrado? <a href="login.html" id="register"><strong>Faça login</strong></a></h6>
+        </div>
+    </div>
+
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
