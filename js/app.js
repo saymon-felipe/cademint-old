@@ -447,7 +447,7 @@ function getUserIdInSessionStorage() {
 function logoutUser() {
     sessionStorage.removeItem("jwt_token");
     sessionStorage.removeItem("user_id");
-    window.location.pathname = app_name + "//login.html"
+    window.location.pathname = app_name + "/login.html"
 }
 
 function setEmailInLocalStorage(email) {
@@ -518,7 +518,7 @@ if ($(".register").length) {
                 $("#register-form").find(".response").addClass("success");
                 $("#register-form").find(".response").html("Usuário cadastrado!");
                 $("#register-form").find(".response").show();
-                window.location.href = "/login.html";
+                window.location.pathname = app_name + "/login.html";
             },
             error: (xhr) => {
                 let error;
