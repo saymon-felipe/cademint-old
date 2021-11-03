@@ -1,7 +1,7 @@
 
 let id_usuario = getUserIdInSessionStorage();
 
-let app_name = "scrum-cademint";
+let app_name = "/scrum-cademint";
 
 function getUserIdInSessionStorage() {
     let user_id = sessionStorage.getItem("user_id");
