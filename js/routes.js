@@ -1,6 +1,8 @@
 
 let id_usuario = getUserIdInSessionStorage();
 
+let app_name = "scrum-cademint";
+
 function getUserIdInSessionStorage() {
     let user_id = sessionStorage.getItem("user_id");
     return user_id;
@@ -16,12 +18,12 @@ function getJwtFromSessionStorage() {
 function checkIfUserIsAuthenticated() {
     let jwt = "Bearer " + getJwtFromSessionStorage();
     if (jwt == "Bearer undefined") { 
-        if (window.location.pathname == "/login.html" || window.location.pathname == "/register.html") { return; };
-        window.location.href = "/login.html";
+        if (window.location.pathname == app_name + "/login.html" || window.location.pathname == app_name + "/register.html") { return; };
+        window.location.href = app_name + "/login.html";
     } else {
         let id_usuario = getUserIdInSessionStorage();
         const url_api = "http://localhost:3000";
-        if (window.location.pathname == "/login.html") {
+        if (window.location.pathname == app_name + "/login.html") {
             $.ajax({
                 url: url_api + "/usuarios/checkJWT/" + id_usuario,
                 type: "GET",
@@ -33,7 +35,7 @@ function checkIfUserIsAuthenticated() {
                     $("#submit-button").attr("disabled", true);
                     $(".loading").show();
                     setTimeout(() => {
-                        window.location.href = "/index.html";
+                        window.location.href = app_name + "/index.html";
                     }, 2000);
                 },
                 error(xhr,status,error) {
