@@ -26,8 +26,6 @@ if($(document).length) {
 //Função para preencher a imagem do usuário logado
 function fillUserImage() {
     let id_usuario = getUserIdInSessionStorage();
-    let url;
-    console.log(id_usuario)
     if (id_usuario == null) {
         return;
     }

@@ -17,7 +17,6 @@ function getJwtFromSessionStorage() {
 //Função testará se usuário está logado para permitir sua entrada na página
 function checkIfUserIsAuthenticated() {
     let jwt = "Bearer " + getJwtFromSessionStorage();
-    console.log(window.location.pathname)
     if (jwt == "Bearer undefined") { 
         if (window.location.pathname == "/scrum-cademint/login.html" || window.location.pathname == "/scrum-cademint/register.html") { return; };
         window.location.pathname = app_name + "/login.html";
