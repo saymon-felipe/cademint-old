@@ -562,7 +562,6 @@ if ($(".update-profile").length) {
     fillInformations("#nome", ".user-photo-inner", "#user-image", id_usuario);
     
     $(".user-photo").on("mouseover", () => {
-        console.log($("#user-image").is(":visible"))
         if ($("#user-image").is(":visible")) {
             $(".delete-image").css("transform", "translateY(0)");
         };
@@ -578,11 +577,6 @@ if ($(".update-profile").length) {
     $(".user-photo-container").on("click", () => {
         togglePhotoOptions(".photo-options");
     });
-    setTimeout(() => { //Se usuário tiver foto vai mostrar a opção de ver foto ampliada
-        if ($("#user-image").is(":visible")) {
-            $(".show-photo").show();
-        }
-    }, 100);
     
     $(".show-photo").on("click", () => {
         $(".photo-detail-container").show();
@@ -657,6 +651,7 @@ function fillInformations(element1, element2, element3, user_id) {
             if (!res.response.profile_photo == "") {
                 $(element2).html("");
                 $("#user-image").show();
+                $(".show-photo").show();
                 $(element3).attr("src", res.response.profile_photo);
             }
             $(element1).val(res.response.nome);
