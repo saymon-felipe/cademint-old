@@ -1,6 +1,8 @@
 const url_api = "https://scrum-cademint-api.herokuapp.com"; //Ambiente de Teste = http://localhost:3000
                                          //Ambiente de Produção = https://scrum-cademint-api.herokuapp.com
 
+let app_name = "/scrum-cademint";                                        
+
 //Início da execução.
 if($(document).length) {
     fillUserImage();
@@ -47,7 +49,7 @@ function checkIfJwtIsValid() {
     let jwt = "Bearer " + getJwtFromSessionStorage();
     if (jwt == "Bearer undefined") { return; };
     let id_usuario = getUserIdInSessionStorage();
-    if (window.location.href == "/login.html") { return; };
+    if (window.location.pathname == "/scrum-cademint/login.html") { return; };
     $.ajax({
         url: url_api + "/usuarios/checkJWT/" + id_usuario,
         type: "GET",
@@ -189,12 +191,12 @@ function loadOs() {
 
     //Vai para a tela de criar nova OS com status A FAZER.
     $("#new-os-1").on("click", () => {
-        window.location.href = `os-editar.html?s=1`;
+        window.location.pathname = app_name + `/os-editar.html?s=1`;
     });
 
     //Vai para a tela de criar nova OS com status FAZENDO.
     $("#new-os-2").on("click", () => {
-        window.location.href = `os-editar.html?s=2`;
+        window.location.pathname = app_name + `/os-editar.html?s=2`;
     });
 };
 
@@ -212,7 +214,7 @@ function excludeOs(param) {
             },
             type: "DELETE",
             success: (res) => {
-                window.location.href = "index.html";
+                window.location.pathname = app_name + "/index.html";
             }
         });
     };
@@ -238,7 +240,7 @@ function saveOs(os_number, priority, status, description, sponsor, source) {
             sponsor: sponsor
         },
         success: (res) => {
-            window.location.href = "index.html";
+            window.location.pathname = app_name + "/index.html";
         }
     });
 };
@@ -257,7 +259,7 @@ function fillIdComplete(id_raw) {
             id_raw: id_raw
         },
         success: (res) => {
-            window.location.href = "index.html";
+            window.location.pathname = app_name + "/index.html";
         }
     });
 };
@@ -352,11 +354,10 @@ if ($(".edit-os").length) {
     });
 
     $("#cancel-operation").on("click", (e) => {
-        window.location.href = "index.html";
+        window.location.pathname = app_name + "/index.html";
     });
 
     $("#exclude-os").on("click", (e) => {
-        console.log(currentOs)
         if (currentOs == undefined) {
             $(".response").html("Não é possível excluir uma OS que não existe!");
         }
@@ -412,7 +413,7 @@ if ($(".login").length) {
             success: (res) => {
                 setJwtInSessionStorage(res.token);
                 setUserIdInSessionStorage(res.id_usuario);
-                window.location.href = "/index.html"
+                window.location.pathname = app_name + "/index.html"
             },
             error: (xhr) => {
                 let error;
@@ -446,7 +447,7 @@ function getUserIdInSessionStorage() {
 function logoutUser() {
     sessionStorage.removeItem("jwt_token");
     sessionStorage.removeItem("user_id");
-    window.location.href = "/login.html"
+    window.location.pathname = app_name + "//login.html"
 }
 
 function setEmailInLocalStorage(email) {
@@ -629,7 +630,6 @@ if ($(".update-profile").length) {
             $("#send-photo-button").show();
         };
 
-        console.log(e.target.files.item(0))
         let file = e.target.files.item(0);
         let adress = new FileReader();
         let formData = new FormData();
@@ -691,7 +691,6 @@ function uploadPhoto(id, formData) {
         },
         error: (error) => {
             $(".loading").hide();
-            console.log(error.responseJSON.error)
             $(".response").html(error.responseJSON.error);
         }
     });
@@ -711,7 +710,6 @@ function requireImage(id_usuario) {
         url: url_api + "/usuarios/" + id_usuario,
         type: "GET",
         success: (res) => {
-            console.log(res.response.profile_photo)
             $(".photo-detail").attr("src", res.response.profile_photo);
             togglePhotoOptions(".photo-options");
         }
