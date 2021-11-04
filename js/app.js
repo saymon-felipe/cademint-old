@@ -1,14 +1,18 @@
 const url_api = "https://scrum-cademint-api.herokuapp.com"; //Ambiente de Teste = http://localhost:3000
                                          //Ambiente de Produção = https://scrum-cademint-api.herokuapp.com
 
-let app_name = "/scrum-cademint"; // /scrum-cademint (PRODUÇÃO);
+let app_name = ""; // /scrum-cademint (PRODUÇÃO);
                    // "" (TESTE); 
+
+const app_version = "v " + "0.0.1";
 
 //Início da execução.
 if($(document).length) {
     fillUserImage();
     loadOs();
     checkIfJwtIsValid();
+
+    $(".app-version").html(app_version);
 
     setInterval(() => {
         loadOs();
@@ -190,7 +194,7 @@ function loadOs() {
         };
     };
 
-    var url = "https://saymon-felipe.github.io/scrum-cademint/" // https://saymon-felipe.github.io/scrum-cademint/ (PRODUÇÃO)
+    var url = "http://127.0.0.1:5500/" // https://saymon-felipe.github.io/scrum-cademint/ (PRODUÇÃO)
              // http://127.0.0.1:5500/ (TESTE)
 
     //Vai para a tela de criar nova OS com status A FAZER.
