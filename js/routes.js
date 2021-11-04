@@ -46,6 +46,7 @@ function checkIfUserIsAuthenticated() {
     let jwt = "Bearer " + getJwtFromSessionStorage();
     if (jwt == "Bearer undefined") { 
         if (window.location.pathname == app_name + "/login.html" || window.location.pathname == app_name + "/register.html") { return; };
+        console.log(app_name)
         window.location.pathname = app_name + "/login.html";
     } else {
         if (window.location.pathname == app_name + "/login.html") {
