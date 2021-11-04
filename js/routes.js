@@ -13,7 +13,7 @@ function getJwtFromSessionStorage() {
 
 //Função testará se usuário está logado para permitir sua entrada na página
 function checkIfUserIsAuthenticated() {
-    let app_name = ""; // /scrum-cademint (PRODUÇÃO);
+    let app_name = "/scrum-cademint"; // /scrum-cademint (PRODUÇÃO);
                                       // "" (TESTE); 
     let jwt = "Bearer " + getJwtFromSessionStorage();
     if (jwt == "Bearer undefined") { 
