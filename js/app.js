@@ -1,7 +1,11 @@
 const url_api = "https://scrum-cademint-api.herokuapp.com"; //Ambiente de Teste = http://localhost:3000
                                          //Ambiente de Produção = https://scrum-cademint-api.herokuapp.com
 
-let app_name = "/scrum-cademint";                                        
+let app_name = "/scrum-cademint"; // /scrum-cademint (PRODUÇÃO);
+                   // "" (TESTE); 
+                   
+let url = "https://saymon-felipe.github.io/scrum-cademint/" // https://saymon-felipe.github.io/scrum-cademint/ (PRODUÇÃO)
+             // http://127.0.0.1:5500/ (TESTE)
 
 //Início da execução.
 if($(document).length) {
@@ -49,7 +53,7 @@ function checkIfJwtIsValid() {
     let jwt = "Bearer " + getJwtFromSessionStorage();
     if (jwt == "Bearer undefined") { return; };
     let id_usuario = getUserIdInSessionStorage();
-    if (window.location.pathname == "/scrum-cademint/login.html") { return; };
+    if (window.location.pathname == app_name + "/login.html") { return; };
     $.ajax({
         url: url_api + "/usuarios/checkJWT/" + id_usuario,
         type: "GET",
@@ -191,12 +195,16 @@ function loadOs() {
 
     //Vai para a tela de criar nova OS com status A FAZER.
     $("#new-os-1").on("click", () => {
-        window.location.pathname = app_name + `/os-editar.html\?s=1`;
+        let url_os = new URL(url + "os-editar.html");
+        url_os.searchParams.append("s", 1);
+        window.location.href = url_os;
     });
 
     //Vai para a tela de criar nova OS com status FAZENDO.
     $("#new-os-2").on("click", () => {
-        window.location.pathname = app_name + `/os-editar.html\?s=2`;
+        let url_os = new URL(url + "os-editar.html");
+        url_os.searchParams.append("s", 2);
+        window.location.href = url_os;
     });
 };
 
