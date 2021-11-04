@@ -3,9 +3,6 @@ const url_api = "https://scrum-cademint-api.herokuapp.com"; //Ambiente de Teste 
 
 let app_name = "/scrum-cademint"; // /scrum-cademint (PRODUÇÃO);
                    // "" (TESTE); 
-                   
-let url = "https://saymon-felipe.github.io/scrum-cademint/" // https://saymon-felipe.github.io/scrum-cademint/ (PRODUÇÃO)
-             // http://127.0.0.1:5500/ (TESTE)
 
 //Início da execução.
 if($(document).length) {
@@ -193,16 +190,19 @@ function loadOs() {
         };
     };
 
+    var url = "https://saymon-felipe.github.io/scrum-cademint/" // https://saymon-felipe.github.io/scrum-cademint/ (PRODUÇÃO)
+             // http://127.0.0.1:5500/ (TESTE)
+
     //Vai para a tela de criar nova OS com status A FAZER.
     $("#new-os-1").on("click", () => {
-        let url_os = new URL(url + "os-editar.html");
+        var url_os = new URL(url + "os-editar.html");
         url_os.searchParams.append("s", 1);
         window.location.href = url_os;
     });
 
     //Vai para a tela de criar nova OS com status FAZENDO.
     $("#new-os-2").on("click", () => {
-        let url_os = new URL(url + "os-editar.html");
+        var url_os = new URL(url + "os-editar.html");
         url_os.searchParams.append("s", 2);
         window.location.href = url_os;
     });
