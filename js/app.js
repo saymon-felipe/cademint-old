@@ -14,7 +14,7 @@ function changeAppVersion(version) {
 // A centena refere-se à alterações grandes na usabilidade e no conceito em geral.
 //
 // ==============================
-   changeAppVersion("0.0.1");
+   changeAppVersion("0.0.2");
 // ==============================
 
 //Início da execução.
