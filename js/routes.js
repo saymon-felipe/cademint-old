@@ -15,6 +15,7 @@ function getJwtFromSessionStorage() {
 function checkIfUserIsAuthenticated() {
     let app_name = "/scrum-cademint"; // /scrum-cademint (PRODUÇÃO)
                                       // "" (TESTE)
+    
     let jwt = "Bearer " + getJwtFromSessionStorage();
     if (jwt == "Bearer undefined") { 
         if (window.location.pathname == app_name + "/login.html" || window.location.pathname == app_name + "/register.html") { return; };

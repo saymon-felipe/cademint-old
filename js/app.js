@@ -4,7 +4,7 @@ const url_api = "https://scrum-cademint-api.herokuapp.com"; //Ambiente de Teste 
 let app_name = "/scrum-cademint"; // /scrum-cademint (PRODUÇÃO);
                    // "" (TESTE); 
 
-const app_version = "v " + "0.0.1";
+//const app_version = "v " + "0.0.1";
 
 //Início da execução.
 if($(document).length) {
