@@ -1,10 +1,21 @@
-const url_api = "https://scrum-cademint-api.herokuapp.com"; //Ambiente de Teste = http://localhost:3000
-                                         //Ambiente de Produção = https://scrum-cademint-api.herokuapp.com
+let app_version;
 
-let app_name = "/scrum-cademint"; // /scrum-cademint (PRODUÇÃO);
-                   // "" (TESTE); 
+function changeAppVersion(version) {
+    app_version = "v " + version;
+}
 
-const app_version = "v " + "0.0.1";
+// FUNÇÃO PARA ATUALIZAR A VERSÃO DO APP
+// 
+// O parâmetro que será informado será versão do aplicativo que vai para o ar (deve ser trocada antes de cada commit).
+// O formato deve ser x.x.x e incremental (explicação abaixo).
+//
+// A unidade refere-se à alterações pequenas que não tem grande impacto sobre a usabilidade do produto.
+// A dezena refere-se à alterações médias que tem um impacto significativo na usabilidade do produto.
+// A centena refere-se à alterações grandes na usabilidade e no conceito em geral.
+//
+// ==============================
+   changeAppVersion("0.0.1");
+// ==============================
 
 //Início da execução.
 if($(document).length) {

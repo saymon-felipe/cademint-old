@@ -1,4 +1,16 @@
 let id_usuario = getUserIdInSessionStorage();
+let app_name;
+let url_api;
+
+// FUNÇÃO PARA TROCAR O AMBIENTE DA APLICAÇÃO
+//
+// Primeiro parâmetro será 0 ou 1, sendo que:
+// 0 - Ambiente de teste
+// 1 - Ambiente de produção
+// 
+// ==============================
+   changeAppAmbient(0);
+// ==============================
 
 function getUserIdInSessionStorage() {
     let user_id = sessionStorage.getItem("user_id");
@@ -11,19 +23,32 @@ function getJwtFromSessionStorage() {
     return jwt;
 }
 
+function changeAppAmbient(test_or_prod) {
+    const dev_name = ""; //Nome da aplicação em desenvolvimento
+    const production_name = "/scrum-cademint" //Nome da aplicação em produção
+    const dev_environment = "http://localhost:3000"; //Ambiente de desenvolvimento
+    const production_environment = "https://scrum-cademint-api.herokuapp.com"; //Ambiente de produção
+
+    switch (test_or_prod) {
+        case 0:
+            app_name = dev_name;
+            url_api = dev_environment;
+            break;
+        case 1: 
+            app_name = production_name;
+            url_api = production_environment;
+            break;
+    }
+}
+
 //Função testará se usuário está logado para permitir sua entrada na página
 function checkIfUserIsAuthenticated() {
-    let app_name = "/scrum-cademint"; // /scrum-cademint (PRODUÇÃO)
-                                      // "" (TESTE)
-    
     let jwt = "Bearer " + getJwtFromSessionStorage();
     if (jwt == "Bearer undefined") { 
         if (window.location.pathname == app_name + "/login.html" || window.location.pathname == app_name + "/register.html") { return; };
         window.location.pathname = app_name + "/login.html";
     } else {
-        let id_usuario = getUserIdInSessionStorage();
         if (window.location.pathname == app_name + "/login.html") {
-            const url_api = "https://scrum-cademint-api.herokuapp.com";
             $.ajax({
                 url: url_api + "/usuarios/checkJWT/" + id_usuario,
                 type: "GET",
