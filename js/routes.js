@@ -17,11 +17,9 @@ function checkIfUserIsAuthenticated() {
                                       // "" (TESTE)
     
     let jwt = "Bearer " + getJwtFromSessionStorage();
-    console.log(jwt)
     if (jwt == "Bearer undefined") { 
         if (window.location.pathname == app_name + "/login.html" || window.location.pathname == app_name + "/register.html") { return; };
-        console.log(app_name + "/login.html")
-        //window.location.pathname = app_name + "/login.html";
+        window.location.pathname = app_name + "/login.html";
     } else {
         let id_usuario = getUserIdInSessionStorage();
         if (window.location.pathname == app_name + "/login.html") {
