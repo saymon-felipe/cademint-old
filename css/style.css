@@ -549,7 +549,7 @@ nav i {
     }
 }
 
-/* CREATE PROFILE */
+/* UPDATE PROFILE */
 
 .update-profile-container {
     display: flex;
@@ -575,6 +575,10 @@ nav i {
 
 .update-profile-body {
     margin: 1rem 3rem;
+}
+
+#update-profile-form .response {
+    font-size: 1rem;
 }
 
 .update-profile-footer {

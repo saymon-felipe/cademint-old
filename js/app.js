@@ -282,7 +282,7 @@ function fillIdComplete(id_raw) {
             id_raw: id_raw
         },
         success: (res) => {
-            window.location.pathname = app_name + "/index.html";
+            window.location.href = app_name + "/index.html";
         }
     });
 };
@@ -621,6 +621,11 @@ if ($(".update-profile").length) {
 
     $("#update-profile-button").on("click", () => {
         let name = $("#nome").val();
+        if (name.length > 9) {
+            $(".response").html("Limite atingido!");
+            return;
+        }
+        
         let jwt = "Bearer " + getJwtFromSessionStorage();
         $.ajax({
             url: url_api + "/usuarios/update_name/" + id_usuario,
