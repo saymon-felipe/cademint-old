@@ -9,7 +9,7 @@ let url_api;
 // 1 - Ambiente de produção
 // 
 // ==============================
-   changeAppAmbient(0);
+   changeAppAmbient(1);
 // ==============================
 
 function getUserIdInSessionStorage() { //Pega o id do usuário logado que está armazenado em session storage.
