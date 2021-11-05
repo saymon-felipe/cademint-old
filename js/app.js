@@ -9,7 +9,7 @@ function changeAppVersionAndUrl(ambient, version) {
             system_url = app_url_test;
             break;
         case 1:
-            usystem_url = app_url_production;
+            system_url = app_url_production;
             break;
     }
     app_version = "v " + version;
