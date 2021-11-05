@@ -1,7 +1,7 @@
 let app_version;
 let system_url;
 
-function changeAppVersionAndUrl(ambient, version) {
+function changeAppVersionAndUrl(ambient, version) { //Função irá trocar automaticamente o ambiente do aplicativo conforme o parâmetro passado na função e a versão também.
     const app_url_production = "https://saymon-felipe.github.io/scrum-cademint/";
     const app_url_test = "http://127.0.0.1:5500/";
     switch (ambient) {
@@ -27,54 +27,46 @@ function changeAppVersionAndUrl(ambient, version) {
 // A centena refere-se à alterações grandes na usabilidade e no conceito em geral.
 //
 // ==============================
-   changeAppVersionAndUrl(1, "0.0.4");
+   changeAppVersionAndUrl(0, "0.0.4");
 // ==============================
 
-//Início da execução.
-if($(document).length) {
-    fillUserImage();
-    getAllOs();
-    checkIfJwtIsValid();
+if($(document).length) { //Início da execução.
+    if (window.location.pathname != app_name + "/login.html") { //Se cair aqui significa que o usuário não está na tela de login e as funções deverão ser executadas.
+        fillUserImage(); //Carrega imagem do usuário.
+        checkIfJwtIsValid(); //Verifica se o token JWT é válido quando carrega qualquer página (se existir).
+        getAllOs(); //Inicia a execução das requisições de OS.
+    }
 
-    $(".app-version").html(app_version);
+    $(".app-version").html(app_version); //Insere a versão do app.
 
-    setInterval(() => {
-        checkIfJwtIsValid();
-        fillUserImage();
-    }, 18000);
-
-    //Funções do menu
-    $(".go-to-user-profile-inner").on("click", () => {
+    $(".go-to-user-profile-inner").on("click", () => { //Função visual do menu
         $(".profile-more-options-container").toggleClass("opacity-1");
         $("#profile-more-options").toggleClass("rotate");
     });
 };
 
-//Função para preencher a imagem do usuário logado
-function fillUserImage() {
+function fillUserImage() { //Função para preencher a imagem do usuário logado
     let id_usuario = getUserIdInSessionStorage();
-    if (id_usuario == null) {
-        return;
-    }
     $.ajax({
         url: url_api + "/usuarios/" + id_usuario,
         type: "GET",
         success: (res) => {
             $(".user-name").html(res.response.nome);
             if (res.response.profile_photo == "") {
-                res.response.profile_photo = url_api + "/public/default-user-image.png";
+                res.response.profile_photo = url_api + "/public/default-user-image.png"; //Se o usuário não tiver foto, uma imagem padrão do servidor é colocada.
             }
             $(".avatar-header").attr("src", res.response.profile_photo);
+        },
+        complete: () => {
+            setTimeout(fillUserImage, 18000); //Chamada recursiva da função a cada 18 segundos.
         }
     })
 }
 
-//Função para checkar se o JWT é valido, se não faz uma nova requisição
-function checkIfJwtIsValid() {
+function checkIfJwtIsValid() { //Função para checkar se o JWT é valido, se não for, deleta o JWT atual do session storage e depois é redirecionado para o login.
     let jwt = "Bearer " + getJwtFromSessionStorage();
-    if (jwt == "Bearer undefined") { return; };
     let id_usuario = getUserIdInSessionStorage();
-    if (window.location.pathname == app_name + "/login.html") { return; };
+    
     $.ajax({
         url: url_api + "/usuarios/checkJWT/" + id_usuario,
         type: "GET",
@@ -86,12 +78,15 @@ function checkIfJwtIsValid() {
         },
         error(xhr) {
             removeJwtFromSessionStorage();
+        },
+        complete: () => {
+            setTimeout(checkIfJwtIsValid, 18000); //Chamada recursiva da função a cada 18 segundos.
         }
     });
 }
 
-//Função para gerar número de OS com base no ano e no mês, além do próprio id da OS em banco.
-function generateNumberOs(number) {
+
+function generateNumberOs(number) { //Função para gerar número completo da OS com base no ano e no mês atual, além do próprio id da OS em banco.
     let date = new Date();
     let year = date.getFullYear().toString().slice(-2);
     let month = date.getMonth() + 1;
@@ -108,16 +103,14 @@ function generateNumberOs(number) {
     return newId;
 };
 
-//Função para resetar os campos do SCRUM.
-function resetOsFields(field1, field2, field3, field4) {
+function resetOsFields(field1, field2, field3, field4) { //Função para resetar os campos do kanban.
     $(field1).html("");
     $(field2).html("");
     $(field3).html("");
     $(field4).html("");
 };
 
-//Função para encontrar a OS solicitada pelo ID.
-function findOS(id) {
+function findOS(id) { //Função para encontrar a OS solicitada pelo ID da mesma.
     let os;
     $.ajax({
         url: url_api + "/os/" + id,
@@ -130,8 +123,7 @@ function findOS(id) {
     return os[0];
 };
 
-//Função para encontrar as classes segundo a prioridade da OS.
-function findPriority(priority, badge = 0) {
+function findPriority(priority, badge = 0) { //Função para encontrar as classes dos badges das OS segundo a prioridade dela.
     switch (priority) {
         case 1: 
             if (badge == 1) { return "normal" };
@@ -142,29 +134,27 @@ function findPriority(priority, badge = 0) {
     };
 };
 
-//Função recupera as OS do banco de dados.
-function getAllOs() {
+function getAllOs() { //Função recupera a lista de OS do banco de dados.
     let mainArrayOs;
     $.ajax({
         url: url_api + "/os",
         type: "GET",
         success: (res) => {
             mainArrayOs = res.response.os_list;
-            if (mainArrayOs == null) {
+            if (mainArrayOs == null) { //Se não vier nada do banco de dados, assume um array vazio.
                 mainArrayOs = [];
             }
         },
         complete: () => {
             loadOs(mainArrayOs);
-            setTimeout(getAllOs, 5000);
+            setTimeout(getAllOs, 5000); //Chamada recursiva da requisição.
         }
     });
     
 };
 
-//Função aloca as OS conforme status no KANBAM.
 function loadOs(mainArrayOs) {
-    if (mainArrayOs == undefined) {
+    if (mainArrayOs == undefined) { //Função aloca as OS's conforme status no kanban.
         return;
     }
     resetOsFields("#col-to-do .os-list", "#col-doing .os-list", "#col-test .os-list", "#col-done .os-list");
@@ -208,27 +198,24 @@ function loadOs(mainArrayOs) {
         };
     };
 
-    //Vai para a tela de criar nova OS com status A FAZER.
-    $("#new-os-1").on("click", () => {
+    $("#new-os-1").on("click", () => { //Vai para a tela de criar nova OS com status A FAZER.
         var url_os = new URL(system_url + "os-editar.html");
         url_os.searchParams.append("s", 1);
         window.location.href = url_os;
     });
 
-    //Vai para a tela de criar nova OS com status FAZENDO.
-    $("#new-os-2").on("click", () => {
+    $("#new-os-2").on("click", () => { //Vai para a tela de criar nova OS com status FAZENDO.
         var url_os = new URL(system_url + "os-editar.html");
         url_os.searchParams.append("s", 2);
         window.location.href = url_os;
     });
 };
 
-//Função exclui a OS solicitada através do ID.
-function excludeOs(param) {
+function excludeOs(param) { //Função exclui a OS solicitada através do ID.
     let currentOs = findOS(param);
     let jwt = "Bearer " + getJwtFromSessionStorage();
     if (currentOs == undefined) {
-        $(".response").html("Não é possível excluir uma OS que não existe ainda!");
+        $(".response").html("Não é possível excluir uma OS que não existe!");
     } else {
         $.ajax({
             url: url_api + "/os/" + param,
@@ -243,13 +230,12 @@ function excludeOs(param) {
     };
 };
 
-//Função salva uma OS já existente através do ID.
-function saveOs(os_number, priority, status, description, sponsor, source) {
+function saveOs(os_number, priority, status, description, sponsor, source) { //Função salva uma OS já existente através do ID.
     let jwt = "Bearer " + getJwtFromSessionStorage();
-    if (source > 2000) {
+    if (source > 2000) { //Se o campo descrição tiver mais de 2000 caracteres, não é permitido salvar.
         return;
     };
-    $.ajax({
+    $.ajax({ //Requisição que atualiza a OS com o ID definido com os novos dados.
         url: url_api + "/os",
         headers: {
             Authorization: jwt
@@ -268,8 +254,7 @@ function saveOs(os_number, priority, status, description, sponsor, source) {
     });
 };
 
-//Função cria o ID completo conforme o ID da OS retornada do banco e faz UPDATE da respectiva linha na tabela.
-function fillIdComplete(id_raw) {
+function fillIdComplete(id_raw) { //Função cria o ID completo conforme o ID da OS retornada do banco e faz UPDATE da respectiva linha na tabela.
     let jwt = "Bearer " + getJwtFromSessionStorage();
     $.ajax({
         url: url_api + "/os/id_complete",
@@ -287,10 +272,9 @@ function fillIdComplete(id_raw) {
     });
 };
 
-//Função cria uma nova OS enviando dados dos inputs para o banco de dados.
-function createOs(priority, status, description, sponsor, source) {
+function createOs(priority, status, description, sponsor, source) { //Função cria uma nova OS enviando dados dos inputs para o banco de dados.
     let jwt = "Bearer " + getJwtFromSessionStorage();
-    if (source > 2000) {
+    if (source > 2000) { //Se o campo descrição tiver mais de 2000 caracteres, não é permitido salvar.
         return;
     };
     $.ajax({
@@ -306,12 +290,12 @@ function createOs(priority, status, description, sponsor, source) {
             sponsor: sponsor
         },
         success: (res) => {
-            fillIdComplete(res.os_criada.id_os);
+            fillIdComplete(res.os_criada.id_os); //Ao final da requisição de criação, a requisição de preenchimento do ID completo é disparada.
         }
     });
 };
 
-function countCharacters(source, target, response) {
+function countCharacters(source, target, response) { //Função conta os caracteres do campo de descrição de OS e retorna para a tela.
     let characters = $(source).val();
     let stringLength = characters.length;
     if(stringLength > 2000) {
@@ -324,68 +308,61 @@ function countCharacters(source, target, response) {
     $(target).html(`${characters.length} / 2000 caracteres.`);
 }
 
-//Funções que rodam a partir do momento que entra na tela 'os-editar.html'.
-if ($(".edit-os").length) {
-
-    let responsavel = $("#sponsor");
-    let nomes = [];
+if ($(".edit-os").length) { //Funções que rodam a partir do momento que entra na tela 'os-editar.html'.
     
-    $.ajax({
+    $.ajax({ //Requisição preenche o select de responsáveis com os nomes dos usuários cadastrados no banco.
         url: url_api + "/usuarios",
         type: "GET",
         async: false,
         success: (res) => {
             for (let i in res.response.lista_de_usuarios) {
-                nomes.push(`<option value="${res.response.lista_de_usuarios[i].nome}">${res.response.lista_de_usuarios[i].nome}</option>`);
-                responsavel.append(nomes[i])
+                $("#sponsor").append(`<option value="${res.response.lista_de_usuarios[i].nome}">${res.response.lista_de_usuarios[i].nome}</option>`);
             }
         }
     });
 
     let url = window.location.href;
-    let paramValue1 = "";
-    let paramValue2 = "";
+    let paramValue1;
+    let paramValue2;
     let param1excluded;
     let currentOs;
+
     let param1 = url.split("?");
-    if (param1[1].indexOf("i") != -1) {
+    if (param1[1].indexOf("i") != -1) { //Se entrar aqui existe o parâmetro ID na url.
         param1excluded = param1[1].split("&");
         paramValue1 = param1excluded[0].replace("id=", "");
         paramValue2 = param1excluded[1].replace("s=", "");
         currentOs = findOS(paramValue1);
     } else {
-        paramValue2 = param1[1].replace("s=", "");
+        paramValue2 = param1[1].replace("s=", ""); //Se não somente o parametro S que indica em qual coluna do kanban ela foi criada.
     };
-    if (paramValue1 != undefined) {
+    if (paramValue1 != undefined) { //Se o parâmetro ID da url existir, ele pega o numero e coloca no campo id da OS.
         $("#so-number").val(paramValue1);
     };
-    if (currentOs != undefined) {
+    if (currentOs != undefined) { //Se entrar aqui é porque o usuário clicou para editar uma OS que já existe e preenche os dados dos campos.
         $("#sponsor").val(currentOs.sponsor);
         $("#status").val(currentOs.status_os);
         $("#priority").val(currentOs.priority);
         $("#description").val(currentOs.desc_os);
         
     } else {
-        $("#status").val(paramValue2);
+        $("#status").val(paramValue2); //Se for uma nova OS, somente o valor do campo status é preenchido conforme o parâmetro da URL.
     };
 
-    countCharacters("#description", ".count-characters", ".characters-response");
+    countCharacters("#description", ".count-characters", ".characters-response"); //Se inicia a contagem dos caracteres do campo descrição da OS.
     $("#description").on("keyup", () => {
         countCharacters("#description", ".count-characters", ".characters-response");
     });
 
-    $("#cancel-operation").on("click", (e) => {
+    $("#cancel-operation").on("click", () => { //Cancela o que estiver fazendo na tela de os-editar.html e redireciona para a index.
         window.location.href = app_name + "/index.html";
     });
 
-    $("#exclude-os").on("click", (e) => {
-        if (currentOs == undefined) {
-            $(".response").html("Não é possível excluir uma OS que não existe!");
-        }
+    $("#exclude-os").on("click", () => { //Solicita a exclusão da OS atual.
         excludeOs(paramValue1);
     });
 
-    $("#save-os").on("click", () => {
+    $("#save-os").on("click", () => { //Salva a OS atual ou cria uma nova, se nenhum campo estiver vazio.
         let os_number = $("#so-number").val();
         let priority = $("#priority").val();
         let status = $("#status").val();
@@ -405,25 +382,34 @@ if ($(".edit-os").length) {
     });
 };
 
-//Funções para tela de login
-if ($(".login").length) {
-    let currentEmail = $("#user").val();
-    let email = getEmailInLocalStorage();
-    if (email != undefined) {
+if ($(".login").length) { //Funções para tela de login.
+    let url = window.location.href;
+    let param = url.split("?")[1];
+    if (param == "msg=time-out") {
+        $(".response").html("Sessão expirada, faça login novamente");
+        $(".response").show();
+    }
+
+    let currentEmail = $("#user").val(); //Pega o email do input.
+    let email = getEmailInLocalStorage(); //Pega o email que foi guardado em local storage se existir.
+    if (email != undefined) { //Se não existir nenhum e-mail previamente guardado em local storage, pega o email que está no input.
         fillEmail(email);
     };
-    $("#user").on("keyup", () => {
+    $("#user").on("keyup", () => { //Se o email no input não for igual ao que está em local storage, a opção de lembrar email é exibida.
         showRemember(email, currentEmail);
     });
     $("#login-form").on("submit", (e) => {
         e.preventDefault();
+
+        $("#login-form").find(".loading").html("");
+        $("#login-form").find(".loading").hide();
         
-        let data = $("#login-form").serializeArray().reduce(function (obj, item) {
+        let data = $("#login-form").serializeArray().reduce(function (obj, item) { //Pega todos os dados do formulário e coloca em um objeto
             obj[item.name] = item.value;
             return obj;
         }, {});
 
-        if (data['remember'] == 'on') { setEmailInLocalStorage(data['email']); }
+        if (data['remember'] == 'on') { setEmailInLocalStorage(data['email']); } //Se o usuário marcou a opção de lembrar o email, pega o email do input e armazena em local storage.
 
         $("#login-form").find(".form-input").attr("disabled", true);
         $("#login-form").find(".loading").show();
@@ -433,10 +419,10 @@ if ($(".login").length) {
             url: url_api + "/usuarios/login",
             type: "POST",
             data: data,
-            success: (res) => {
+            success: (res) => { //Se o usuário for autenticado, o token JWT e o ID são armazenados em session storage e redirecionado para index.html.
                 setJwtInSessionStorage(res.token);
                 setUserIdInSessionStorage(res.id_usuario);
-                window.location.pathname = app_name + "/index.html"
+                window.location.href = app_name + "/index.html"
             },
             error: (xhr) => {
                 let error;
@@ -457,23 +443,23 @@ if ($(".login").length) {
     });
 }
 
-function setUserIdInSessionStorage(id_usuario) {
-    sessionStorage.setItem("user_id", id_usuario);
+function setUserIdInSessionStorage(id_usuario) { //Armazena ID do usuário logado em session storage.
+    sessionStorage.setItem("user_id", id_usuario); 
 }
 
-function getUserIdInSessionStorage() {
+function getUserIdInSessionStorage() { //Recupera ID do usuário logado em session storage.
     let user_id = sessionStorage.getItem("user_id");
     return user_id;
 }
 
-//Função para deslogar usuário
-function logoutUser() {
+
+function logoutUser() { //Função para deslogar usuário removendo JWT e ID de session storage e redirecionando para login.html
     sessionStorage.removeItem("jwt_token");
     sessionStorage.removeItem("user_id");
     window.location.pathname = app_name + "/login.html"
 }
 
-function setEmailInLocalStorage(email) {
+function setEmailInLocalStorage(email) { //Se não existir um email em local storage ele armazena o que foi passado no parâmetro, se não ele sobrescreve o que já existia.
     let varEmail = getEmailInLocalStorage();
     if (varEmail != undefined) {
         localStorage.removeItem("e-mail");
@@ -484,29 +470,29 @@ function setEmailInLocalStorage(email) {
     return;
 }
 
-function getEmailInLocalStorage() {
+function getEmailInLocalStorage() { //Recupera o email de local storage.
     let email = localStorage.getItem('e-mail');
     if (email == undefined) { return; }
     return email;
 }
 
-function fillEmail(email) {
+function fillEmail(email) { //Pega o valor do parâmetro e preenche o campo email do formulário de login.
     $("#login-form").find("#user").val(email);
 }
 
-function showRemember(email1, email2) {
+function showRemember(email1, email2) { //Mostra opção de lembrar email se os parâmetros passados na função forem diferentes.
     if (email1 == email2) { return; };
     $(".remember").css("display", "flex");
     return;
 }
 
-function getJwtFromSessionStorage() {
+function getJwtFromSessionStorage() { //Recupera o token JWT de session storage.
     let jwt = sessionStorage.getItem("jwt_token");
     if (jwt == undefined) { return; }
     return jwt;
 }
 
-function setJwtInSessionStorage(token) {
+function setJwtInSessionStorage(token) { //Armazena o token JWT de session storage se não existir, ou sobrescreve se já existir.
     if (sessionStorage.getItem("jwt_token")) {
         sessionStorage.removeItem("jwt_token");
         sessionStorage.setItem("jwt_token", token);
@@ -516,16 +502,19 @@ function setJwtInSessionStorage(token) {
     return;
 }
 
-function removeJwtFromSessionStorage() {
+function removeJwtFromSessionStorage() { //Remove o token JWT de session storage e envia para o login passando parametro na URL.
     sessionStorage.removeItem("jwt_token");
+
+    var time_out_url = new URL(system_url + "login.html");
+    time_out_url.searchParams.append("msg", "time-out");
+    window.location.href = time_out_url;
 }
 
-//Funções para tela de registro
-if ($(".register").length) {
+if ($(".register").length) { //Funções para tela de registro
     $("#register-form").on("submit", (e) => {
         e.preventDefault();
         
-        let data = $("#register-form").serializeArray().reduce(function (obj, item) {
+        let data = $("#register-form").serializeArray().reduce(function (obj, item) { //Pega todos os dados do formulário e coloca em um objeto
             obj[item.name] = item.value;
             return obj;
         }, {});
@@ -537,7 +526,7 @@ if ($(".register").length) {
             url: url_api + "/usuarios/cadastro",
             type: "POST",
             data: data,
-            success: () => {
+            success: () => { //No sucesso na requisição de cadastro redireciona para fazer o login.
                 $("#register-form").find(".response").addClass("success");
                 $("#register-form").find(".response").html("Usuário cadastrado!");
                 $("#register-form").find(".response").show();
@@ -562,44 +551,28 @@ if ($(".register").length) {
     });
 };
 
-//Função para fechar modal de envio da imagem
-function closeImageModal() {
-    $(".upload").css("transform", "translateY(-100vh)");
-    setTimeout(() => {
-        $(".upload").hide();
-        $(".overlay").hide();
-    }, 400);
-
-    $(".photo-detail-container").css("transform", "translateY(-100vh)");
-    setTimeout(() => {
-        $(".photo-detail-container").hide();
-        $(".overlay").hide();
-    }, 400);
-}
-
-//Funções para tela de alteração do perfil
-if ($(".update-profile").length) {
+if ($(".update-profile").length) { //Funções para tela de alteração do perfil
     let id_usuario = getUserIdInSessionStorage();
-    fillInformations("#nome", ".user-photo-inner", "#user-image", id_usuario);
+    fillInformations("#nome", ".user-photo-inner", "#user-image", id_usuario); //Preenche a tela com as informações do usuário vindo do banco.
     
-    $(".user-photo").on("mouseover", () => {
+    $(".user-photo").on("mouseover", () => { //Mostra a opção de excluir imagem se for carregada uma imagem.
         if ($("#user-image").is(":visible")) {
             $(".delete-image").css("transform", "translateY(0)");
         };
     });
-    $(".user-photo").on("mouseout", () => {
+    $(".user-photo").on("mouseout", () => {  //Esconde a opção de excluir imagem se for carregada uma imagem.
         if ($("#user-image").is(":visible")) {
             $(".delete-image").css("transform", "translateY(30px)");
         };
     });
-    $(".delete-image").on("click", () => {
+    $(".delete-image").on("click", () => { //Remove a imagem atual do usuário.
         removeImage(id_usuario);
     });
-    $(".user-photo-container").on("click", () => {
+    $(".user-photo-container").on("click", () => { //Abre mais opções da foto do usuário.
         togglePhotoOptions(".photo-options");
     });
     
-    $(".show-photo").on("click", () => {
+    $(".show-photo").on("click", () => { //Abre um modal para ver a foto expandida.
         $(".photo-detail-container").show();
         $(".overlay").show();
         setTimeout(() => {
@@ -607,27 +580,27 @@ if ($(".update-profile").length) {
         }, 10);
         requireImage(id_usuario);
     });
-    $(".upload-photo").on("click", () => {
+    $(".upload-photo").on("click", () => { //Requisita o upload de uma nova imagem.
         sendPhoto();
     });
 
-    $(".overlay").on("click", () => {
+    $(".overlay").on("click", () => { //Quando clica fora do modal, ele se fecha, não necessitando de um botão de fechar.
         closeImageModal();
     });
 
-    $("#nome").on("keyup", () => {
+    $("#nome").on("keyup", () => { //Se usuário estiver editando o nome, o botão se salvar aparece.
         $("#update-profile-button").show();
     });
 
     $("#update-profile-button").on("click", () => {
         let name = $("#nome").val();
-        if (name.length > 9) {
+        if (name.length > 9) { //Limitação do nome do usuário
             $(".response").html("Limite atingido!");
             return;
         }
         
         let jwt = "Bearer " + getJwtFromSessionStorage();
-        $.ajax({
+        $.ajax({ //Faz o update do nome do usuário
             url: url_api + "/usuarios/update_name/" + id_usuario,
             type: "PATCH",
             headers: {
@@ -642,7 +615,7 @@ if ($(".update-profile").length) {
         });
     });
 
-    $("#photo").on("change", (e) => {
+    $("#photo").on("change", (e) => { //Funções para quando um novo arquivo é carregado no modal de envio de nova imagem.
         let formData = new FormData;
 
         $(".response").html("");
@@ -652,7 +625,7 @@ if ($(".update-profile").length) {
         $('.file-name').html(fileName);
 
         let file = e.target.files.item(0);
-        if (file.type === "image/jpeg" || file.type === "image/jpg" || file.type === "image/png") {
+        if (file.type === "image/jpeg" || file.type === "image/jpg" || file.type === "image/png") { //Se o arquivo tiver um desses formatos (PNG, JPG E JPEG), a imagem é exibida no modal e é permitida a requisição para o servidor.
             $("#send-photo-button").show();
             let adress = new FileReader();
             formData.set("user_imagem", file);
@@ -663,7 +636,7 @@ if ($(".update-profile").length) {
             };
 
             $("#send-photo-button").on("click", () => {
-                uploadPhoto(id_usuario, formData);
+                uploadPhoto(id_usuario, formData); //Faz a requisição de upload de foto.
             });
         } else {
             $(".image-preview").attr("src", "");
@@ -673,7 +646,21 @@ if ($(".update-profile").length) {
     });
 };
 
-function fillInformations(element1, element2, element3, user_id) {
+function closeImageModal() { //Fecha o modal de envio da imagem.
+    $(".upload").css("transform", "translateY(-100vh)");
+    setTimeout(() => {
+        $(".upload").hide();
+        $(".overlay").hide();
+    }, 400);
+
+    $(".photo-detail-container").css("transform", "translateY(-100vh)");
+    setTimeout(() => {
+        $(".photo-detail-container").hide();
+        $(".overlay").hide();
+    }, 400);
+}
+
+function fillInformations(element1, element2, element3, user_id) { //Preenche as informações da tela de update-profile.html com o que vem de banco.
     $.ajax({
         url: url_api + "/usuarios/" + user_id,
         type: "GET",
@@ -689,7 +676,7 @@ function fillInformations(element1, element2, element3, user_id) {
     });
 };
 
-function togglePhotoOptions(element) {
+function togglePhotoOptions(element) { //Abre ou fecha as opções de quando clica na foto do usuário.
     if ($(element).is(":visible")) {
         $(element).css("display", "none");
     } else {
@@ -697,7 +684,7 @@ function togglePhotoOptions(element) {
     }  
 };
 
-function uploadPhoto(id, formData) {
+function uploadPhoto(id, formData) { //Função faz o upload da imagem em si para o servidor e então, fecha o modal e recarrega a página.
     $(".response").html("");
     let jwt = "Bearer " + getJwtFromSessionStorage();
     $(".loading").show();
@@ -723,7 +710,7 @@ function uploadPhoto(id, formData) {
     });
 }
 
-function sendPhoto() {
+function sendPhoto() { //Abre o modal de envio de uma nova imagem.
     $(".upload").show();
     setTimeout(() => {
         $(".upload").css("transform", "translateY(0)");
@@ -732,7 +719,7 @@ function sendPhoto() {
     $(".overlay").show();
 }
 
-function requireImage(id_usuario) {
+function requireImage(id_usuario) { //Pega a URL da imagem do usuário no banco.
     $.ajax({
         url: url_api + "/usuarios/" + id_usuario,
         type: "GET",
@@ -743,7 +730,7 @@ function requireImage(id_usuario) {
     });
 };
 
-function removeImage(id_usuario) {
+function removeImage(id_usuario) { //Função remove a URL da imagem do respectivo usuário no banco de dados e recarrega a página.
     let jwt = "Bearer " + getJwtFromSessionStorage();
     $.ajax({
         url: url_api + "/usuarios/remove_image/" + id_usuario,

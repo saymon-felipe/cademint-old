@@ -400,10 +400,12 @@ nav i {
     padding: 70px 25px;
     margin: 0 15px;
 }
+
 .header-text {
     align-self: center;
     font-size: 1.7rem;
 }
+
 .login-actions {
     display: flex;
     justify-content: space-around;
@@ -425,12 +427,14 @@ nav i {
     width: 100%;
     padding: 5px 30px;
 }
+
 .login input {
     border: 1px solid #CFCFCF;
     background: #F1F5FA;
     border-radius: 10px;
     margin: 10px 0;
 }
+
 .login button {
     background: #00A2E8;
     border: none;
@@ -439,6 +443,7 @@ nav i {
     font-size: 1.2rem;
     cursor: pointer;
 }
+
 .login button:active {
     background: #008ac5;
 }
@@ -853,4 +858,3 @@ nav i {
 .show-photo {
     display: none;
 }
-
