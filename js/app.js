@@ -27,7 +27,7 @@ function changeAppVersionAndUrl(ambient, version) {
 // A centena refere-se à alterações grandes na usabilidade e no conceito em geral.
 //
 // ==============================
-   changeAppVersionAndUrl(1, "0.0.3");
+   changeAppVersionAndUrl(1, "0.0.4");
 // ==============================
 
 //Início da execução.
