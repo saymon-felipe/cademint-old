@@ -66,7 +66,7 @@ function fillUserImage() {
             }
             $(".avatar-header").attr("src", res.response.profile_photo);
         }
-    });
+    })
 }
 
 //Função para checkar se o JWT é valido, se não faz uma nova requisição
