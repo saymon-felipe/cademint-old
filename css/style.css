@@ -358,6 +358,7 @@ nav i {
 }
 
 .response {
+    margin-top: 1rem;
     text-align: center;
     font-size: 1.3rem;
     text-transform: uppercase;

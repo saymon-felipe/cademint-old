@@ -1,10 +1,23 @@
 let app_version;
+let system_url;
 
-function changeAppVersion(version) {
+function changeAppVersionAndUrl(ambient, version) {
+    const app_url_production = "https://saymon-felipe.github.io/scrum-cademint/";
+    const app_url_test = "http://127.0.0.1:5500/";
+    switch (ambient) {
+        case 0:
+            system_url = app_url_test;
+            break;
+        case 1:
+            usystem_url = app_url_production;
+            break;
+    }
     app_version = "v " + version;
 }
 
 // FUNÇÃO PARA ATUALIZAR A VERSÃO DO APP
+//
+// O primeiro parâmetro se refere ao ambiente do app, preencha 0 para Teste e 1 para PRODUÇÃO
 // 
 // O parâmetro que será informado será versão do aplicativo que vai para o ar (deve ser trocada antes de cada commit).
 // O formato deve ser x.x.x e incremental (explicação abaixo).
@@ -14,25 +27,21 @@ function changeAppVersion(version) {
 // A centena refere-se à alterações grandes na usabilidade e no conceito em geral.
 //
 // ==============================
-   changeAppVersion("0.0.2");
+   changeAppVersionAndUrl(1, "0.0.3");
 // ==============================
 
 //Início da execução.
 if($(document).length) {
     fillUserImage();
-    loadOs();
+    getAllOs();
     checkIfJwtIsValid();
 
     $(".app-version").html(app_version);
 
     setInterval(() => {
-        loadOs();
-    }, 1000);
-
-    setInterval(() => {
         checkIfJwtIsValid();
         fillUserImage();
-    }, 60000);
+    }, 18000);
 
     //Funções do menu
     $(".go-to-user-profile-inner").on("click", () => {
@@ -75,7 +84,7 @@ function checkIfJwtIsValid() {
         success: (res) => {
             return;
         },
-        error(xhr,status,error) {
+        error(xhr) {
             removeJwtFromSessionStorage();
         }
     });
@@ -109,12 +118,16 @@ function resetOsFields(field1, field2, field3, field4) {
 
 //Função para encontrar a OS solicitada pelo ID.
 function findOS(id) {
-    let mainArrayOs = getAllOs();
-    for (let i in mainArrayOs) {
-        if (mainArrayOs[i].id_complete == id) {
-            return mainArrayOs[i];
-        };
-    };
+    let os;
+    $.ajax({
+        url: url_api + "/os/" + id,
+        type: "GET",
+        async: false,
+        success: (res) => {
+            os = res.response.os_list
+        }
+    });
+    return os[0];
 };
 
 //Função para encontrar as classes segundo a prioridade da OS.
@@ -129,95 +142,82 @@ function findPriority(priority, badge = 0) {
     };
 };
 
-//Função armazena as OS recuperadas do banco de dados em localStorage para consulta.
-function setOsInLocalStorage(object) {
-    let arrayOsJson = JSON.parse(JSON.stringify(object));
-    let arrayOs = JSON.stringify(arrayOsJson);
-    if (localStorage.getItem("all_os")) {
-        localStorage.removeItem("all_os");
-        localStorage.setItem("all_os", arrayOs);
-        return;
-    }
-    localStorage.setItem("all_os", arrayOs);
-    return;
-};
-
 //Função recupera as OS do banco de dados.
 function getAllOs() {
+    let mainArrayOs;
     $.ajax({
         url: url_api + "/os",
         type: "GET",
         success: (res) => {
-            setOsInLocalStorage(res.response.os_list);
+            mainArrayOs = res.response.os_list;
+            if (mainArrayOs == null) {
+                mainArrayOs = [];
+            }
+        },
+        complete: () => {
+            loadOs(mainArrayOs);
+            setTimeout(getAllOs, 5000);
         }
     });
-    let arrayOsJson = localStorage.getItem("all_os");
-    let mainArrayOs = JSON.parse(arrayOsJson);
-    if (mainArrayOs == null) {
-        mainArrayOs = [];
-    }
-    return mainArrayOs;
+    
 };
 
 //Função aloca as OS conforme status no KANBAM.
-function loadOs() {
-    let mainArrayOs = getAllOs();
+function loadOs(mainArrayOs) {
+    if (mainArrayOs == undefined) {
+        return;
+    }
     resetOsFields("#col-to-do .os-list", "#col-doing .os-list", "#col-test .os-list", "#col-done .os-list");
-    if (!mainArrayOs.length == 0) {
-        for (let i in mainArrayOs) {
-            let card = `<a href="os-editar.html?id=${mainArrayOs[i].id_complete}&s=0" class="card-link">
-                            <div class="card-os" id=${mainArrayOs[i].id_complete}>
-                                <div class="card-os-header">
-                                    <h6>(OS) ${mainArrayOs[i].id_complete}</h6>
-                                    <h6 class="sponsor-card-name">${mainArrayOs[i].sponsor}</h6>
-                                </div>
-                                <div class="card-os-body">
-                                    <p class="os-description">
-                                        ${mainArrayOs[i].desc_os}
-                                    </p>
-                                    <div class="text-elipsis">...</div>
-                                </div>
-                                
-                                <div class="priority-container ${findPriority(mainArrayOs[i].priority, 1)}">
-                                    <h6 class="priority-text">${findPriority(mainArrayOs[i].priority)}</h6>
-                                </div>
+    for (let i in mainArrayOs) {
+        let card = `<a href="os-editar.html?id=${mainArrayOs[i].id_complete}&s=0" class="card-link">
+                        <div class="card-os" id=${mainArrayOs[i].id_complete}>
+                            <div class="card-os-header">
+                                <h6>(OS) ${mainArrayOs[i].id_complete}</h6>
+                                <h6 class="sponsor-card-name">${mainArrayOs[i].sponsor}</h6>
                             </div>
-                        </a>`;
+                            <div class="card-os-body">
+                                <p class="os-description">
+                                    ${mainArrayOs[i].desc_os}
+                                </p>
+                                <div class="text-elipsis">...</div>
+                            </div>
+                            
+                            <div class="priority-container ${findPriority(mainArrayOs[i].priority, 1)}">
+                                <h6 class="priority-text">${findPriority(mainArrayOs[i].priority)}</h6>
+                            </div>
+                        </div>
+                    </a>`;
 
-            switch (mainArrayOs[i].status_os) {
-                case 1:
-                    $("#col-to-do .os-list").append(card);
-                    break;
-                case 2:
-                    $("#col-doing .os-list").append(card);
-                    break;
-                case 3: 
-                    $("#col-test .os-list").append(card);
-                    break;
-                case 4:
-                    $("#col-done .os-list").append(card);
-                    break;
-            };
+        switch (mainArrayOs[i].status_os) {
+            case 1:
+                $("#col-to-do .os-list").append(card);
+                break;
+            case 2:
+                $("#col-doing .os-list").append(card);
+                break;
+            case 3: 
+                $("#col-test .os-list").append(card);
+                break;
+            case 4:
+                $("#col-done .os-list").append(card);
+                break;
+        };
 
-            if (mainArrayOs[i].desc_os.length > 162) {
-                $("#" + mainArrayOs[i].id_complete + " .text-elipsis").show();
-            };
+        if (mainArrayOs[i].desc_os.length > 162) {
+            $("#" + mainArrayOs[i].id_complete + " .text-elipsis").show();
         };
     };
 
-    var url = "https://saymon-felipe.github.io/scrum-cademint/" // https://saymon-felipe.github.io/scrum-cademint/ (PRODUÇÃO)
-             // http://127.0.0.1:5500/ (TESTE)
-
     //Vai para a tela de criar nova OS com status A FAZER.
     $("#new-os-1").on("click", () => {
-        var url_os = new URL(url + "os-editar.html");
+        var url_os = new URL(system_url + "os-editar.html");
         url_os.searchParams.append("s", 1);
         window.location.href = url_os;
     });
 
     //Vai para a tela de criar nova OS com status FAZENDO.
     $("#new-os-2").on("click", () => {
-        var url_os = new URL(url + "os-editar.html");
+        var url_os = new URL(system_url + "os-editar.html");
         url_os.searchParams.append("s", 2);
         window.location.href = url_os;
     });
@@ -237,7 +237,7 @@ function excludeOs(param) {
             },
             type: "DELETE",
             success: (res) => {
-                window.location.pathname = app_name + "/index.html";
+                window.location.href = app_name + "/index.html";
             }
         });
     };
@@ -263,7 +263,7 @@ function saveOs(os_number, priority, status, description, sponsor, source) {
             sponsor: sponsor
         },
         success: (res) => {
-            window.location.pathname = app_name + "/index.html";
+            window.location.href = app_name + "/index.html";
         }
     });
 };
@@ -333,6 +333,7 @@ if ($(".edit-os").length) {
     $.ajax({
         url: url_api + "/usuarios",
         type: "GET",
+        async: false,
         success: (res) => {
             for (let i in res.response.lista_de_usuarios) {
                 nomes.push(`<option value="${res.response.lista_de_usuarios[i].nome}">${res.response.lista_de_usuarios[i].nome}</option>`);
@@ -359,10 +360,7 @@ if ($(".edit-os").length) {
         $("#so-number").val(paramValue1);
     };
     if (currentOs != undefined) {
-        setTimeout(() => {
-            console.log(currentOs.sponsor)
-            $("#sponsor").val(currentOs.sponsor);
-        }, 300);
+        $("#sponsor").val(currentOs.sponsor);
         $("#status").val(currentOs.status_os);
         $("#priority").val(currentOs.priority);
         $("#description").val(currentOs.desc_os);
@@ -377,7 +375,7 @@ if ($(".edit-os").length) {
     });
 
     $("#cancel-operation").on("click", (e) => {
-        window.location.pathname = app_name + "/index.html";
+        window.location.href = app_name + "/index.html";
     });
 
     $("#exclude-os").on("click", (e) => {
@@ -640,29 +638,33 @@ if ($(".update-profile").length) {
     });
 
     $("#photo").on("change", (e) => {
+        let formData = new FormData;
+
         $(".response").html("");
         let filePath = $("#photo").val();
         let fileSplited = filePath.split('\\');
         let fileName = fileSplited[fileSplited.length - 1];
         $('.file-name').html(fileName);
-        if (fileName != undefined) {
-            $("#send-photo-button").show();
-        };
 
         let file = e.target.files.item(0);
-        let adress = new FileReader();
-        let formData = new FormData();
-        formData.append("user_imagem", file);
-        
-        adress.onloadend = () => {
-            $(".image-preview").attr("src", adress.result);
-            $(".photo-preview").css("display", "flex");
-        };
-        adress.readAsDataURL(file);
+        if (file.type === "image/jpeg" || file.type === "image/jpg" || file.type === "image/png") {
+            $("#send-photo-button").show();
+            let adress = new FileReader();
+            formData.set("user_imagem", file);
+            adress.readAsDataURL(file);
+            adress.onloadend = () => {
+                $(".image-preview").attr("src", adress.result);
+                $(".photo-preview").css("display", "flex");
+            };
 
-        $("#send-photo-button").on("click", () => {
-            uploadPhoto(id_usuario, formData);
-        });
+            $("#send-photo-button").on("click", () => {
+                uploadPhoto(id_usuario, formData);
+            });
+        } else {
+            $(".image-preview").attr("src", "");
+            $(".photo-preview").css("display", "none");
+            $(".response").html("Tipo de arquivo não suportado");
+        }
     });
 };
 
