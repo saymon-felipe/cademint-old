@@ -209,6 +209,7 @@ html, body {
 .os-description {
     overflow: hidden;
     max-height: 7.5rem;
+    word-break: break-word;
     margin-bottom: .4rem;
 }
 
@@ -243,10 +244,10 @@ html, body {
     font-size: 1.4rem;
     color: black;
     background: rgb(242, 242, 242);
-    padding: 0 5px;
+    padding: 0 6px 5px;
     position: absolute;
     right: 0;
-    bottom: 5px;
+    bottom: 1px;
 }
 
 .normal {
