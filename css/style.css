@@ -10,7 +10,7 @@
 
 .page-title {
     color: var(--blue)!important;
-    margin: 0!important;
+    margin: 0 1rem!important;
 }
 
 * {
@@ -21,6 +21,12 @@
 
 ::-webkit-scrollbar {
     width: 5px;
+}
+
+@media (max-width: 865px) {
+    ::-webkit-scrollbar {
+        height: 5px;
+    }
 }
 
 ::-webkit-scrollbar-thumb {
@@ -62,11 +68,18 @@ html, body {
     margin-right: 1rem;
 }
 
+.title-container {
+    width: 100%;
+}
+
+    .title-container a {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+    }
+
 .go-to-user-profile {
-    position: absolute;
-    top: 7px;
-    right: 30px;
-    margin-right: 2rem;
+    margin-right: 1rem;
 }
 
 .go-to-user-profile-inner {
@@ -78,7 +91,6 @@ html, body {
 }
 
     .go-to-user-profile-inner i {
-        margin-left: 12rem;
         font-size: 1.2rem;
         color: black!important;
         cursor: pointer;
@@ -87,6 +99,8 @@ html, body {
 
     .go-to-user-profile-inner h6 {
         margin-top: .2rem;
+        display: flex;
+        margin-right: 1rem;
     }
 
 .rotate {
@@ -95,8 +109,8 @@ html, body {
 
 .profile-more-options-container {
     position: absolute;
-    top: 30px;
-    right: -30px;
+    bottom: -6.6rem;
+    right: -15px;
     background: #FFCA37;
     padding: 5px;
     border-radius: 5px;
@@ -105,6 +119,8 @@ html, body {
     transition: all 0.4s;
     overflow: hidden;
     opacity: 0;
+    display: none;
+    /*display: block;*/
 }
 
     .profile-more-options-container ul {
@@ -123,7 +139,7 @@ html, body {
     }
 
 .opacity-1 {
-    opacity: 1;
+    opacity: 1!important;
 }
 
 .header {
@@ -146,11 +162,16 @@ html, body {
     font-weight: 700;
 }
 
+.kanban-title {
+    width: calc(100% + 30px);
+}
+
 .col-scrum {
     height: calc(100vh - 95px);
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 0 7px;
 }
 
 .col-p-30 {
@@ -176,7 +197,8 @@ html, body {
     max-height: 15rem;
     border-radius: 15px;
     padding: 1rem;
-    margin: .6rem auto;
+    margin: 1rem auto;
+    position: relative;
 }
 
 .card-os-header {
@@ -200,6 +222,12 @@ html, body {
     justify-content: center;
     color: white;
     border-radius: 2.5rem;
+    position: absolute;
+    bottom: .6rem;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 80%;
 }
 
 .priority-container h6 {
@@ -215,6 +243,7 @@ html, body {
 
 .card-os-body {
     position: relative;
+    margin-bottom: 28px;
 }
 
 .feedback-text {
@@ -225,6 +254,7 @@ html, body {
 .count-characters {
     position: absolute;
     right: 0;
+    text-align: end;
 }
 
 .max-length {
@@ -258,6 +288,8 @@ html, body {
     background: red;
 }
 
+/* OS EDIT */
+
 input {
    padding-left: .5rem;
 }
@@ -280,11 +312,56 @@ label {
     margin: 0;
 }
 
+.informations-container {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+}
+
 .container-input {
+    margin: .5rem .7rem;
     font-weight: 600;
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+}
+
+@media (max-width: 527px) {
+    .informations-container {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 390px) {
+    .container-input {
+        width: 100%;
+    }
+        .container-input input, .container-input select {
+            width: 100%!important;
+            height: 2rem;
+        }
+    .description {
+        flex-direction: column;
+        justify-content: center;
+    }
+        .description label {
+            margin: 0!important;
+            text-align: center;
+        }
+    .form-buttons {
+        flex-wrap: wrap;
+        margin: 3rem auto!important;
+    }
+        .form-buttons button {
+            margin: .3rem .5rem!important;
+        }
+}
+
+.edit-os .form-os input, .edit-os .form-os select {
+    width: 150px;
 }
 
 .container-input label {
@@ -319,18 +396,124 @@ label {
 
 nav {
     position: relative;
+    display: flex;
+    align-items: center;
+    width: 100vw;
 }
 
 nav i {
     color: var(--blue)!important;
-    position: absolute;
     font-size: 2rem;
-    margin-left: 1rem;
+    
+}
+
+/* RESPONSIVE MENU */
+
+.responsive-menu {
+    display: none;
+    position: relative;
+}
+
+.responsive-user {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.responsive-profile-more-options-container {
+    position: absolute;
+    top: 4.1rem;
+    right: -.8rem;
+    background: #FFCA37;
+    padding: 5px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    z-index: 3;
+    transition: all 0.4s;
+    opacity: 0;
+    text-align: center;
+    width: 8rem;
+    display: none;
+}
+
+.responsive-profile-more-options-container ul {
+    margin: 0;
+    list-style: none;
+}
+
+.responsive-profile-more-options-container ul li {
+    font-weight: 500;
+    cursor: pointer;
+    margin: 3px 0;
+    padding: 4px 10px;
+}
+.responsive-profile-more-options-container ul li:hover {
+    background: #dfb030;
+}
+
+nav .container a {
+    margin: 0 4rem;
+    text-align: center;
+}
+
+.app-version {
+    margin: auto;
 }
 
 .return {
-    left: 0;
+    margin-left: 2rem;
 }
+
+.user-name {
+    margin-left: .2rem;
+}
+
+@media (max-width: 700px) {
+    .avatar-header {
+        margin-right: .5rem;
+    }
+    .responsive-menu {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+        .responsive-menu i {
+            color: black!important;
+            cursor: pointer;
+            background: transparent;
+            padding: .5rem .7rem;
+        }
+
+    .go-to-user-profile-inner {
+        display: none;
+    }
+}
+
+@media (max-width: 600px) {
+}
+
+@media (max-width: 428px) {
+    
+}
+
+@media (max-width: 363px) {
+    nav a h3 {
+        font-size: 1.4rem;
+    }
+    nav a span {
+        font-size: .8rem;
+    }
+}
+
+@media (max-width: 311px) {
+    nav a {
+        align-items: flex-start!important;
+    }
+}
+
+/* END RESPONSIVE MENU */
+
+
 
 .new-os {
     display: flex;
@@ -374,6 +557,77 @@ nav i {
     max-height: 93%;
     overflow-y: scroll;
     margin: .5rem 0;
+    padding: 0 .5rem;
+}
+
+@media (max-width: 865px) {
+    html, body {
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    .kanban-title {
+        width: 100%;
+        border-top: 1px solid #dee2e6!important;
+    }
+    .responsive-kanban-column {
+        display: flex;
+        flex-direction: column;
+        width: 100vw;
+        margin: 0;
+    }
+    .responsive-kanban {
+        display: flex;
+        align-items: center;
+        width: 100vw;
+        max-width: 100%;
+        height: 5rem!important;
+        border: none!important;
+        padding: 0;
+        position: relative;
+    }
+
+    .with-new {
+        width: calc(100vw - 3.5rem);
+        margin-left: -3.5rem;
+    }
+
+    .responsive-kanban .os-list {
+        display: flex;
+        flex-direction: row;
+        overflow-x: scroll;
+        padding: .8rem;
+        min-height: 3rem;
+    }
+
+    .card-link {
+        margin: 0 .8rem!important;
+        display: flex;
+        align-items: center;
+    }
+
+    .card-os {
+        height: 100%;
+        width: 15rem;
+        margin: .5rem auto;
+    }
+
+    .new-os {
+        position: absolute;
+        right: .5rem;
+        top: 0;
+        bottom: -2.4rem;
+        margin: auto;
+        width: 3rem;
+        height: 3rem;
+    }
+
+        .new-os i {
+            margin: 0;
+        }
+
+        .new-os h6 {
+            display: none;
+        }
 }
 
 /* LOGIN */
@@ -388,6 +642,12 @@ nav i {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+@media (max-width: 510px) {
+    .login {
+        background-size: 80%;
+    }
 }
 
 .login-container {
@@ -539,7 +799,7 @@ nav i {
     width: 35px;
     height: 35px;
     background: transparent;
-    margin: 10px auto;
+    margin: .8rem auto 0;
     border-radius: 100%;
     border: 6px solid #DA2626;
     border-right: 6px solid transparent;
@@ -568,12 +828,24 @@ nav i {
 .update-profile-inner {
     background: white;
     border-radius: 20px;
-    width: 50rem;
-    margin: auto;
+    width: 60vw;
+    max-width: 1000px;
     box-shadow: 0 0 10px rgba(0,0,0,0.3);
     padding: 70px 25px;
-    margin: 0 15px;
-    position: relative;
+    margin: auto;
+}
+
+@media (max-width: 1040px) {
+    .update-profile-inner {
+        width: 70%;
+    }
+}
+
+@media (max-width: 646px) {
+    .update-profile-inner {
+        width: 90%;
+        padding: 1rem 2rem;
+    }
 }
 
 .update-profile-header {
@@ -582,6 +854,11 @@ nav i {
 
 .update-profile-body {
     margin: 1rem 3rem;
+}
+
+#update-profile-form {
+    display: flex;
+    flex-direction: column;
 }
 
 #update-profile-form .response {
@@ -594,14 +871,23 @@ nav i {
 
 .form-inputs {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    position: relative;
+}
+
+@media (max-width: 829px) {
+    .form-inputs {
+        justify-content: center;
+    }
+    .name-input {
+        margin: 1.5rem 3rem!important;
+    }
 }
 
 .save-button {
     padding: 5px 15px;
-    margin: 15px auto;
+    margin: 3rem 0;
     text-align: center;
     background: #56b335;
     color: white;
@@ -627,7 +913,6 @@ nav i {
     justify-content: center;
     cursor: pointer;
     position: relative;
-    overflow: hidden;
 }
 
 .user-photo-container {  
@@ -636,6 +921,7 @@ nav i {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
 }
 
 .user-photo .user {
@@ -648,11 +934,13 @@ nav i {
 
 .photo-options {
     position: absolute;
+    min-width: 10rem;
     display: none;
     /*display: flex;*/
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    text-align: center;
     right: 180px;
     color: black;
     background: white;
@@ -680,24 +968,49 @@ nav i {
         background: rgb(218, 218, 218);
     }
 
+@media (max-width: 570px) {
+    .photo-options {
+        right: 0;
+        left: 0;
+        top: -6rem;
+        margin: auto;
+    }
+}
+
 .upload {
     background: white;
     border-radius: 20px;
     margin: auto;
-    width: 30rem;
-    height: 22rem;
+    width: 50vw;
+    height: 50vw;
+    max-width: 50rem;
+    max-height: 50rem;
     box-shadow: 0 0 10px rgba(0,0,0,0.3);
     position: absolute;
     top: 0;
     bottom: 0;
+    margin: auto;
     right: 0;
     left: 0;
-    margin: auto;
-    z-index: 2;
+    z-index: 6;
     transition: transform 0.4s;
     transform: translateY(-100vh);
     display: none;
     padding: 1.5rem;
+}
+
+@media (max-width: 1128px) {
+    .upload {
+        width: 70vw;
+        height: 70vw;
+    }
+}
+
+@media (max-width: 458px) {
+    .upload {
+        width: 90vw;
+        height: 70vh;
+    }
 }
 
 .overlay {
@@ -708,7 +1021,7 @@ nav i {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 1;
+    z-index: 5;
     display: none;
 }
 
@@ -728,6 +1041,10 @@ nav i {
     background: #0090ce;
 }
 
+.input-file-custom {
+    margin: 0 1rem;
+}
+
 .input-file-custom span {
     display: block;
     text-align: center;
@@ -744,13 +1061,15 @@ nav i {
 
 .send-photo {
     display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: center;
 }
 
 .file-name {
-    margin: 0;
-    margin-left: 1.5rem;
+    margin: 0 1rem .5rem;
     height: 34px;
-    display: flex;
+    display: none;
     align-items: center;
     max-width: 15ch;
     overflow: hidden;
@@ -764,12 +1083,20 @@ nav i {
     align-items: center;
     justify-content: center;
     margin-top: 1rem;
-    height: calc(100% - 110px);
+    height: calc(100% - 130px);
     overflow: hidden;
 }
 
 .image-preview {
     width: 80%;
+}
+
+.user-image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    position: absolute;
+    overflow: hidden;
 }
 
 #user-image {
@@ -788,16 +1115,28 @@ nav i {
 .upload button {
     height: 34px;
     padding: 0 15px;
-    margin: 0 0 0 1.5rem;
+    margin: 0 1rem;
     border-radius: 5px;
     display: none;
     cursor: pointer;
+}
+
+@media (max-width: 550px) {
+    #send-photo-button {
+        height: 25px;
+        font-size: .8rem;
+        padding: 0 10px;
+    }
+    .input-file-custom, .file-name {
+        font-size: .8rem;
+    }
 }
 
 .name-input {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin: 1.5rem 3rem 1.5rem 0;
 }
 
 .name-input input {
@@ -810,24 +1149,48 @@ nav i {
     margin-bottom: .5rem;
 }
 
+@media (max-width: 892px) {
+    .name-input {
+        text-align: center;
+    }
+
+    .update-profile-header {
+        text-align: center;
+    }
+}
+
 .photo-detail-container {
     background: white;
     border-radius: 20px;
-    margin: auto;
-    width: 30rem;
-    height: 30rem;
+    width: 50vw;
+    height: 50vw;
+    max-width: 50rem;
+    max-height: 50rem;
     box-shadow: 0 0 10px rgba(0,0,0,0.3);
     position: absolute;
     top: -5rem;
     bottom: 0;
-    right: 0;
-    left: 0;
     margin: auto;
-    z-index: 3;
+    z-index: 6;
     transition: transform 0.4s;
     transform: translateY(-100vh);
     display: none;
     padding: 1.5rem;
+}
+
+@media (max-width: 1128px) {
+    .photo-detail-container {
+        width: 70vw;
+        height: 70vw;
+    }
+}
+
+@media (max-width: 458px) {
+    .photo-detail-container {
+        top: -13rem;
+        width: 90vw;
+        height: 110vw;
+    }
 }
 
 .photo-detail {
@@ -846,7 +1209,7 @@ nav i {
     /*display: none;*/
     display: flex;
     transition: transform 0.4s;
-    transform: translateY(30px);
+    transform: translateY(35px);
     justify-content: center;
     align-items: center;
     padding: .2rem 0;

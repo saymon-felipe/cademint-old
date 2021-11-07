@@ -18,13 +18,29 @@
 <body class="edit-os">
     <nav class="bg-primary py-2">
         <a href="index.html"><i class="fas fa-arrow-circle-left return"></i></a>
-        <div class="container d-flex justify-content-center">
-            <a href="index.html" class="d-flex align-items-center">
+        <div class="title-container">
+            <a href="index.html">
                 <h3 class="page-title">SCRUM Cademint</h3>
-                <span class="app-version ml-3"></span>
+                <span class="app-version"></span>
             </a>
         </div>
         <div class="go-to-user-profile">
+            <div class="responsive-menu">
+                <i class="fas fa-bars" id="menu-hamburguer"></i>
+                <div class="responsive-menu-container">
+                    <div class="responsive-profile-more-options-container">
+                        <div class="responsive-user">
+                            <img class="avatar-p avatar-header">
+                            <h6><span class="user-name"></span></h6>
+                        </div>
+                        <ul>
+                            <li><a href="update-profile.html">Alterar perfil</a></li>
+                            <li onclick="logoutUser()">Sair</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
             <div class="go-to-user-profile-inner">
                 <img class="avatar-p avatar-header">
                 <h6>Olá, <span class="user-name"></span></h6>
@@ -40,18 +56,18 @@
     </nav>
     <section class="container">
         <form class="form-os">
-            <div class="row">
-                <div class="so-number col-3 container-input">
+            <div class="informations-container">
+                <div class="so-number container-input">
                     <label for="so-number">Id OS: </label>
                     <input type="number" name="so-number" id="so-number" disabled placeholder="Automático">
                 </div>
-                <div class="sponsor col-3 container-input">
+                <div class="sponsor container-input">
                     <label for="sponsor">Responsável: </label>
                     <select name="sponsor" id="sponsor">
                         <option>-- Nome --</option>
                     </select>
                 </div>
-                <div class="priority-input col-3 container-input">
+                <div class="priority-input container-input">
                     <label for="priority">Prioridade: </label>
                     <select name="priority" id="priority">
                         <option value="">-- Prioridade --</option>
@@ -59,7 +75,7 @@
                         <option value="2">Prioritário</option>
                     </select>
                 </div>
-                <div class="status col-3 container-input">
+                <div class="status container-input">
                     <label for="status">Status: </label>
                     <select name="status" id="status">
                         <option value="">-- Status --</option>

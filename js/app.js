@@ -27,7 +27,7 @@ function changeAppVersionAndUrl(ambient, version) { //Função irá trocar autom
 // A centena refere-se à alterações grandes na usabilidade e no conceito em geral.
 //
 // ==============================
-   changeAppVersionAndUrl(1, "0.0.6");
+   changeAppVersionAndUrl(1, "0.1.0");
 // ==============================
 
 if($(document).length) { //Início da execução.
@@ -39,9 +39,20 @@ if($(document).length) { //Início da execução.
 
     $(".app-version").html(app_version); //Insere a versão do app.
 
-    $(".go-to-user-profile-inner").on("click", () => { //Função visual do menu
-        $(".profile-more-options-container").toggleClass("opacity-1");
-        $("#profile-more-options").toggleClass("rotate");
+    $(".go-to-user-profile-inner").on("click", () => { //Função visual do menu.
+        $(".profile-more-options-container").show();
+        setTimeout(() => {
+            $(".profile-more-options-container").toggleClass("opacity-1");
+            $("#profile-more-options").toggleClass("rotate");
+        }, 10);
+    });
+
+    $("#menu-hamburguer").on("click", () => { //Função para o menu responsivo.
+        console.log("entrou")
+        $(".responsive-profile-more-options-container").show();
+        setTimeout(() => {
+            $(".responsive-profile-more-options-container").toggleClass("opacity-1");
+        }, 10);
     });
 };
 
@@ -554,17 +565,35 @@ if ($(".register").length) { //Funções para tela de registro
 if ($(".update-profile").length) { //Funções para tela de alteração do perfil
     let id_usuario = getUserIdInSessionStorage();
     fillInformations("#nome", ".user-photo-inner", "#user-image", id_usuario); //Preenche a tela com as informações do usuário vindo do banco.
-    
+
+    let screenWidth = window.innerWidth;
+    $(window).on("resize", () => {
+        screenWidth = window.innerWidth;
+    });
+
     $(".user-photo").on("mouseover", () => { //Mostra a opção de excluir imagem se for carregada uma imagem.
-        if ($("#user-image").is(":visible")) {
-            $(".delete-image").css("transform", "translateY(0)");
-        };
+        if (screenWidth > 950) {
+            if ($("#user-image").attr("src") != undefined) {
+                $(".delete-image").css("transform", "translateY(0)");
+            };
+        }
     });
+
     $(".user-photo").on("mouseout", () => {  //Esconde a opção de excluir imagem se for carregada uma imagem.
-        if ($("#user-image").is(":visible")) {
-            $(".delete-image").css("transform", "translateY(30px)");
-        };
+        if (screenWidth > 950) {
+            if ($("#user-image").attr("src") != undefined) {
+                $(".delete-image").css("transform", "translateY(35px)");
+            };
+        }  
     });
+
+    $(document).on("click", e => {
+        let container = $(".user-photo-container");
+        if (!container.is(e.target) && container.has(e.target).length === 0) {
+            $(".photo-options").hide();
+        }
+    })
+    
     $(".delete-image").on("click", () => { //Remove a imagem atual do usuário.
         removeImage(id_usuario);
     });
@@ -574,7 +603,7 @@ if ($(".update-profile").length) { //Funções para tela de alteração do perfi
     
     $(".show-photo").on("click", () => { //Abre um modal para ver a foto expandida.
         $(".photo-detail-container").show();
-        $(".overlay").show();
+        $(".overlay").css("display", "flex");
         setTimeout(() => {
             $(".photo-detail-container").css("transform", "translateY(0)");
         }, 10);
@@ -617,6 +646,8 @@ if ($(".update-profile").length) { //Funções para tela de alteração do perfi
 
     $("#photo").on("change", (e) => { //Funções para quando um novo arquivo é carregado no modal de envio de nova imagem.
         let formData = new FormData;
+
+        $(".file-name").css("display", "flex");
 
         $(".response").html("");
         let filePath = $("#photo").val();
@@ -661,6 +692,10 @@ function closeImageModal() { //Fecha o modal de envio da imagem.
 }
 
 function fillInformations(element1, element2, element3, user_id) { //Preenche as informações da tela de update-profile.html com o que vem de banco.
+    let screenWidth = window.innerWidth;
+    $(window).on("resize", () => {
+        screenWidth = window.innerWidth;
+    })
     $.ajax({
         url: url_api + "/usuarios/" + user_id,
         type: "GET",
@@ -672,6 +707,13 @@ function fillInformations(element1, element2, element3, user_id) { //Preenche as
                 $(element3).attr("src", res.response.profile_photo);
             }
             $(element1).val(res.response.nome);
+        },
+        complete: () => {
+            if (screenWidth < 950) {
+                if ($("#user-image").attr("src") != undefined) {
+                    $(".delete-image").css("transform", "translateY(0)");
+                };
+            }
         }
     });
 };

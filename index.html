@@ -17,14 +17,30 @@
 </head>
 <body class="index">
     
-    <nav class="bg-primary py-2 header">
-        <div class="container d-flex justify-content-center">
-            <a href="index.html" class="d-flex align-items-center">
+    <nav class="bg-primary p-2 header">
+        <div class="title-container">
+            <a href="index.html">
                 <h3 class="page-title">SCRUM Cademint</h3>
-                <span class="app-version ml-3"></span>
+                <span class="app-version"></span>
             </a>
         </div>
         <div class="go-to-user-profile">
+            <div class="responsive-menu">
+                <i class="fas fa-bars" id="menu-hamburguer"></i>
+                <div class="responsive-menu-container">
+                    <div class="responsive-profile-more-options-container">
+                        <div class="responsive-user">
+                            <img class="avatar-p avatar-header">
+                            <h6><span class="user-name"></span></h6>
+                        </div>
+                        <ul>
+                            <li><a href="update-profile.html">Alterar perfil</a></li>
+                            <li onclick="logoutUser()">Sair</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
             <div class="go-to-user-profile-inner">
                 <img class="avatar-p avatar-header">
                 <h6>Olá, <span class="user-name"></span></h6>
@@ -40,39 +56,37 @@
     </nav>
 
     <section>
-        <div class="row steps">
-            <div class="col-3 border-right border-bottom d-flex justify-content-center align-items-center">
-                <h5>A fazer</h5>
-            </div>
-            <div class="col-3 border-right border-bottom d-flex justify-content-center align-items-center">
-                <h5>Fazendo</h5>
-            </div>
-            <div class="col-3 border-right border-bottom d-flex justify-content-center align-items-center">
-                <h5>Teste</h5>
-            </div>
-            <div class="col-3 border-bottom d-flex justify-content-center align-items-center">
-                <h5>Concluído</h5>
-            </div>
-        </div>
-        <div class="row h-100">
-            <div class="col-3 border-right col-scrum col-p-30" id="col-to-do">
-                <div class="os-list"></div>
+        <div class="responsive-kanban-column row h-100">
+            <div class="responsive-kanban col-3 border-right col-scrum col-p-30" id="col-to-do">
+                <div class="kanban-title border-bottom d-flex justify-content-center align-items-center">
+                    <h5>A fazer</h5>
+                </div>
+                <div class="os-list with-new"></div>
                 <div class="new-os" id="new-os-1">
                     <i class="fas fa-plus-circle"></i>
                     <h6>Novo</h6>
                 </div>
             </div>
-            <div class="col-3 border-right col-scrum" id="col-doing">
-                <div class="os-list"></div>
+            <div class="responsive-kanban col-3 border-right col-scrum" id="col-doing">
+                <div class="kanban-title border-bottom d-flex justify-content-center align-items-center">
+                    <h5>Fazendo</h5>
+                </div>
+                <div class="os-list with-new"></div>
                 <div class="new-os" id="new-os-2">
                     <i class="fas fa-plus-circle"></i>
                     <h6>Novo</h6>
                 </div>
             </div>
-            <div class="col-3 border-right col-scrum" id="col-test">
+            <div class="responsive-kanban col-3 border-right col-scrum" id="col-test">
+                <div class="kanban-title border-bottom d-flex justify-content-center align-items-center">
+                    <h5>Teste</h5>
+                </div>
                 <div class="os-list"></div>
             </div>
-            <div class="col-3 col-scrum col-pr-30" id="col-done">
+            <div class="responsive-kanban col-3 col-scrum col-pr-30" id="col-done">
+                <div class="kanban-title border-bottom d-flex justify-content-center align-items-center">
+                    <h5>Concluído</h5>
+                </div>
                 <div class="os-list"></div>
             </div>
         </div>

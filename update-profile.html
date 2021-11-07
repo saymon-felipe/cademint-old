@@ -17,14 +17,30 @@
 </head>
 <body class="update-profile">
     <nav class="bg-primary py-2 header">
-        <div class="container d-flex justify-content-center">
-            <a href="index.html"><i class="fas fa-arrow-circle-left return"></i></a>
-            <a href="index.html" class="d-flex align-items-center">
+        <a href="index.html"><i class="fas fa-arrow-circle-left return"></i></a>
+        <div class="title-container">
+            <a href="index.html">
                 <h3 class="page-title">SCRUM Cademint</h3>
-                <span class="app-version ml-3"></span>
+                <span class="app-version"></span>
             </a>
         </div>
         <div class="go-to-user-profile">
+            <div class="responsive-menu">
+                <i class="fas fa-bars" id="menu-hamburguer"></i>
+                <div class="responsive-menu-container">
+                    <div class="responsive-profile-more-options-container">
+                        <div class="responsive-user">
+                            <img class="avatar-p avatar-header">
+                            <h6><span class="user-name"></span></h6>
+                        </div>
+                        <ul>
+                            <li><a href="update-profile.html">Alterar perfil</a></li>
+                            <li onclick="logoutUser()">Sair</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
             <div class="go-to-user-profile-inner">
                 <img class="avatar-p avatar-header">
                 <h6>Olá, <span class="user-name"></span></h6>
@@ -58,25 +74,31 @@
                                     <i class="fas fa-user user"></i>
                                     <i class="fas fa-plus plus"></i>
                                 </div>
-                                <img id="user-image">
+                                <div class="user-image">
+                                    <img id="user-image">
+                                    <div class="delete-image">
+                                        <span>Excluir</span>
+                                        <i class="fas fa-trash ml-2"></i>
+                                    </div>
+                                </div>
+                                
+                                <div class="photo-options">
+                                    <ul>
+                                        <li class="show-photo">Ver foto</li>
+                                        <li class="upload-photo">Enviar foto</li>
+                                    </ul>
+                                </div>
+                               
                             </div>
-                            <div class="delete-image">
-                                <span>Excluir</span>
-                                <i class="fas fa-trash ml-2"></i>
-                            </div>
+                            
                         </div>
                         
-                        <div class="photo-options">
-                            <ul>
-                                <li class="show-photo">Ver foto</li>
-                                <li class="upload-photo">Enviar foto</li>
-                            </ul>
-                        </div>
+                        
                         <div class="photo-detail-container">
                             <img class="photo-detail">
                         </div>
                         <div class="upload">
-                            <div class="send row">
+                            <div class="send">
                                 <form class="send-photo" method="post" enctype="multipart/form-data">
                                     <div class="input-file-custom">
                                         <label for="photo" id="upload-button">
