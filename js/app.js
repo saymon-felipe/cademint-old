@@ -27,7 +27,7 @@ function changeAppVersionAndUrl(ambient, version) { //Função irá trocar autom
 // A centena refere-se à alterações grandes na usabilidade e no conceito em geral.
 //
 // ==============================
-   changeAppVersionAndUrl(1, "0.1.0");
+   changeAppVersionAndUrl(1, "0.1.1");
 // ==============================
 
 if($(document).length) { //Início da execução.
@@ -48,7 +48,6 @@ if($(document).length) { //Início da execução.
     });
 
     $("#menu-hamburguer").on("click", () => { //Função para o menu responsivo.
-        console.log("entrou")
         $(".responsive-profile-more-options-container").show();
         setTimeout(() => {
             $(".responsive-profile-more-options-container").toggleClass("opacity-1");
@@ -69,7 +68,7 @@ function fillUserImage() { //Função para preencher a imagem do usuário logado
             $(".avatar-header").attr("src", res.response.profile_photo);
         },
         complete: () => {
-            setTimeout(fillUserImage, 18000); //Chamada recursiva da função a cada 18 segundos.
+            setTimeout(fillUserImage, 36000); //Chamada recursiva da função a cada 36 segundos.
         }
     })
 }
@@ -164,6 +163,44 @@ function getAllOs() { //Função recupera a lista de OS do banco de dados.
     
 };
 
+function showTooltip(id, user_owner, priority, size) {
+    let border = "border: 2px solid ";
+    switch (priority) {
+        case "1": 
+            border += "#FFA500";
+            break;
+        case "2": 
+            border += "#FF0000";
+            break;
+    }
+    setTimeout(() => {
+        $(".os-tooltip").attr("id", "#tooltip-" + id);
+        $(".os-tooltip").attr("style", border);
+        $(".os-tooltip").html(`
+                                <h6 class="os-tooltip-number"><strong>(OS) ${id}</strong></h6>
+                                <h6><strong>Aberta por:</strong> ${user_owner}</h6>
+                                <h6><strong>Tamanho:</strong> ${size}</h6>
+                                <h6><strong>Expira:</strong> Não</h6>
+                                <h6><strong>H. Previstas:</strong> n/a</h6>
+                                <h6><strong>H. Restantes:</strong> n/a</h6>
+                            `);
+        $(".os-tooltip").css("display", "block");
+        setTimeout(() => {
+            $(".os-tooltip").css("opacity", 1);
+        }, 20);
+    }, 300);
+    
+}
+
+function hideTooltip() {
+    $(".os-tooltip").css("opacity", 0);
+    setTimeout(() => {
+        $(".os-tooltip").css("display", "none");
+        $(".os-tooltip").attr("id", "");
+        $(".os-tooltip").html("");
+    }, 300);
+}
+
 function loadOs(mainArrayOs) {
     if (mainArrayOs == undefined) { //Função aloca as OS's conforme status no kanban.
         return;
@@ -171,7 +208,7 @@ function loadOs(mainArrayOs) {
     resetOsFields("#col-to-do .os-list", "#col-doing .os-list", "#col-test .os-list", "#col-done .os-list");
     for (let i in mainArrayOs) {
         let card = `<a href="os-editar.html?id=${mainArrayOs[i].id_complete}&s=0" class="card-link">
-                        <div class="card-os" id=${mainArrayOs[i].id_complete}>
+                        <div class="card-os" id="${mainArrayOs[i].id_complete}" onmouseenter="showTooltip('${mainArrayOs[i].id_complete}', '${mainArrayOs[i].user_owner}', '${mainArrayOs[i].priority}', '${mainArrayOs[i].size}')" onmouseleave="hideTooltip()">
                             <div class="card-os-header">
                                 <h6>(OS) ${mainArrayOs[i].id_complete}</h6>
                                 <h6 class="sponsor-card-name">${mainArrayOs[i].sponsor}</h6>
@@ -186,6 +223,13 @@ function loadOs(mainArrayOs) {
                             <div class="priority-container ${findPriority(mainArrayOs[i].priority, 1)}">
                                 <h6 class="priority-text">${findPriority(mainArrayOs[i].priority)}</h6>
                             </div>
+                        </div>
+                        <div class="os-tooltip" id="tooltip-${mainArrayOs[i].id_complete}">
+                            <h6><strong>Aberta por:</strong> ${mainArrayOs[i].user_owner}</h6>
+                            <h6><strong>Tamanho:</strong> Default</h6>
+                            <h6><strong>Expira:</strong> Não</h6>
+                            <h6><strong>H. Previstas:</strong> n/a</h6>
+                            <h6><strong>H. Restantes:</strong> n/a</h6>
                         </div>
                     </a>`;
 
@@ -241,7 +285,7 @@ function excludeOs(param) { //Função exclui a OS solicitada através do ID.
     };
 };
 
-function saveOs(os_number, priority, status, description, sponsor, source) { //Função salva uma OS já existente através do ID.
+function saveOs(os_number, priority, status, description, sponsor, user_owner, size, source) { //Função salva uma OS já existente através do ID.
     let jwt = "Bearer " + getJwtFromSessionStorage();
     if (source > 2000) { //Se o campo descrição tiver mais de 2000 caracteres, não é permitido salvar.
         return;
@@ -257,7 +301,9 @@ function saveOs(os_number, priority, status, description, sponsor, source) { //F
             status_os: status,
             priority: priority,
             id_complete: os_number,
-            sponsor: sponsor
+            sponsor: sponsor,
+            user_owner: user_owner,
+            size: size
         },
         success: (res) => {
             window.location.href = app_name + "/index.html";
@@ -283,7 +329,7 @@ function fillIdComplete(id_raw) { //Função cria o ID completo conforme o ID da
     });
 };
 
-function createOs(priority, status, description, sponsor, source) { //Função cria uma nova OS enviando dados dos inputs para o banco de dados.
+function createOs(priority, status, description, sponsor, user_owner, size, source) { //Função cria uma nova OS enviando dados dos inputs para o banco de dados.
     let jwt = "Bearer " + getJwtFromSessionStorage();
     if (source > 2000) { //Se o campo descrição tiver mais de 2000 caracteres, não é permitido salvar.
         return;
@@ -298,7 +344,9 @@ function createOs(priority, status, description, sponsor, source) { //Função c
             desc_os: description,
             status_os: status,
             priority: priority,
-            sponsor: sponsor
+            sponsor: sponsor,
+            user_owner: user_owner,
+            size: size
         },
         success: (res) => {
             fillIdComplete(res.os_criada.id_os); //Ao final da requisição de criação, a requisição de preenchimento do ID completo é disparada.
@@ -328,6 +376,7 @@ if ($(".edit-os").length) { //Funções que rodam a partir do momento que entra 
         success: (res) => {
             for (let i in res.response.lista_de_usuarios) {
                 $("#sponsor").append(`<option value="${res.response.lista_de_usuarios[i].nome}">${res.response.lista_de_usuarios[i].nome}</option>`);
+                $("#owner").append(`<option value="${res.response.lista_de_usuarios[i].nome}">${res.response.lista_de_usuarios[i].nome}</option>`);
             }
         }
     });
@@ -355,6 +404,8 @@ if ($(".edit-os").length) { //Funções que rodam a partir do momento que entra 
         $("#status").val(currentOs.status_os);
         $("#priority").val(currentOs.priority);
         $("#description").val(currentOs.desc_os);
+        $("#owner").val(currentOs.user_owner)
+        $("#size").val(currentOs.size);
         
     } else {
         $("#status").val(paramValue2); //Se for uma nova OS, somente o valor do campo status é preenchido conforme o parâmetro da URL.
@@ -379,19 +430,33 @@ if ($(".edit-os").length) { //Funções que rodam a partir do momento que entra 
         let status = $("#status").val();
         let description = $("#description").val();
         let sponsor = $("#sponsor").val();
+        let user_owner = $("#owner").val();
         let source = $("#description").val().length;
-        if (priority == "" || status == "" || description == "" || sponsor == "-- Nome --") {
+        let size = $("#size").val();
+        if (priority == "" || status == "" || description == "" || sponsor == "" || user_owner == "" || size == "") {
             $(".response").html("Não foi possível salvar a OS, campos vazios.");
         } else {
             $(".response").html("");
             if (currentOs != undefined) {
-                saveOs(os_number, priority, status, description, sponsor, source);
+                saveOs(os_number, priority, status, description, sponsor, user_owner, size, source);
             } else {
-                createOs(priority, status, description, sponsor, source);
+                createOs(priority, status, description, sponsor, user_owner, size, source);
             }
         };
     });
 };
+
+function showPasswordToggleClass(element, older_class, new_class) {
+    if ($(element).hasClass(older_class)) {
+        $(element).removeClass(older_class);
+        $(element).addClass(new_class);
+        $("#password").attr("type", "text");
+    } else if ($(element).hasClass(new_class)) {
+        $(element).removeClass(new_class);
+        $(element).addClass(older_class);
+        $("#password").attr("type", "password");
+    }
+}
 
 if ($(".login").length) { //Funções para tela de login.
     let url = window.location.href;
@@ -409,6 +474,21 @@ if ($(".login").length) { //Funções para tela de login.
     $("#user").on("keyup", () => { //Se o email no input não for igual ao que está em local storage, a opção de lembrar email é exibida.
         showRemember(email, currentEmail);
     });
+
+    $("#password").on("keydown", () => { //Função exibe botão de mostrar senha quando existe algum valor no input de password
+        setTimeout(() => {
+            if (!$("#password").val() == "") {
+                $(".show-password").show();
+            } else {
+                $(".show-password").hide();
+            };
+        }, 10);
+    });
+
+    $(".show-password").on("click", () => { //Botão que mostra ou esconde a senha.
+        showPasswordToggleClass(".show-password i", "fa-eye-slash", "fa-eye");
+    });
+
     $("#login-form").on("submit", (e) => {
         e.preventDefault();
 
@@ -433,7 +513,7 @@ if ($(".login").length) { //Funções para tela de login.
             success: (res) => { //Se o usuário for autenticado, o token JWT e o ID são armazenados em session storage e redirecionado para index.html.
                 setJwtInSessionStorage(res.token);
                 setUserIdInSessionStorage(res.id_usuario);
-                window.location.href = app_name + "/index.html"
+                window.location.href = app_name + "/index.html";
             },
             error: (xhr) => {
                 let error;

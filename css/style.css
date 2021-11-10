@@ -4,6 +4,14 @@
     --blue-low: #0090ce!important;
 }
 
+/* RESET BOOTSTRAP */
+
+.col-3 {
+    position: static;
+}
+
+/* RESET BOOTSTRAP */
+
 .bg-primary {
     background: var(--yellow)!important;
 }
@@ -316,7 +324,7 @@ label {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: space-around;
     width: 100%;
 }
 
@@ -554,7 +562,7 @@ nav .container a {
 
 .os-list {
     width: 100%;
-    max-height: 93%;
+    max-height: 83%;
     overflow-y: scroll;
     margin: .5rem 0;
     padding: 0 .5rem;
@@ -630,6 +638,34 @@ nav .container a {
         }
 }
 
+/* OS TOOLTIP */
+
+.os-tooltip {
+    background: rgb(242, 242, 242);
+    box-shadow: 0 0 10px rgba(197, 197, 197, 0.2);
+    max-height: 15rem;
+    border-radius: 15px;
+    padding: 1.5rem 3rem;
+    margin: 1.5rem;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+    .os-tooltip .os-tooltip-number {
+        margin-bottom: 1rem;
+    }
+
+.os-tooltip h6 {
+    font-size: 1rem;
+}
+
+/* END OS TOOLTIP */
+
 /* LOGIN */
 
 .login {
@@ -648,6 +684,20 @@ nav .container a {
     .login {
         background-size: 80%;
     }
+}
+
+#login-form {
+    position: relative;
+}
+
+.show-password {
+    display: none;
+    position: absolute;
+    background: transparent;
+    padding: .2rem .5rem;
+    cursor: pointer;
+    right: 1.5rem;
+    top: 4rem;
 }
 
 .login-container {
