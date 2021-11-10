@@ -164,32 +164,33 @@ function getAllOs() { //Função recupera a lista de OS do banco de dados.
 };
 
 function showTooltip(id, user_owner, priority, size) {
-    let border = "border: 2px solid ";
-    switch (priority) {
-        case "1": 
-            border += "#FFA500";
-            break;
-        case "2": 
-            border += "#FF0000";
-            break;
-    }
-    setTimeout(() => {
-        $(".os-tooltip").attr("id", "#tooltip-" + id);
-        $(".os-tooltip").attr("style", border);
-        $(".os-tooltip").html(`
-                                <h6 class="os-tooltip-number"><strong>(OS) ${id}</strong></h6>
-                                <h6><strong>Aberta por:</strong> ${user_owner}</h6>
-                                <h6><strong>Tamanho:</strong> ${size}</h6>
-                                <h6><strong>Expira:</strong> Não</h6>
-                                <h6><strong>H. Previstas:</strong> n/a</h6>
-                                <h6><strong>H. Restantes:</strong> n/a</h6>
-                            `);
-        $(".os-tooltip").css("display", "block");
+    if (window.innerWidth > 865) {
+            let border = "border: 2px solid ";
+        switch (priority) {
+            case "1": 
+                border += "#FFA500";
+                break;
+            case "2": 
+                border += "#FF0000";
+                break;
+        }
         setTimeout(() => {
-            $(".os-tooltip").css("opacity", 1);
-        }, 20);
-    }, 300);
-    
+            $(".os-tooltip").attr("id", "#tooltip-" + id);
+            $(".os-tooltip").attr("style", border);
+            $(".os-tooltip").html(`
+                                    <h6 class="os-tooltip-number"><strong>(OS) ${id}</strong></h6>
+                                    <h6><strong>Aberta por:</strong> ${user_owner}</h6>
+                                    <h6><strong>Tamanho:</strong> ${size}</h6>
+                                    <h6><strong>Expira:</strong> Não</h6>
+                                    <h6><strong>H. Previstas:</strong> n/a</h6>
+                                    <h6><strong>H. Restantes:</strong> n/a</h6>
+                                `);
+            $(".os-tooltip").css("display", "block");
+            setTimeout(() => {
+                $(".os-tooltip").css("opacity", 1);
+            }, 20);
+        }, 300);
+    }
 }
 
 function hideTooltip() {
