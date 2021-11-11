@@ -1,6 +1,6 @@
 :root {
     --yellow: #FFCA37!important;
-    --blue: #00A2E8!important;
+    --blue: rgb(0, 162, 232)!important;
     --blue-low: #0090ce!important;
 }
 
@@ -61,7 +61,8 @@ a:hover {
 
 html, body {
     height: 100vh;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: scroll;
     width: 100vw;
 }
 
@@ -154,7 +155,10 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: end;
-    position: relative;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 4;
 }
 
 .header-icon {
@@ -170,29 +174,51 @@ html, body {
     font-weight: 700;
 }
 
+.kanban-title-container {
+    position: fixed;
+    top: 4.5rem;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    background: white;
+    flex-wrap: wrap;
+    z-index: 3;
+}
+
 .kanban-title {
-    width: calc(100% + 30px);
+    width: 25vw;
+}
+
+.kanban-title, .kanban-title-responsive {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.kanban-title-responsive {
+    display: none;
+    width: 100%;
+    border: 1px solid #dee2e6;
+}
+
+@media (max-width: 865px) {
+    
 }
 
 .col-scrum {
-    height: calc(100vh - 95px);
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0 7px;
-}
-
-.col-p-30 {
-    padding-left: 30px;
-}
-
-.col-pr-30 {
-    padding-right: 30px;
+    padding: 4.6rem 7px 0;
+    width: 25vw!important;
 }
 
 .card-link {
     width: 100%;
     margin: 0!important;
+    z-index: 2;
 }
 
 .font-small {
@@ -203,10 +229,12 @@ html, body {
     background: rgb(242, 242, 242);
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
     max-height: 15rem;
+    max-width: 447px;
     border-radius: 15px;
     padding: 1rem;
     margin: 1rem auto;
     position: relative;
+    z-index: 2;
 }
 
 .card-os-header {
@@ -521,14 +549,30 @@ nav .container a {
 
 /* END RESPONSIVE MENU */
 
+.kanban {
+    margin-top: 4.5rem;
+    height: 100%;
+}
 
+.kanban-column {
+    display: flex;
+}
+
+@media (max-width: 400px) {
+    .kanban {
+        margin-top: 5.3rem;
+    }
+}
 
 .new-os {
+    position: absolute;
+    background: white;
+    top: 2.3rem;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 85%;
-    margin: .5rem auto;
+    margin: .5rem auto -.7rem;
     cursor: pointer;
     border-radius: 10px;
     padding: .6rem 0;
@@ -561,11 +605,15 @@ nav .container a {
 }
 
 .os-list {
+    list-style: none;
     width: 100%;
-    max-height: 83%;
-    overflow-y: scroll;
+    height: 100%;
     margin: .5rem 0;
     padding: 0 .5rem;
+}
+
+.os-list-overlay {
+    background: rgba(0, 162, 232, 0.268);
 }
 
 @media (max-width: 865px) {
@@ -586,17 +634,22 @@ nav .container a {
     .responsive-kanban {
         display: flex;
         align-items: center;
-        width: 100vw;
-        max-width: 100%;
-        height: 5rem!important;
+        width: 100vw!important;
         border: none!important;
-        padding: 0;
         position: relative;
+        padding: 0;
+    }
+
+    .kanban-title-container {
+        display: none;
+    }
+    .kanban-title-responsive {
+        display: flex;
     }
 
     .with-new {
         width: calc(100vw - 3.5rem);
-        margin-left: -3.5rem;
+        margin-left: -4rem;
     }
 
     .responsive-kanban .os-list {

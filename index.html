@@ -7,10 +7,13 @@
 
     <link rel="stylesheet" href="fontawesome/css/all.min.css" />
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/jquery-ui.min.css">
     <link rel="stylesheet" href="css/style.css">
 
     <link rel="shortcut icon" href="img/scrum-icon.png" type="image/x-icon">
     <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    
     <script src="js/routes.js"></script>
 
     <title>SCRUM Cademint</title>
@@ -55,36 +58,50 @@
         </div>
     </nav>
 
-    <section>
-        <div class="responsive-kanban-column row h-100">
-            <div class="responsive-kanban col-3 border-right col-scrum col-p-30" id="col-to-do">
-                <div class="kanban-title border-bottom d-flex justify-content-center align-items-center">
+    <section class="kanban">
+        <div class="kanban-title-container">
+            <div class="kanban-title">
+                <h5>A fazer</h5>
+            </div>
+            <div class="kanban-title">
+                <h5>Fazendo</h5>
+            </div>
+            <div class="kanban-title">
+                <h5>Teste</h5>
+            </div>
+            <div class="kanban-title">
+                <h5>Concluído</h5>
+            </div>
+        </div>
+        <div class="responsive-kanban-column kanban-column h-100">
+            <div class="responsive-kanban border-right col-scrum" id="col-to-do">
+                <div class="kanban-title-responsive">
                     <h5>A fazer</h5>
                 </div>
-                <div class="os-list with-new"></div>
                 <div class="new-os" id="new-os-1">
                     <i class="fas fa-plus-circle"></i>
                     <h6>Novo</h6>
                 </div>
+                <div class="os-list with-new"></div>
             </div>
-            <div class="responsive-kanban col-3 border-right col-scrum" id="col-doing">
-                <div class="kanban-title border-bottom d-flex justify-content-center align-items-center">
+            <div class="responsive-kanban border-right col-scrum" id="col-doing">
+                <div class="kanban-title-responsive">
                     <h5>Fazendo</h5>
                 </div>
-                <div class="os-list with-new"></div>
                 <div class="new-os" id="new-os-2">
                     <i class="fas fa-plus-circle"></i>
                     <h6>Novo</h6>
                 </div>
+                <div class="os-list with-new"></div>
             </div>
-            <div class="responsive-kanban col-3 border-right col-scrum" id="col-test">
-                <div class="kanban-title border-bottom d-flex justify-content-center align-items-center">
+            <div class="responsive-kanban border-right col-scrum" id="col-test">
+                <div class="kanban-title-responsive">
                     <h5>Teste</h5>
                 </div>
                 <div class="os-list"></div>
             </div>
-            <div class="responsive-kanban col-3 col-scrum col-pr-30" id="col-done">
-                <div class="kanban-title border-bottom d-flex justify-content-center align-items-center">
+            <div class="responsive-kanban col-scrum" id="col-done">
+                <div class="kanban-title-responsive">
                     <h5>Concluído</h5>
                 </div>
                 <div class="os-list"></div>
@@ -93,6 +110,7 @@
         </div>
     </section>
 
+    
     <script src="js/app.js"></script>
 
 </body>

@@ -1,5 +1,6 @@
 let app_version;
 let system_url;
+let in_drag = false;
 
 function changeAppVersionAndUrl(ambient, version) { //Função irá trocar automaticamente o ambiente do aplicativo conforme o parâmetro passado na função e a versão também.
     const app_url_production = "https://saymon-felipe.github.io/scrum-cademint/";
@@ -27,7 +28,7 @@ function changeAppVersionAndUrl(ambient, version) { //Função irá trocar autom
 // A centena refere-se à alterações grandes na usabilidade e no conceito em geral.
 //
 // ==============================
-   changeAppVersionAndUrl(1, "0.1.1");
+   changeAppVersionAndUrl(1, "0.2.0");
 // ==============================
 
 if($(document).length) { //Início da execução.
@@ -145,55 +146,58 @@ function findPriority(priority, badge = 0) { //Função para encontrar as classe
 };
 
 function getAllOs() { //Função recupera a lista de OS do banco de dados.
-    let mainArrayOs;
-    $.ajax({
-        url: url_api + "/os",
-        type: "GET",
-        success: (res) => {
-            mainArrayOs = res.response.os_list;
-            if (mainArrayOs == null) { //Se não vier nada do banco de dados, assume um array vazio.
-                mainArrayOs = [];
+    if (!in_drag) {
+        let mainArrayOs;
+        $.ajax({
+            url: url_api + "/os",
+            type: "GET",
+            success: (res) => {
+                mainArrayOs = res.response.os_list;
+                if (mainArrayOs == null) { //Se não vier nada do banco de dados, assume um array vazio.
+                    mainArrayOs = [];
+                }
+            },
+            complete: () => {
+                loadOs(mainArrayOs);
+                setTimeout(getAllOs, 5000); //Chamada recursiva da requisição.
             }
-        },
-        complete: () => {
-            loadOs(mainArrayOs);
-            setTimeout(getAllOs, 5000); //Chamada recursiva da requisição.
-        }
-    });
-    
+        });
+    } 
 };
 
-function showTooltip(id, user_owner, priority, size) {
+function showTooltip(id, user_owner, priority, size) { //Função mostra o tooltip da respectiva OS sobreposta e preenche as informações.
     if (window.innerWidth > 865) {
+        if (!in_drag) {
             let border = "border: 2px solid ";
-        switch (priority) {
-            case "1": 
-                border += "#FFA500";
-                break;
-            case "2": 
-                border += "#FF0000";
-                break;
-        }
-        setTimeout(() => {
-            $(".os-tooltip").attr("id", "#tooltip-" + id);
-            $(".os-tooltip").attr("style", border);
-            $(".os-tooltip").html(`
-                                    <h6 class="os-tooltip-number"><strong>(OS) ${id}</strong></h6>
-                                    <h6><strong>Aberta por:</strong> ${user_owner}</h6>
-                                    <h6><strong>Tamanho:</strong> ${size}</h6>
-                                    <h6><strong>Expira:</strong> Não</h6>
-                                    <h6><strong>H. Previstas:</strong> n/a</h6>
-                                    <h6><strong>H. Restantes:</strong> n/a</h6>
-                                `);
-            $(".os-tooltip").css("display", "block");
+            switch (priority) {
+                case "1": 
+                    border += "#FFA500";
+                    break;
+                case "2": 
+                    border += "#FF0000";
+                    break;
+            }
             setTimeout(() => {
-                $(".os-tooltip").css("opacity", 1);
-            }, 20);
-        }, 300);
+                $(".os-tooltip").attr("id", "#tooltip-" + id);
+                $(".os-tooltip").attr("style", border);
+                $(".os-tooltip").html(`
+                                        <h6 class="os-tooltip-number"><strong>(OS) ${id}</strong></h6>
+                                        <h6><strong>Aberta por:</strong> ${user_owner}</h6>
+                                        <h6><strong>Tamanho:</strong> ${size}</h6>
+                                        <h6><strong>Expira:</strong> Não</h6>
+                                        <h6><strong>H. Previstas:</strong> n/a</h6>
+                                        <h6><strong>H. Restantes:</strong> n/a</h6>
+                                    `);
+                $(".os-tooltip").css("display", "block");
+                setTimeout(() => {
+                    $(".os-tooltip").css("opacity", 1);
+                }, 20);
+            }, 300);
+        }
     }
 }
 
-function hideTooltip() {
+function hideTooltip() { //Reseta e esconde tooltip
     $(".os-tooltip").css("opacity", 0);
     setTimeout(() => {
         $(".os-tooltip").css("display", "none");
@@ -202,13 +206,75 @@ function hideTooltip() {
     }, 300);
 }
 
-function loadOs(mainArrayOs) {
-    if (mainArrayOs == undefined) { //Função aloca as OS's conforme status no kanban.
+function turnOsDragabble() { //Acima de 865px de largura da tela, torna as OS arrastáveis
+    if (window.innerWidth > 865) {
+        $(".card-link").draggable({
+            drag: (event, ui) => {
+                in_drag = true;
+                hideTooltip();
+            } 
+        });
+        
+        if ($(".card-link").attr("draggable") == "false"){
+            $(".card-link").attr("draggable", "true");
+            $(".card-link").draggable("enable");
+        }
+    } else {
+        if ($(".card-link").attr("draggable") == "true") {
+            $(".card-link").attr("draggable", "false");
+            $(".card-link").draggable("disable");
+        }
+    }
+}
+
+function turnFieldDropable() { //Torna os campos do kanban aptos à aceitar OS que são arrastadas até eles e depois fazem uma chamada ajax para alterar o status da OS conforme a coluna do kanban.
+    $(".col-scrum").droppable({
+        drop: (event, ui) => {
+            in_drag = false;
+            let jwt = "Bearer " + getJwtFromSessionStorage();
+            let current_os_id = ui.helper[0].id.replace("link-", "");
+            let current_field;
+            switch (event.target.id) {
+                case "col-to-do":
+                    current_field = 1;
+                    break;
+                case "col-doing": 
+                    current_field = 2;
+                    break;
+                case "col-test":
+                    current_field = 3;
+                    break;
+                case "col-done":
+                    current_field = 4;
+                    break;
+            }
+
+            $.ajax({ //Requisição que atualiza o status da OS conforme o campo que ela jogou o card.
+                url: url_api + "/os/" + current_os_id,
+                headers: {
+                    Authorization: jwt
+                },
+                type: "PATCH",
+                data: {
+                    status_os: current_field
+                },
+                success: (res) => {
+                    getAllOs(); //Chama a requisição para preencher novamente o kanban com os novos dados.
+                }
+            });
+        },
+        hoverClass: "os-list-overlay"
+    });
+}
+
+function loadOs(mainArrayOs) { //Função aloca as OS's conforme status no kanban.
+    if (mainArrayOs == undefined) {
         return;
     }
+    
     resetOsFields("#col-to-do .os-list", "#col-doing .os-list", "#col-test .os-list", "#col-done .os-list");
     for (let i in mainArrayOs) {
-        let card = `<a href="os-editar.html?id=${mainArrayOs[i].id_complete}&s=0" class="card-link">
+        let card = `<a href="os-editar.html?id=${mainArrayOs[i].id_complete}&s=0" class="card-link" id="link-${mainArrayOs[i].id_complete}" draggable="false">
                         <div class="card-os" id="${mainArrayOs[i].id_complete}" onmouseenter="showTooltip('${mainArrayOs[i].id_complete}', '${mainArrayOs[i].user_owner}', '${mainArrayOs[i].priority}', '${mainArrayOs[i].size}')" onmouseleave="hideTooltip()">
                             <div class="card-os-header">
                                 <h6>(OS) ${mainArrayOs[i].id_complete}</h6>
@@ -224,13 +290,6 @@ function loadOs(mainArrayOs) {
                             <div class="priority-container ${findPriority(mainArrayOs[i].priority, 1)}">
                                 <h6 class="priority-text">${findPriority(mainArrayOs[i].priority)}</h6>
                             </div>
-                        </div>
-                        <div class="os-tooltip" id="tooltip-${mainArrayOs[i].id_complete}">
-                            <h6><strong>Aberta por:</strong> ${mainArrayOs[i].user_owner}</h6>
-                            <h6><strong>Tamanho:</strong> Default</h6>
-                            <h6><strong>Expira:</strong> Não</h6>
-                            <h6><strong>H. Previstas:</strong> n/a</h6>
-                            <h6><strong>H. Restantes:</strong> n/a</h6>
                         </div>
                     </a>`;
 
@@ -254,6 +313,14 @@ function loadOs(mainArrayOs) {
         };
     };
 
+    turnOsDragabble();
+    turnFieldDropable();
+
+    $(window).on("resize", () => {
+        turnOsDragabble();
+        turnFieldDropable();
+    });
+
     $("#new-os-1").on("click", () => { //Vai para a tela de criar nova OS com status A FAZER.
         var url_os = new URL(system_url + "os-editar.html");
         url_os.searchParams.append("s", 1);
@@ -266,6 +333,11 @@ function loadOs(mainArrayOs) {
         window.location.href = url_os;
     });
 };
+
+$(".kanban").on("mouseleave", () => { //Se o mouse sair fora da div do kanban, significa que o usuário está tentando quebrar o layout e uma nova chamada de getAllOs é feita.
+    in_drag = false;
+    getAllOs();
+});
 
 function excludeOs(param) { //Função exclui a OS solicitada através do ID.
     let currentOs = findOS(param);
