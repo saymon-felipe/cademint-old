@@ -28,7 +28,7 @@ function changeAppVersionAndUrl(ambient, version) { //Função irá trocar autom
 // A centena refere-se à alterações grandes na usabilidade e no conceito em geral.
 //
 // ==============================
-   changeAppVersionAndUrl(1, "0.2.1");
+   changeAppVersionAndUrl(1, "0.2.2");
 // ==============================
 
 if($(document).length) { //Início da execução.
@@ -163,7 +163,9 @@ function getAllOs() { //Função recupera a lista de OS do banco de dados.
                 setTimeout(getAllOs, 5000); //Chamada recursiva da requisição.
             }
         });
-    } 
+    } else {
+        setTimeout(getAllOs, 5000); //Chamada recursiva da requisição.
+    }
 };
 
 function setOsInSessionStorage(mainArrayOs) { //Armazena a lista de OS em session storage para consulta rápida.
@@ -176,7 +178,7 @@ function setOsInSessionStorage(mainArrayOs) { //Armazena a lista de OS em sessio
     }
 }
 
-function getOsFromLocalStorage() { //Recupera a lista de OS em session storage para consulta rápida.
+function getOsFromSessionStorage() { //Recupera a lista de OS em session storage para consulta rápida.
     return JSON.parse(sessionStorage.getItem("os_list"));
 }
 
@@ -248,10 +250,9 @@ function turnFieldDropable() { //Torna os campos do kanban aptos à aceitar OS q
     $(".col-scrum").droppable({
         drop: (event, ui) => {
             
-            in_drag = false;
             let jwt = "Bearer " + getJwtFromSessionStorage();
             let current_os_id = ui.helper[0].id.replace("link-", "");
-            let os_array = getOsFromLocalStorage();
+            let os_array = getOsFromSessionStorage();
             
             let current_field;
             switch (event.target.id) {
@@ -281,12 +282,13 @@ function turnFieldDropable() { //Torna os campos do kanban aptos à aceitar OS q
                 headers: {
                     Authorization: jwt
                 },
+                async: false,
                 type: "PATCH",
                 data: {
                     status_os: current_field
                 },
-                success: (res) => {
-                    getAllOs(); //Chama a requisição para preencher novamente o kanban com os novos dados.
+                success: (res) => { 
+                    in_drag = false;
                 }
             });
         },
@@ -361,9 +363,9 @@ function loadOs(mainArrayOs) { //Função aloca as OS's conforme status no kanba
     });
 };
 
-$(".kanban").on("mouseleave", () => { //Se o mouse sair fora da div do kanban, significa que o usuário está tentando quebrar o layout e uma nova chamada de getAllOs é feita.
+$(".kanban").on("mouseleave", () => { //Se o mouse sair fora da div do kanban, significa que o usuário está tentando quebrar o layout e os campos são preenchidos novamente.
     in_drag = false;
-    getAllOs();
+    loadOs(getOsFromSessionStorage());
 });
 
 function excludeOs(param) { //Função exclui a OS solicitada através do ID.
