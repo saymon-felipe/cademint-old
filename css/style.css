@@ -149,6 +149,12 @@ html, body {
         background: #dfb030;
     }
 
+@media (max-width: 849px) {
+    .profile-more-options-container {
+        bottom: -7.6rem!important;
+    }
+}
+
 .opacity-1 {
     opacity: 1!important;
 }
@@ -202,10 +208,6 @@ html, body {
     display: none;
     width: 100%;
     border: 1px solid #dee2e6;
-}
-
-@media (max-width: 865px) {
-    
 }
 
 .col-scrum {
@@ -527,13 +529,6 @@ nav .container a {
     }
 }
 
-@media (max-width: 600px) {
-}
-
-@media (max-width: 428px) {
-    
-}
-
 @media (max-width: 363px) {
     nav a h3 {
         font-size: 1.4rem;
@@ -554,6 +549,12 @@ nav .container a {
 .kanban {
     margin-top: 4.5rem;
     height: 100%;
+}
+
+@media (max-width: 849px) {
+    .kanban {
+        margin-top: 6.5rem;
+    }
 }
 
 .kanban-column {
