@@ -85,6 +85,8 @@ html, body {
         display: flex;
         flex-direction: column;
         text-align: center;
+        width: 40%;
+        margin: auto;
     }
 
 .go-to-user-profile {
