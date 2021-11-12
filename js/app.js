@@ -28,7 +28,7 @@ function changeAppVersionAndUrl(ambient, version) { //Função irá trocar autom
 // A centena refere-se à alterações grandes na usabilidade e no conceito em geral.
 //
 // ==============================
-   changeAppVersionAndUrl(1, "0.2.0");
+   changeAppVersionAndUrl(1, "0.2.1");
 // ==============================
 
 if($(document).length) { //Início da execução.
@@ -158,12 +158,27 @@ function getAllOs() { //Função recupera a lista de OS do banco de dados.
                 }
             },
             complete: () => {
+                setOsInSessionStorage(mainArrayOs);
                 loadOs(mainArrayOs);
                 setTimeout(getAllOs, 5000); //Chamada recursiva da requisição.
             }
         });
     } 
 };
+
+function setOsInSessionStorage(mainArrayOs) { //Armazena a lista de OS em session storage para consulta rápida.
+    let array = JSON.stringify((mainArrayOs));
+    if (sessionStorage.getItem("os_list")) {
+        sessionStorage.removeItem("os_list");
+        sessionStorage.setItem("os_list", array);
+    } else {
+        sessionStorage.setItem("os_list", array);
+    }
+}
+
+function getOsFromLocalStorage() { //Recupera a lista de OS em session storage para consulta rápida.
+    return JSON.parse(sessionStorage.getItem("os_list"));
+}
 
 function showTooltip(id, user_owner, priority, size) { //Função mostra o tooltip da respectiva OS sobreposta e preenche as informações.
     if (window.innerWidth > 865) {
@@ -198,12 +213,14 @@ function showTooltip(id, user_owner, priority, size) { //Função mostra o toolt
 }
 
 function hideTooltip() { //Reseta e esconde tooltip
-    $(".os-tooltip").css("opacity", 0);
-    setTimeout(() => {
-        $(".os-tooltip").css("display", "none");
-        $(".os-tooltip").attr("id", "");
-        $(".os-tooltip").html("");
-    }, 300);
+   setTimeout(() => {
+        $(".os-tooltip").css("opacity", 0);
+        setTimeout(() => {
+            $(".os-tooltip").css("display", "none");
+            $(".os-tooltip").attr("id", "");
+            $(".os-tooltip").html("");
+        }, 300);
+   }, 100);
 }
 
 function turnOsDragabble() { //Acima de 865px de largura da tela, torna as OS arrastáveis
@@ -230,9 +247,12 @@ function turnOsDragabble() { //Acima de 865px de largura da tela, torna as OS ar
 function turnFieldDropable() { //Torna os campos do kanban aptos à aceitar OS que são arrastadas até eles e depois fazem uma chamada ajax para alterar o status da OS conforme a coluna do kanban.
     $(".col-scrum").droppable({
         drop: (event, ui) => {
+            
             in_drag = false;
             let jwt = "Bearer " + getJwtFromSessionStorage();
             let current_os_id = ui.helper[0].id.replace("link-", "");
+            let os_array = getOsFromLocalStorage();
+            
             let current_field;
             switch (event.target.id) {
                 case "col-to-do":
@@ -247,6 +267,13 @@ function turnFieldDropable() { //Torna os campos do kanban aptos à aceitar OS q
                 case "col-done":
                     current_field = 4;
                     break;
+            }
+
+            for (let i in os_array) { //Faz o preenchimento do array de OS modificado antes da requisição para diminuir o delay e não causar bug visual.
+                if (os_array[i].id_complete == current_os_id){
+                    os_array[i].status_os = current_field;
+                    loadOs(os_array);
+                }
             }
 
             $.ajax({ //Requisição que atualiza o status da OS conforme o campo que ela jogou o card.
