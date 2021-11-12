@@ -28,7 +28,7 @@ function changeAppVersionAndUrl(ambient, version) { //Função irá trocar autom
 // A centena refere-se à alterações grandes na usabilidade e no conceito em geral.
 //
 // ==============================
-   changeAppVersionAndUrl(1, "0.2.2");
+   changeAppVersionAndUrl(1, "0.2.3");
 // ==============================
 
 if($(document).length) { //Início da execução.
@@ -145,7 +145,7 @@ function findPriority(priority, badge = 0) { //Função para encontrar as classe
     };
 };
 
-function getAllOs() { //Função recupera a lista de OS do banco de dados.
+function getAllOs(fill = false) { //Função recupera a lista de OS do banco de dados.
     if (!in_drag) {
         let mainArrayOs;
         $.ajax({
@@ -160,7 +160,9 @@ function getAllOs() { //Função recupera a lista de OS do banco de dados.
             complete: () => {
                 setOsInSessionStorage(mainArrayOs);
                 loadOs(mainArrayOs);
-                setTimeout(getAllOs, 5000); //Chamada recursiva da requisição.
+                if (!fill) {
+                    setTimeout(getAllOs, 5000); //Chamada recursiva da requisição.
+                }
             }
         });
     } else {
@@ -289,6 +291,7 @@ function turnFieldDropable() { //Torna os campos do kanban aptos à aceitar OS q
                 },
                 success: (res) => { 
                     in_drag = false;
+                    getAllOs(true);
                 }
             });
         },
