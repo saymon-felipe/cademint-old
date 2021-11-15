@@ -28,7 +28,7 @@ function changeAppVersionAndUrl(ambient, version) { //Função irá trocar autom
 // A centena refere-se à alterações grandes na usabilidade e no conceito em geral.
 //
 // ==============================
-   changeAppVersionAndUrl(1, "0.2.5");
+   changeAppVersionAndUrl(1, "0.2.6");
 // ==============================
 
 if($(document).length) { //Início da execução.
@@ -48,12 +48,26 @@ if($(document).length) { //Início da execução.
         }, 10);
     });
 
+    $("html, body").scroll(() => { //Mostra o botão de voltar ao topo se usuário tiver dado scroll na página
+        let scroll = $("body").scrollTop();
+        if (scroll > 150) {
+            $(".back-to-top").css("opacity", 1);
+        } else {
+            $(".back-to-top").css("opacity", 0);
+        }
+    });
+
+    $(".back-to-top").on("click", () => { // Botão de voltar ao topo.
+        $("html, body").animate({scrollTop: 0}, "medium");
+    });
+
     $("#menu-hamburguer").on("click", () => { //Função para o menu responsivo.
         $(".responsive-profile-more-options-container").show();
         setTimeout(() => {
             $(".responsive-profile-more-options-container").toggleClass("opacity-1");
         }, 10);
     });
+
 };
 
 function fillUserImage() { //Função para preencher a imagem do usuário logado
