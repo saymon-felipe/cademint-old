@@ -28,7 +28,7 @@ function changeAppVersionAndUrl(ambient, version) { //Função irá trocar autom
 // A centena refere-se à alterações grandes na usabilidade e no conceito em geral.
 //
 // ==============================
-   changeAppVersionAndUrl(1, "0.2.9");
+   changeAppVersionAndUrl(1, "0.2.10");
 // ==============================
 
 if($(document).length) { //Início da execução.
@@ -624,7 +624,9 @@ if ($(".login").length) { //Funções para tela de login.
         $("#login-form").find(".form-input").attr("disabled", true);
         $("#login-form").find(".loading").show();
         $("#login-form").find('.response').hide();
-        showPasswordToggleClass(".show-password i", "fa-eye-slash", "fa-eye");
+        if ($("#password").attr("type") != "password") {
+            showPasswordToggleClass(".show-password i", "fa-eye-slash", "fa-eye");
+        };
         
         $.ajax({
             url: url_api + "/usuarios/login",
