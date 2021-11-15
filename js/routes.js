@@ -46,9 +46,9 @@ function changeAppAmbient(test_or_prod) {
 function checkIfUserIsAuthenticated() {
     let jwt = "Bearer " + getJwtFromSessionStorage();
     if (jwt == "Bearer undefined") { 
-        if (window.location.pathname == app_name + "/login.html" || window.location.pathname == app_name + "/register.html") { return; }; //Se o usuário já estiver na página de login ou register, ele não é redirecionado.
-        
-        window.location.pathname = app_name + "/login.html";
+        if (window.location.pathname != app_name + "/login.html" && window.location.pathname != app_name + "/register.html") { //Se o usuário não estiver na página de login ou register, ele é redirecionado.
+            window.location.pathname = app_name + "/login.html";
+        };
     } else {
         if (window.location.pathname == app_name + "/login.html") { //Se ja estiver logado no sistema e acessar a página de login, é checkado a valia do token JWT e então redirecionado para a index.
             $.ajax({

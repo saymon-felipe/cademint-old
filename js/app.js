@@ -28,11 +28,11 @@ function changeAppVersionAndUrl(ambient, version) { //Função irá trocar autom
 // A centena refere-se à alterações grandes na usabilidade e no conceito em geral.
 //
 // ==============================
-   changeAppVersionAndUrl(1, "0.2.7");
+   changeAppVersionAndUrl(1, "0.2.8");
 // ==============================
 
 if($(document).length) { //Início da execução.
-    if (window.location.pathname != app_name + "/login.html") { //Se cair aqui significa que o usuário não está na tela de login e as funções deverão ser executadas.
+    if (window.location.pathname != app_name + "/login.html" && window.location.pathname != app_name + "/register.html") { //Se cair aqui significa que o usuário não está na tela de login e as funções deverão ser executadas.
         fillUserImage(); //Carrega imagem do usuário.
         checkIfJwtIsValid(); //Verifica se o token JWT é válido quando carrega qualquer página (se existir).
         getAllOs(); //Inicia a execução das requisições de OS.
@@ -624,6 +624,7 @@ if ($(".login").length) { //Funções para tela de login.
         $("#login-form").find(".form-input").attr("disabled", true);
         $("#login-form").find(".loading").show();
         $("#login-form").find('.response').hide();
+        showPasswordToggleClass(".show-password i", "fa-eye-slash", "fa-eye");
         
         $.ajax({
             url: url_api + "/usuarios/login",
@@ -720,44 +721,60 @@ function removeJwtFromSessionStorage() { //Remove o token JWT de session storage
     window.location.href = time_out_url;
 }
 
+function matchPassword(password, repeatPassword) {
+    if (password == repeatPassword) {
+        return true;
+    }
+    return false;
+};
+
 if ($(".register").length) { //Funções para tela de registro
+    
     $("#register-form").on("submit", (e) => {
         e.preventDefault();
-        
-        let data = $("#register-form").serializeArray().reduce(function (obj, item) { //Pega todos os dados do formulário e coloca em um objeto
-            obj[item.name] = item.value;
-            return obj;
-        }, {});
 
-        $("#register-form").find(".form-input").attr("disabled", true);
-        $("#register-form").find(".loading").show();
+        let password = $("#password").val();
+        let repeatPassword = $("#confirm_password").val();
         
-        $.ajax({
-            url: url_api + "/usuarios/cadastro",
-            type: "POST",
-            data: data,
-            success: () => { //No sucesso na requisição de cadastro redireciona para fazer o login.
-                $("#register-form").find(".response").addClass("success");
-                $("#register-form").find(".response").html("Usuário cadastrado!");
-                $("#register-form").find(".response").show();
-                window.location.pathname = app_name + "/login.html";
-            },
-            error: (xhr) => {
-                let error;
-                if (xhr.responseJSON != undefined) {
-                    error = xhr.responseJSON.mensagem;
-                } else {
-                    error = "Erro";
+        if (matchPassword(password, repeatPassword)) {
+            let data = $("#register-form").serializeArray().reduce(function (obj, item) { //Pega todos os dados do formulário e coloca em um objeto
+                obj[item.name] = item.value;
+                return obj;
+            }, {});
+    
+            $("#register-form").find(".form-input").attr("disabled", true);
+            $("#register-form").find(".loading").show();
+            
+            $.ajax({
+                url: url_api + "/usuarios/cadastro",
+                type: "POST",
+                data: data,
+                success: () => { //No sucesso na requisição de cadastro redireciona para fazer o login.
+                    $("#register-form").find(".response").addClass("success");
+                    $("#register-form").find(".response").html("Usuário cadastrado!");
+                    $("#register-form").find(".response").show();
+                    window.location.pathname = app_name + "/login.html";
+                },
+                error: (xhr) => {
+                    let error;
+                    if (xhr.responseJSON != undefined) {
+                        error = xhr.responseJSON.mensagem;
+                    } else {
+                        error = "Erro";
+                    }
+                    $("#register-form").find('.response').html(error);
+                    $("#register-form").find('.response').show();
+                    $("#register-form").find(".loading").hide();
+                },
+                complete: () => {
+                    $("#register-form").find('.form-input').attr('disabled', false);
+                    $("#register-form").find(".loading").hide();
                 }
-                $("#register-form").find('.response').html(error);
-                $("#register-form").find('.response').show();
-                $("#register-form").find(".loading").hide();
-            },
-            complete: () => {
-                $("#register-form").find('.form-input').attr('disabled', false);
-                $("#register-form").find(".loading").hide();
-            }
-        });
+            });
+        } else {
+            $("#register-form").find(".response").html("Senhas não coincidem!");
+            $("#register-form").find(".response").show();
+        }
     });
 };
 
