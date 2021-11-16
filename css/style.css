@@ -178,6 +178,43 @@ html, body {
         color: var(--blue-low)!important;
     }
 
+.new-version-availabe {
+    display: none;
+    width: 100%;
+    background:rgb(0, 162, 232);
+    color: white;
+    position: fixed;
+    top: 0;
+    z-index: 6;
+    transition: background 0.4s;
+    text-align: center;
+    animation-name: blink;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}
+
+    .new-version-availabe h6 {
+        margin: .5rem 0;
+    }
+
+    .new-version-availabe a {
+        color: white;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+@keyframes blink {
+    0% {
+        background:rgb(0, 162, 232);
+    }
+    50% {
+        background:rgb(59, 192, 248);
+    }
+    100% {
+        background:rgb(0, 162, 232);
+    }
+}
+
 .steps h5 {
     font-weight: 700;
 }

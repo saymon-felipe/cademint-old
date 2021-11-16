@@ -2,7 +2,7 @@ let app_version;
 let system_url;
 let in_drag = false;
 
-function changeAppVersionAndUrl(ambient, version) { //Função irá trocar automaticamente o ambiente do aplicativo conforme o parâmetro passado na função e a versão também.
+function changeAppUrl(ambient) { //Função irá trocar automaticamente o ambiente do aplicativo conforme o parâmetro passado na função e a versão também.
     const app_url_production = "https://saymon-felipe.github.io/scrum-cademint/";
     const app_url_test = "http://127.0.0.1:5500/";
     switch (ambient) {
@@ -13,7 +13,6 @@ function changeAppVersionAndUrl(ambient, version) { //Função irá trocar autom
             system_url = app_url_production;
             break;
     }
-    app_version = "v " + version;
 }
 
 // FUNÇÃO PARA ATUALIZAR A VERSÃO DO APP
@@ -28,7 +27,7 @@ function changeAppVersionAndUrl(ambient, version) { //Função irá trocar autom
 // A centena refere-se à alterações grandes na usabilidade e no conceito em geral.
 //
 // ==============================
-   changeAppVersionAndUrl(1, "0.2.10");
+   changeAppUrl(1);
 // ==============================
 
 if($(document).length) { //Início da execução.
@@ -36,7 +35,8 @@ if($(document).length) { //Início da execução.
         fillUserImage(); //Carrega imagem do usuário.
         checkIfJwtIsValid(); //Verifica se o token JWT é válido quando carrega qualquer página (se existir).
         getAllOs(); //Inicia a execução das requisições de OS.
-    }
+        fillAppVersion();
+    };
 
     $(".app-version").html(app_version); //Insere a versão do app.
 
@@ -68,6 +68,37 @@ if($(document).length) { //Início da execução.
         }, 10);
     });
 
+};
+
+function fillAppVersion() { //Preenche a variável de versão do sistema conforme a versão vinda do servidor
+    $.ajax({
+        url: url_api + "/system",
+        type: "GET",
+        async: false,
+        success: (res) => {
+            app_version = res.response.system_version;
+        },
+        complete: () => {
+            checkSystemVersion();
+        }
+    })
+};
+
+function checkSystemVersion() {
+    $.ajax({
+        url: url_api + "/system",
+        type: "GET",
+        success: (res) => {
+            if (res.response.system_version != app_version) {
+                $(".new-version-availabe").show();
+            };
+        },
+        complete: () => {
+            setTimeout(() => {
+                checkSystemVersion(app_version);
+            }, 20000); //Chamada recursiva da função a cada 36 segundos.
+        }
+    })
 };
 
 function fillUserImage() { //Função para preencher a imagem do usuário logado
