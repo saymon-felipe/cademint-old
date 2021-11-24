@@ -1,16 +1,49 @@
-let id_usuario = getUserIdInSessionStorage();
-let app_name;
-let url_api;
+let id_usuario = getUserIdInSessionStorage(); // ID do usuário atual
+let app_name; // Nome do app que é passado na URL
+let app_version; // Versão atual do APP
+let url_api; // Url da api
+let system_url; // Url da aplicação WEB
 
-// FUNÇÃO PARA TROCAR O AMBIENTE DA APLICAÇÃO
+//Função irá trocar automaticamente o ambiente do aplicativo conforme o parâmetro passado na função.
+function changeAppAmbient(test_or_prod) {
+    const dev_name = ""; //Nome da aplicação em desenvolvimento.
+    const production_name = "/scrum-cademint" //Nome da aplicação em produção.
+    const dev_environment = "http://localhost:3000"; //Ambiente de desenvolvimento.
+    const production_environment = "https://scrum-cademint-api.herokuapp.com"; //Ambiente de produção.
+    const app_url_production = "https://saymon-felipe.github.io/scrum-cademint"; //Url do aplicativo web em produção
+    const app_url_test = "http://127.0.0.1:5500"; //Url do aplicativo web em teste
+
+    switch (test_or_prod) {
+        case 0:
+            app_name = dev_name;
+            url_api = dev_environment;
+            system_url = app_url_test;
+            break;
+        case 1: 
+            app_name = production_name;
+            url_api = production_environment;
+            system_url = app_url_production;
+            break;
+    }
+}
+
+
+
+
+// TROCA DO AMBIENTE DA APLICAÇÃO
 //
-// Primeiro parâmetro será 0 ou 1, sendo que:
+// O parâmetro que deverá ser informado será 0 ou 1, sendo que:
 // 0 - Ambiente de teste
 // 1 - Ambiente de produção
 // 
 // ==============================
    changeAppAmbient(1);
 // ==============================
+
+
+
+
+// INÍCIO DA APLICAÇÃO
 
 function getUserIdInSessionStorage() { //Pega o id do usuário logado que está armazenado em session storage.
     let user_id = sessionStorage.getItem("user_id");
@@ -21,25 +54,6 @@ function getJwtFromSessionStorage() { //Pega o token jwt que está armazenado no
     let jwt = sessionStorage.getItem("jwt_token");
     if (jwt == undefined) { return; }
     return jwt;
-}
-
-//Função irá trocar automaticamente o ambiente do aplicativo conforme o parâmetro passado na função.
-function changeAppAmbient(test_or_prod) {
-    const dev_name = ""; //Nome da aplicação em desenvolvimento.
-    const production_name = "/scrum-cademint" //Nome da aplicação em produção.
-    const dev_environment = "http://localhost:3000"; //Ambiente de desenvolvimento.
-    const production_environment = "https://scrum-cademint-api.herokuapp.com"; //Ambiente de produção.
-
-    switch (test_or_prod) {
-        case 0:
-            app_name = dev_name;
-            url_api = dev_environment;
-            break;
-        case 1: 
-            app_name = production_name;
-            url_api = production_environment;
-            break;
-    }
 }
 
 //Função testará se usuário está logado para permitir sua entrada na página.

@@ -252,13 +252,11 @@ html, body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 4.6rem 7px 0;
+    padding: 5rem 7px 0;
     width: 25vw!important;
 }
 
 .card-link {
-    width: 100%;
-    margin: 0!important;
     z-index: 2;
 }
 
@@ -273,7 +271,7 @@ html, body {
     max-width: 447px;
     border-radius: 15px;
     padding: 1rem;
-    margin: 1rem auto;
+    margin: .3rem auto;
     position: relative;
     z-index: 2;
 }
@@ -595,6 +593,7 @@ nav .container a {
 
 .kanban-column {
     display: flex;
+    min-height: 100vh;
 }
 
 @media (max-width: 400px) {
@@ -745,7 +744,7 @@ nav .container a {
     z-index: 999;
     display: none;
     opacity: 0;
-    transition: opacity 0.2s;
+    transition: opacity 0.1s;
 }
 
     .os-tooltip .os-tooltip-number {
@@ -1163,7 +1162,7 @@ nav .container a {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 5;
+    z-index: 4;
     display: none;
 }
 
@@ -1239,6 +1238,7 @@ nav .container a {
     display: flex;
     position: absolute;
     overflow: hidden;
+    border-radius: 10px;
 }
 
 #user-image {
@@ -1348,14 +1348,14 @@ nav .container a {
     background: white;
     opacity: 0.8;
     width: 100%;
-    /*display: none;*/
-    display: flex;
+    display: none;
+    /*display: flex*/
     transition: transform 0.4s;
     transform: translateY(35px);
     justify-content: center;
     align-items: center;
     padding: .2rem 0;
-    z-index: 4;
+    z-index: 5;
 }
 
 .delete-image:hover {

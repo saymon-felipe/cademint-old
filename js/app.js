@@ -1,34 +1,4 @@
-let app_version;
-let system_url;
-let in_drag = false;
-
-function changeAppUrl(ambient) { //Função irá trocar automaticamente o ambiente do aplicativo conforme o parâmetro passado na função e a versão também.
-    const app_url_production = "https://saymon-felipe.github.io/scrum-cademint/";
-    const app_url_test = "http://127.0.0.1:5500/";
-    switch (ambient) {
-        case 0:
-            system_url = app_url_test;
-            break;
-        case 1:
-            system_url = app_url_production;
-            break;
-    }
-}
-
-// FUNÇÃO PARA ATUALIZAR A VERSÃO DO APP
-//
-// O primeiro parâmetro se refere ao ambiente do app, preencha 0 para Teste e 1 para PRODUÇÃO
-// 
-// O parâmetro que será informado será versão do aplicativo que vai para o ar (deve ser trocada antes de cada commit).
-// O formato deve ser x.x.x e incremental (explicação abaixo).
-//
-// A unidade refere-se à alterações pequenas que não tem grande impacto sobre a usabilidade do produto.
-// A dezena refere-se à alterações médias que tem um impacto significativo na usabilidade do produto.
-// A centena refere-se à alterações grandes na usabilidade e no conceito em geral.
-//
-// ==============================
-   changeAppUrl(1);
-// ==============================
+let in_drag = false; // Variável de controle para verificar se o usuário está movendo uma OS ou não.
 
 if($(document).length) { //Início da execução.
     if (window.location.pathname != app_name + "/login.html" && window.location.pathname != app_name + "/register.html") { //Se cair aqui significa que o usuário não está na tela de login e as funções deverão ser executadas.
@@ -70,7 +40,7 @@ if($(document).length) { //Início da execução.
 
 };
 
-function fillAppVersion() { //Preenche a variável de versão do sistema conforme a versão vinda do servidor
+function fillAppVersion() { //Preenche a variável de versão do sistema conforme o valor vindo do servidor
     $.ajax({
         url: url_api + "/system",
         type: "GET",
@@ -241,38 +211,36 @@ function showTooltip(id, user_owner, priority, size) { //Função mostra o toolt
                     border += "#FF0000";
                     break;
             }
+            $(".os-tooltip").attr("id", "#tooltip-" + id);
+            $(".os-tooltip").attr("style", border);
+            $(".os-tooltip").html(`
+                                    <h6 class="os-tooltip-number"><strong>(OS) ${id}</strong></h6>
+                                    <h6><strong>Aberta por:</strong> ${user_owner}</h6>
+                                    <h6><strong>Tamanho:</strong> ${size}</h6>
+                                    <h6><strong>Expira:</strong> Não</h6>
+                                    <h6><strong>H. Previstas:</strong> n/a</h6>
+                                    <h6><strong>H. Restantes:</strong> n/a</h6>
+                                `);
+            $(".os-tooltip").css("display", "block");
             setTimeout(() => {
-                $(".os-tooltip").attr("id", "#tooltip-" + id);
-                $(".os-tooltip").attr("style", border);
-                $(".os-tooltip").html(`
-                                        <h6 class="os-tooltip-number"><strong>(OS) ${id}</strong></h6>
-                                        <h6><strong>Aberta por:</strong> ${user_owner}</h6>
-                                        <h6><strong>Tamanho:</strong> ${size}</h6>
-                                        <h6><strong>Expira:</strong> Não</h6>
-                                        <h6><strong>H. Previstas:</strong> n/a</h6>
-                                        <h6><strong>H. Restantes:</strong> n/a</h6>
-                                    `);
-                $(".os-tooltip").css("display", "block");
-                setTimeout(() => {
-                    $(".os-tooltip").css("opacity", 1);
-                }, 20);
-            }, 300);
+                $(".os-tooltip").css("opacity", 1);
+            }, 10);
         }
     }
 }
 
-function hideTooltip() { //Reseta e esconde tooltip
-   setTimeout(() => {
+function hideTooltip() { //Reseta e esconde tooltip.
+    if ($(".os-tooltip").is(":visible")) {
         $(".os-tooltip").css("opacity", 0);
         setTimeout(() => {
             $(".os-tooltip").css("display", "none");
             $(".os-tooltip").attr("id", "");
             $(".os-tooltip").html("");
-        }, 300);
-   }, 100);
+        }, 100);
+    }
 }
 
-function turnOsDragabble() { //Acima de 865px de largura da tela, torna as OS arrastáveis
+function turnOsDragabble() { //Acima de 865px de largura da tela, torna as OS arrastáveis.
     if (window.innerWidth > 865) {
         $(".card-link").draggable({
             drag: (event, ui) => {
@@ -390,22 +358,26 @@ function loadOs(mainArrayOs) { //Função aloca as OS's conforme status no kanba
         };
     };
 
-    turnOsDragabble();
-    turnFieldDropable();
-
-    $(window).on("resize", () => {
+    if (window.location.pathname == app_name + "/index.html") { // Só executa as funções para mover as OS's de lugar se estiver na index.html, para evitar erros no console.
         turnOsDragabble();
         turnFieldDropable();
+    }
+
+    $(window).on("resize", () => {
+        if (window.location.pathname == app_name + "/index.html") { // Só executa as funções para mover as OS's de lugar se estiver na index.html, para evitar erros no console.
+            turnOsDragabble();
+            turnFieldDropable();
+        }
     });
 
     $("#new-os-1").on("click", () => { //Vai para a tela de criar nova OS com status A FAZER.
-        var url_os = new URL(system_url + "os-editar.html");
+        var url_os = new URL(system_url + "/os-editar.html");
         url_os.searchParams.append("s", 1);
         window.location.href = url_os;
     });
 
     $("#new-os-2").on("click", () => { //Vai para a tela de criar nova OS com status FAZENDO.
-        var url_os = new URL(system_url + "os-editar.html");
+        var url_os = new URL(system_url + "/os-editar.html");
         url_os.searchParams.append("s", 2);
         window.location.href = url_os;
     });
@@ -749,7 +721,7 @@ function setJwtInSessionStorage(token) { //Armazena o token JWT de session stora
 function removeJwtFromSessionStorage() { //Remove o token JWT de session storage e envia para o login passando parametro na URL.
     sessionStorage.removeItem("jwt_token");
 
-    var time_out_url = new URL(system_url + "login.html");
+    var time_out_url = new URL(system_url + "/login.html");
     time_out_url.searchParams.append("msg", "time-out");
     window.location.href = time_out_url;
 }
@@ -823,7 +795,10 @@ if ($(".update-profile").length) { //Funções para tela de alteração do perfi
     $(".user-photo").on("mouseover", () => { //Mostra a opção de excluir imagem se for carregada uma imagem.
         if (screenWidth > 950) {
             if ($("#user-image").attr("src") != undefined) {
-                $(".delete-image").css("transform", "translateY(0)");
+                $(".delete-image").css("display", "flex");
+                setTimeout(() => {
+                    $(".delete-image").css("transform", "translateY(0)");
+                }, 10);
             };
         }
     });
@@ -832,6 +807,9 @@ if ($(".update-profile").length) { //Funções para tela de alteração do perfi
         if (screenWidth > 950) {
             if ($("#user-image").attr("src") != undefined) {
                 $(".delete-image").css("transform", "translateY(35px)");
+                setTimeout(() => {
+                    $(".delete-image").css("display", "flex");
+                }, 400);
             };
         }  
     });
@@ -852,7 +830,7 @@ if ($(".update-profile").length) { //Funções para tela de alteração do perfi
     
     $(".show-photo").on("click", () => { //Abre um modal para ver a foto expandida.
         $(".photo-detail-container").show();
-        $(".overlay").css("display", "flex");
+        $(".overlay").show();
         setTimeout(() => {
             $(".photo-detail-container").css("transform", "translateY(0)");
         }, 10);
