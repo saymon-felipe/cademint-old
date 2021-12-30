@@ -56,7 +56,8 @@ a:hover {
 
 html, body {
     height: 100vh;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: scroll;
     width: 100vw;
     font-family: Arial, Helvetica, sans-serif;
 }
@@ -811,6 +812,7 @@ html, body {
     align-items: center;
     justify-content: end;
     z-index: 4;
+    position: fixed;
 }
 
 .header-icon {
@@ -873,6 +875,16 @@ html, body {
 
 .steps h5 {
     font-weight: 700;
+}
+
+.kanban {
+    margin-top: 7rem;
+}
+
+@media (min-width: 1108px) {
+    .kanban {
+        margin-top: 5rem;
+    }
 }
 
 .kanban-title-container {
@@ -1264,9 +1276,6 @@ nav .container a {
 
 .kanban-column {
     display: flex;
-    height: 100vh;
-    overflow-y: scroll;
-    overflow-x: hidden;
 }
 
 @media (min-width: 866px) {
@@ -2150,6 +2159,7 @@ nav .container a {
     transition: opacity 0.4s;
     align-items: center;
     justify-content: center;
+    z-index: 1;
 }
 
     .back-to-top i {
