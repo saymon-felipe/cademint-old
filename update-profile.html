@@ -67,8 +67,21 @@
         <div class="update-profile-inner">
             <div class="update-profile-header">
                 <h4>Alterar o perfil</h4>
+                <div class="delete-user-container">
+                    <i class='fas fa-trash-alt'></i>
+                    <span>Excluir conta</span>
+                </div>
             </div>
             <div class="update-profile-body">
+                <div class="delete-user-confirmation">
+                    <h4>Tem certeza que deseja excluir a sua conta?</h4>
+                    <button id="exclude-account-confirmation-button">Sim, excluir</button>
+                    <button id="skip-exclude-confirmation">Não, cancelar</button>
+                    <div class="deleting-message">
+                        <h6>Apagando usuário...</h6>
+                    </div>
+                    <div class="loading"></div>
+                </div>
                 <div id="update-profile-form">
                     <div class="form-inputs">
                         <div class="name-input">

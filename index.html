@@ -20,9 +20,20 @@
     <title>SCRUM Cademint</title>
 </head>
 <body class="index">
-
+    <div class="enter-group-message">
+        <h1>Parabéns! Você entrou em um grupo!</h1>
+        <button>OK</button>
+    </div>
     <div class="new-version-availabe">
         <h6>Nova versão do sistema disponível! Salve o que está fazendo e <span><a href="index.html">recarregue aqui!</a></span></h6>
+    </div>
+
+    <div class="in-maintenance-element">
+        <h4>Cuidado! O sistema entrou em manutenção e as suas alterações não serão salvas!</h4>
+    </div>
+
+    <div class="responsive-choose-project-modal">
+        <div class="responsive-projects-list"></div>
     </div>
     
     <nav class="bg-primary p-2 header">
@@ -32,6 +43,14 @@
                 <span class="app-version"></span>
             </a>
         </div>
+        <div class="current-project-container">
+            <div class="projects">
+                <select id="projects-name">                </select>
+                <i class="fas fa-sync-alt" id="change-project"></i>
+                <i class="fas fa-plus" id="new-project"></i>
+            </div>
+        </div>
+        
         <div class="go-to-user-profile">
             <div class="responsive-menu">
                 <i class="fas fa-bars" id="menu-hamburguer"></i>
@@ -42,6 +61,7 @@
                             <h6><span class="user-name"></span></h6>
                         </div>
                         <ul>
+                            <li onclick="manageGroups()" id="manage-groups">Gerenciar grupos</li>
                             <li><a href="update-profile.html">Alterar perfil</a></li>
                             <li onclick="logoutUser()">Sair</li>
                         </ul>
@@ -55,6 +75,7 @@
                 <i class="fas fa-chevron-down" id="profile-more-options"></i>
                 <div class="profile-more-options-container">
                     <ul>
+                        <li onclick="manageGroups()">Gerenciar grupos</li>
                         <li><a href="update-profile.html">Alterar perfil</a></li>
                         <li onclick="logoutUser()">Sair</li>
                     </ul>
@@ -63,17 +84,89 @@
         </div>
     </nav>
 
-    <div class="back-to-top">
-        <i class="fas fa-arrow-circle-up"></i>
+    <div class="new-project-modal">
+        <div class="modal-header">
+            <h1>Novo projeto</h1>
+            <i class="fas fa-times" id="close-new-project-modal"></i>
+        </div>
+        <div class="modal-body">
+            <form action="create_group" id="form_create_group">
+                <input type="text" id="group_name" placeholder="Nome do projeto" maxlength="17" title="Insira o nome do grupo">
+                <!-- <input type="email" placeholder="Adicionar membros (email)" title="Adicione membros informando seu email e separando por vírgula"> -->
+            </form>
+            <div class="response"></div>
+        </div>
+        <div class="modal-footer">
+            <button class="create-button">Criar</button>
+            <button class="cancelate-button">Cancelar</button>
+        </div>
+    </div>
+
+    <div class="manage-groups_modal">
+        <div class="modal-header">
+            <h1>Gerenciar projetos</h1>
+            <i class="fas fa-times" id="close-manage-projects-modal"></i>
+        </div>
+        <div class="modal-body">
+
+            <div class="responsive-group-modal-body">
+                <ul>
+                    <li id="responsive-my-groups">Meus grupos</li>
+                    <li id="responsive-other-groups">Outros grupos</li>
+                </ul>
+                <div class="responsive-edit-group"></div>
+            </div>
+
+            <div class="groups-list">
+                <div class="my-groups">
+                    <h6><strong>Meus grupos</strong></h6>
+                    <ul class="my-groups-list"></ul>
+                </div>
+                <div class="groups-i-participate">
+                    <h6><strong>Outros grupos</strong></h6>
+                    <ul class="other-groups-list">
+                    </ul>
+                </div>
+            </div>
+            <div class="edit-group">
+                <input type="hidden" id="current_project">
+                <div class="members-list-container">
+                    <div class="members-list"></div>
+                </div>
+                <div class="new-member">
+                    <i class="fas fa-plus-circle"></i>
+                    <h6>Novo membro</h6>
+                </div>
+            </div>
+        </div>
+        <div class="modal-body-loading">
+            <div class="loading"></div>
+        </div>
+        <div class="modal-footer">
+            <button class="create-button">Salvar</button>
+            <button class="cancelate-button">Cancelar</button>
+        </div>
     </div>
 
     <section class="kanban">
         <div class="kanban-title-container">
             <div class="kanban-title">
                 <h5>A fazer</h5>
+                <div class="new-os-container">
+                    <div class="new-os" id="responsive-new-os-1">
+                        <i class="fas fa-plus-circle"></i>
+                        <h6>Novo</h6>
+                    </div>
+                </div>
             </div>
             <div class="kanban-title">
                 <h5>Fazendo</h5>
+                <div class="new-os-container">
+                    <div class="new-os" id="responsive-new-os-2">
+                        <i class="fas fa-plus-circle"></i>
+                        <h6>Novo</h6>
+                    </div>
+                </div>
             </div>
             <div class="kanban-title">
                 <h5>Teste</h5>
@@ -86,10 +179,10 @@
             <div class="responsive-kanban border-right col-scrum" id="col-to-do">
                 <div class="kanban-title-responsive">
                     <h5>A fazer</h5>
-                </div>
-                <div class="new-os" id="new-os-1">
-                    <i class="fas fa-plus-circle"></i>
-                    <h6>Novo</h6>
+                    <div class="new-os" id="new-os-1">
+                        <i class="fas fa-plus-circle"></i>
+                        <h6>Novo</h6>
+                    </div>
                 </div>
                 <div class="os-list with-new"></div>
             </div>
