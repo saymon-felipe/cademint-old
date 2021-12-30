@@ -879,6 +879,7 @@ html, body {
 
 .kanban {
     margin-top: 7rem;
+    height: calc(100vh - 70px);
 }
 
 @media (min-width: 1108px) {
@@ -1276,6 +1277,7 @@ nav .container a {
 
 .kanban-column {
     display: flex;
+    height: 100%;
 }
 
 @media (min-width: 866px) {
