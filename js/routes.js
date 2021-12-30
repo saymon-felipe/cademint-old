@@ -148,7 +148,7 @@ function checkIfUserIsAuthenticated() { // Função testará se usuário está l
                     }
                 },
                 complete: () => {
-                    if (window.location.pathname != "/login.html" && window.location.pathname != "/register.html") {
+                    if (window.location.pathname != app_name + "/login.html" && window.location.pathname != app_name + "/register.html") {
                         setTimeout(checkIfUserIsAuthenticated, 10000);
                     }
                 }
