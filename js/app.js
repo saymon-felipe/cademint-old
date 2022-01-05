@@ -1205,7 +1205,7 @@ function showTooltip(id, user_owner, priority, size) { // Função mostra o tool
                                 `;*/
             let osTooltipElement = `
                                     <div class="os-tooltip" id="#tooltip-${id}" style="${border}">
-                                        <h6 class="os-tooltip-number"><strong>(OS) ${id}</strong></h6>
+                                        <h6 class="os-tooltip-number"><strong>${id}</strong></h6>
                                         <h6><strong>Aberta por:</strong> ${user_owner}</h6>
                                         <h6><strong>Tamanho:</strong> ${size}</h6>
                                     </div>
@@ -1303,8 +1303,8 @@ function loadOs(mainArrayOs) { // Função aloca as OS's conforme status no kanb
         let card = `<a href="os-editar.html?id=${mainArrayOs[i].id_complete}&s=0" class="card-link" id="link-${mainArrayOs[i].id_complete}" draggable="false">
                         <div class="card-os" id="${mainArrayOs[i].id_complete}" onmouseenter="showTooltip('${mainArrayOs[i].id_complete}', '${mainArrayOs[i].user_owner}', '${mainArrayOs[i].priority}', '${mainArrayOs[i].size}')" onmouseleave="hideTooltip()">
                             <div class="card-os-header">
-                                <h6>(OS) ${mainArrayOs[i].id_complete}</h6>
-                                <h6 class="sponsor-card-name">${mainArrayOs[i].sponsor}</h6>
+                                <h6><strong>${mainArrayOs[i].id_complete}</strong></h6>
+                                <h6 class="sponsor-card-name"><strong>${mainArrayOs[i].sponsor}</strong></h6>
                             </div>
                             <div class="card-os-body">
                                 <p class="os-description">
@@ -1588,7 +1588,7 @@ if ($(".edit-os").length) { // Funções que rodam a partir do momento que entra
                 let size = $("#size").val();
 
                 if (priority == "" || status == "" || description == "" || sponsor == "" || user_owner == "" || size == "") {
-                    $(".response").html("Não foi possível salvar a OS, campos vazios.");
+                    $(".response").html("Não foi possível salvar a tarefa, campos vazios.");
                 } else {
                     $(".response").html("");
                     if (currentOs != undefined) {
