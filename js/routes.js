@@ -94,6 +94,10 @@ function systemInMaintenance() { // Função checka se o sistema está em manute
 
 function checkIfUserIsAuthenticated() { // Função testará se usuário está logado para permitir sua entrada na página.
     if (systemInMaintenance()) {
+        removeOsListFromSessionStorage();
+        removeJwtFromLocalStorage("from_maintenance");
+        removeUserIdInLocalStorage();
+
         if (window.location.pathname != app_name + "/maintenance.html") {
             if (getJwtFromLocalStorage() == null) {
                 window.location.pathname = app_name + "/maintenance.html";
@@ -101,11 +105,8 @@ function checkIfUserIsAuthenticated() { // Função testará se usuário está l
                 $(".in-maintenance-element").show();
             }
         } else {
-            setTimeout(checkIfUserIsAuthenticated, 10000); // Se o sistema estiver em manutenção e cair na página de manutenção, depois de 10 segundos é feita uma nova verificação.
+            setTimeout(checkIfUserIsAuthenticated, 60 * 1000); // Se o sistema estiver em manutenção e cair na página de manutenção, depois de 60 segundos é feita uma nova verificação.
         }
-        removeOsListFromSessionStorage();
-        removeJwtFromLocalStorage("from_maintenance");
-        removeUserIdInLocalStorage();
     } else {
         let jwt = "Bearer " + getJwtFromLocalStorage();
         if (jwt == "Bearer null") { 

@@ -1384,7 +1384,7 @@ function excludeOs(param) { // Função exclui a OS solicitada através do ID.
     let jwt = "Bearer " + getJwtFromLocalStorage();
 
     if (currentOs == undefined) {
-        $(".response").html("Não é possível excluir uma OS que não existe!");
+        $(".response").html("Não é possível excluir uma tarefa que não existe!");
     } else {
         $.ajax({
             url: url_api + "/os/delete_os",
