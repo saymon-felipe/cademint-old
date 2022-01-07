@@ -74,6 +74,29 @@ if($(document).length) { // Início da execução.
                 $(".responsive-new-member h6").show();
                 $(".responsive-new-member i").show();
             }
+            
+            $(".responsive-new-member").on("click", (e) => { // Função mostra o input para enviar solicitação por email à alguém, tamém exibe o botão para salvar e valida o email do input quando o elemento perde o foco.
+                let inputElement = "<input type='email' placeholder='Insira o email' class='new-member-input' /><div class='loading'></div>";
+        
+                $(".new-member-input").remove();
+                $(".responsive-new-member .loading").remove();
+        
+                $("#" + e.currentTarget.id).append(inputElement);
+                $("#" + e.currentTarget.id + " h6").hide();
+                $("#" + e.currentTarget.id + " i").hide();
+        
+                $(".new-member-input").css("opacity", 1);
+                $(".new-member-input").focus();
+                $(".manage-groups_modal .modal-footer .create-button").show();
+        
+                setTimeout(() => {
+                    $(".manage-groups_modal .modal-footer .create-button").css("opacity", 1);
+                }, 5);
+        
+                $(".new-member-input").on("blur", () => {
+                    validateEmail($(".new-member-input").val())
+                });
+            });
         } else {
             if (e.target.nodeName == "I") {
                 if ($(".my-groups-list")[0].childElementCount > 1) {
@@ -267,32 +290,9 @@ function fillUserProjectsInModal(user_id, responsive = false) { // Função pree
             let project = findProjectNameById(e.currentTarget.parentElement.parentElement.parentElement.parentElement.parentElement.children[0].id.replace("group-", ""));
             excludeUserButton(e, project);
         });
-
-        $(".responsive-new-member").on("click", (e) => { // Função mostra o input para enviar solicitação por email à alguém, tamém exibe o botão para salvar e valida o email do input quando o elemento perde o foco.
-            let inputElement = "<input type='email' placeholder='Insira o email' class='new-member-input' /><div class='loading'></div>";
-
-            $(".new-member-input").remove();
-            $(".responsive-new-member .loading").remove();
-
-            if (!$(".new-member-input").length) {
-                $("#" + e.currentTarget.id).append(inputElement);
-            }
-            $("#" + e.currentTarget.id + " h6").hide();
-            $("#" + e.currentTarget.id + " i").hide();
-
-            $(".new-member-input").css("opacity", 1);
-            $(".new-member-input").focus();
-            $(".manage-groups_modal .modal-footer .create-button").show();
-
-            setTimeout(() => {
-                $(".manage-groups_modal .modal-footer .create-button").css("opacity", 1);
-            }, 5);
-
-            $(".new-member-input").on("blur", () => {
-                validateEmail($(".new-member-input").val())
-            });
-        });
     }
+
+    
 }
 
 function hideNewMemberInput() { // Função esconde o input para enviar email.
