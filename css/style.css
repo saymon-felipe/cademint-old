@@ -17,6 +17,10 @@
     background: var(--yellow)!important;
 }
 
+.d-none {
+    display: none;
+}
+
 .page-title {
     color: var(--blue)!important;
     margin: 0 1rem!important;
@@ -2121,6 +2125,18 @@ nav .container a {
     object-fit: contain;
 }
 
+@media (min-width: 950px) {
+    .user-image:hover .delete-image {
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 950px) {
+    .user-image .delete-image {
+        transform: translateY(0);
+    }
+}
+
 .delete-image {
     position: absolute;
     bottom: 0;
@@ -2128,8 +2144,7 @@ nav .container a {
     background: white;
     opacity: 0.8;
     width: 100%;
-    display: none;
-    /*display: flex*/
+    display: flex;
     transition: transform 0.4s;
     transform: translateY(35px);
     justify-content: center;

@@ -1885,36 +1885,9 @@ if ($(".update-profile").length) { // Funções para tela de alteração do perf
 
     fillInformations("#nome", ".user-photo-inner", "#user-image", id_usuario); // Preenche a tela com as informações do usuário vindo do banco.
 
-    let screenWidth = window.innerWidth;
-    if (screenWidth > 950) { // Acima de 950px de largura da tela, o botão de excluir imagem (se existir) é escondido e só aparece no mouseover, se nãoele é sempre exibido.
-        hideDeleteImage();
-    } else {
-        showDeleteImage();
-    }
-
-    $(window).on("resize", () => { // Faz o mesmo que na função acima mas quando acontece resize.
-        screenWidth = window.innerWidth;
-        if (screenWidth > 950) {
-            hideDeleteImage();
-        } else {
-            showDeleteImage();
-        }
-    });
-
-    $(".user-photo").on("mouseover", () => { // Mostra a opção de excluir imagem se for carregada uma imagem se a tela for maior que 950px.
-        if (screenWidth > 950) {
-            showDeleteImage();
-        }
-    });
-
-    $(".user-photo").on("mouseout", () => {  // Esconde a opção de excluir imagem se a imagem for excluida se a tela for maior que 950px.
-        if (screenWidth > 950) {
-            hideDeleteImage();
-        } 
-    });
-
     $(document).on("click", e => { // Se clicar fora das opções da foto, ela fecha.
         let container = $(".user-photo-container");
+
         if (!container.is(e.target) && container.has(e.target).length === 0) {
             $(".photo-options").hide();
         }
@@ -1924,8 +1897,10 @@ if ($(".update-profile").length) { // Funções para tela de alteração do perf
         removeImage(id_usuario);
     });
 
-    $(".user-photo-container").on("click", () => { // Abre mais opções da foto do usuário.
-        togglePhotoOptions(".photo-options");
+    $(".user-photo-container").on("click", e => { // Abre mais opções da foto do usuário.
+        if (e.target.classList[0] != "delete-image") {
+            togglePhotoOptions(".photo-options");
+        }
     });
     
     $(".show-photo").on("click", () => { // Abre um modal para ver a foto expandida.
@@ -2110,25 +2085,11 @@ function fillInformations(element1, element2, element3, user_id) { // Preenche a
     }
 
     $(element1).val(user.nome);
+
+    if ($("#user-image").attr("src") == undefined) {
+        $(".delete-image").addClass("d-none");
+    }
 };
-
-function showDeleteImage() { // Mostra o botão de excluir a imagem.
-    if ($("#user-image").attr("src") != undefined) {
-        $(".delete-image").css("display", "flex");
-        setTimeout(() => {
-            $(".delete-image").css("transform", "translateY(0)");
-        }, 10);
-    };
-}
-
-function hideDeleteImage() { // Esconde o botão de excluir a imagem.
-    if ($("#user-image").attr("src") != undefined) {
-        $(".delete-image").css("transform", "translateY(30px)");
-        setTimeout(() => {
-            $(".delete-image").css("display", "none");
-        }, 400);
-    };
-}
 
 function togglePhotoOptions(element) { // Abre ou fecha as opções de quando clica na foto do usuário.
     if ($(element).is(":visible")) {
@@ -2203,7 +2164,7 @@ function removeImage(id_usuario) { // Função remove a URL da imagem do respect
     
     $.ajax({
         url: url_api + "/usuarios/remove_image",
-        type: "PATCH",
+        type: "POST",
         data: {
             id: id_usuario
         },
