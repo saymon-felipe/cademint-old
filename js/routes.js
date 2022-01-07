@@ -10,7 +10,7 @@ function changeAppAmbient(test_or_prod) { //Função irá trocar automaticamente
     const dev_environment = "http://localhost:3000"; //Ambiente de desenvolvimento.
     const production_environment = "https://scrum-cademint-api.herokuapp.com"; //Ambiente de produção.
     const app_url_production = "https://saymon-felipe.github.io/scrum-cademint"; //Url do aplicativo web em produção
-    const app_url_test = "http://127.0.0.1:5500"; //Url do aplicativo web em teste
+    const app_url_test = "http://127.0.0.1:5501"; //Url do aplicativo web em teste
 
     switch (test_or_prod) {
         case 0:
@@ -36,7 +36,11 @@ function changeAppAmbient(test_or_prod) { //Função irá trocar automaticamente
 // ==============================
    changeAppAmbient(1);
 // ==============================
-
+//
+// ALIMENTAÇÃO DA VERSÃO
+   app_version = "v " + "1.0.2";
+//
+//
 
 // INÍCIO DA APLICAÇÃO
 let login_url = new URL(window.location);

@@ -5,7 +5,7 @@ if($(document).length) { // Início da execução.
     if (window.location.pathname != app_name + "/login.html" && window.location.pathname != app_name + "/register.html" && window.location.pathname != app_name + "/enter_group_invitation.html") { //Se cair aqui significa que o usuário não está na tela de login, registro ou para entrar em um grupo, e as funções deverão ser executadas.
         fillUserImage(); // Carrega imagem do usuário.
         getAllOs(); // Inicia a execução das requisições de OS.
-        fillAppVersion(); // Carrega a versão do software.
+        checkSystemVersion(app_version); // Alimenta a versao do sistema.
         createBackToTopElement(); // Cria o elemento de voltar ao topo.
     };
 
@@ -128,6 +128,25 @@ if($(document).length) { // Início da execução.
             }
         }
     });
+
+    function checkSystemVersion(app_version) { // Verifica se houve uma alteração na versão do software, em caso positivo a mensagem de nova versão é exibida.
+        $(".app-version").html(app_version); //Insere a versão do app.
+
+        $.ajax({
+            url: url_api + "/system",
+            type: "GET",
+            success: (res) => {
+                if (res.response.system_version != app_version) {
+                    $(".new-version-availabe").show();
+                };
+            },
+            complete: () => {
+                setTimeout(() => {
+                    checkSystemVersion(app_version);
+                }, 20000); // Chamada recursiva da função a cada 20 segundos.
+            }
+        })
+    };
 
     $(".new-member").on("click", () => { // Função mostra o input para enviar solicitação por email à alguém, tamém exibe o botão para salvar e valida o email do input quando o elemento perde o foco.
         let inputElement = "<input type='email' placeholder='Insira o email' class='new-member-input' /><div class='loading'></div>";
@@ -1027,40 +1046,6 @@ function closeNewProjectModal() { // Fecha o modal de novo projeto.
         }, 400);
     }
 }
-
-function fillAppVersion() { //Preenche a variável de versão do sistema conforme o valor vindo do servidor.
-    $.ajax({
-        url: url_api + "/system",
-        type: "GET",
-        async: false,
-        success: (res) => {
-            app_version = res.response.system_version;
-            $(".app-version").html(app_version); //Insere a versão do app.
-        },
-        complete: () => {
-            setTimeout(() => {
-                checkSystemVersion();
-            }, 20000);
-        }
-    })
-};
-
-function checkSystemVersion() { // Verifica se houve uma alteração na versão do software, em caso positivo a mensagem de nova versão é exibida.
-    $.ajax({
-        url: url_api + "/system",
-        type: "GET",
-        success: (res) => {
-            if (res.response.system_version != app_version) {
-                $(".new-version-availabe").show();
-            };
-        },
-        complete: () => {
-            setTimeout(() => {
-                checkSystemVersion(app_version);
-            }, 20000); // Chamada recursiva da função a cada 20 segundos.
-        }
-    })
-};
 
 function fillUserImage() { // Função para preencher a imagem do usuário logado.
     let user = requireUser(getUserIdInLocalStorage());
