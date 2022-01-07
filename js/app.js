@@ -74,7 +74,7 @@ if($(document).length) { // Início da execução.
                 $(".responsive-new-member h6").show();
                 $(".responsive-new-member i").show();
             }
-            
+
             $(".responsive-new-member").on("click", (e) => { // Função mostra o input para enviar solicitação por email à alguém, tamém exibe o botão para salvar e valida o email do input quando o elemento perde o foco.
                 let inputElement = "<input type='email' placeholder='Insira o email' class='new-member-input' /><div class='loading'></div>";
         
@@ -1578,6 +1578,8 @@ if ($(".edit-os").length) { // Funções que rodam a partir do momento que entra
             if (getCurrentProjectIdInSessionStorage() == null) {
                 logoutUser();
             } else {
+                $("#save-os").attr("disabled", "disabled");
+
                 let os_number = $("#so-number").val();
                 let priority = $("#priority").val();
                 let status = $("#status").val();
