@@ -878,14 +878,8 @@ html, body {
 }
 
 .kanban {
-    margin-top: 7rem;
+    margin-top: 4.7rem;
     height: calc(100vh - 70px);
-}
-
-@media (min-width: 1108px) {
-    .kanban {
-        margin-top: 5rem;
-    }
 }
 
 .kanban-title-container {
@@ -893,13 +887,22 @@ html, body {
     display: flex;
     align-items: center;
     background: white;
-    flex-wrap: wrap;
     z-index: 3;
 }
 
 .kanban-title {
-    width: 25vw;
+    width: 25%;
     position: relative;
+    margin-left: -.1rem;
+    border-right: 1px solid #dee2e6;
+}
+
+.kanban-title:last-child {
+    border-right: none;
+}
+
+.kanban-title:nth-child(2) {
+    width: calc(25% + 1px);
 }
 
 .kanban-title, .kanban-title-responsive {
@@ -1277,7 +1280,6 @@ nav .container a {
 
 .kanban-column {
     display: flex;
-    height: 100%;
 }
 
 @media (min-width: 866px) {
