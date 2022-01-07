@@ -1211,13 +1211,14 @@ function showTooltip(id, user_owner, priority, size) { // Função mostra o tool
                                     </div>
                                 `;
             $(".card-os").append(osTooltipElement);
-        }
+        } 
     }
 }
 
 function hideTooltip() { // Reseta e esconde tooltip.
     $(".os-tooltip").attr("id", "");
     $(".os-tooltip").html("");
+    $(".os-tooltip").hide();
 }
 
 function turnOsDragabble() { // Acima de 865px de largura da tela, torna as OS arrastáveis.
