@@ -1496,6 +1496,7 @@ if ($(".edit-os").length) { // Funções que rodam a partir do momento que entra
     if (getCurrentProjectIdInSessionStorage() == null) {
         logoutUser();
     } else {
+        $("#description").focus();
         $.ajax({ // Requisição preenche o select de responsáveis com os nomes dos usuários cadastrados no banco.
             url: url_api + "/projects/return_group",
             type: "POST",
