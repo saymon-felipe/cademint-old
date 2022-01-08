@@ -883,7 +883,6 @@ html, body {
 
 .kanban {
     margin-top: 4.7rem;
-    height: calc(100vh - 70px);
 }
 
 .kanban-title-container {
@@ -1283,6 +1282,7 @@ nav .container a {
 }
 
 .kanban-column {
+    min-height: calc(100vh - 100px);
     display: flex;
 }
 
