@@ -2063,10 +2063,11 @@ function closeImageModal() { // Fecha o modal de envio da imagem.
 
 function fillInformations(element1, element2, element3, user_id) { // Preenche as informações da tela de update-profile.html com o que vem de banco.
     let user = requireUser(user_id);
-    if (!user.profile_photo == "") {
+
+    if (user.profile_photo != "") {
         $(element2).html("");
-        $("#user-image").show();
-        $(".show-photo").show();
+        $(".show-photo").css("display", "block");
+        $(element3).css("display", "block");
         $(element3).attr("src", user.profile_photo);
     }
 

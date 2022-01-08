@@ -2053,8 +2053,8 @@ nav .container a {
 .user-image {
     width: 100%;
     height: 100%;
-    min-width: 200px;
-    min-height: 200px;
+    min-width: 170px;
+    min-height: 170px;
     display: flex;
     position: absolute;
     overflow: hidden;
@@ -2172,6 +2172,10 @@ nav .container a {
     .user-image .delete-image {
         transform: translateY(0);
     }
+    
+    .delete-image {
+        opacity: 0.6!important;
+    }
 }
 
 .delete-image {
@@ -2179,7 +2183,7 @@ nav .container a {
     bottom: 0;
     color: black;
     background: white;
-    opacity: 0.8;
+    opacity: 0.7;
     width: 100%;
     display: flex;
     transition: transform 0.4s;
