@@ -807,10 +807,6 @@ html, body {
 
 /* END PROJECTS */
 
-.opacity-1 {
-    opacity: 1!important;
-}
-
 .header {
     display: flex;
     align-items: center;

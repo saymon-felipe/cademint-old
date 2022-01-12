@@ -30,10 +30,20 @@ if($(document).length) { // Início da execução.
     });
 
     $("#menu-hamburguer").on("click", () => { // Exibe o menu responsivo ao clicar no icone de hamburguer.
-        $(".responsive-profile-more-options-container").show();
-        setTimeout(() => {
-            $(".responsive-profile-more-options-container").toggleClass("opacity-1");
-        }, 10);
+        if ($(".responsive-profile-more-options-container").is(":visible")) {
+            $(".responsive-profile-more-options-container").css("opacity", 0);
+            
+            setTimeout(() => {
+                $(".responsive-profile-more-options-container").hide();
+            }, 400);
+        } else {
+            $(".responsive-profile-more-options-container").show();
+            
+            setTimeout(() => {
+                $(".responsive-profile-more-options-container").css("opacity", 1);
+            }, 10);
+        }
+        
     });
 
     $(document.body).on("click", ".group", e => { // Quando clica em algum elemento com a classe grupo é testado se o target é um icone para exclusão do grupo ou span para sair de um grupo, caso contrário apenas edita o grupo selecionado.
