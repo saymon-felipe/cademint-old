@@ -1035,6 +1035,7 @@ function requireUser(user_id) { // Função retorna o usuário pelo id.
 function closeNewProjectModal() { // Fecha o modal de novo projeto.
     if ($(".new-project-modal").is(":visible")) {
         $(".new-project-modal").css("transform", "translateY(-100vh)");
+        $("#group_name").val("");
 
         setTimeout(() => {
             $(".new-project-modal").hide();
