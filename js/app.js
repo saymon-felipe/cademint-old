@@ -600,6 +600,8 @@ function excludeGroup(element) { // Função apaga o grupo solicitado.
             if (getCurrentProjectIdInSessionStorage() == project_id) { // Se o id do grupo que está sendo excluido for igual ao que está em session storage, o que está armazenado é deletado.
                 removeCurrentProjectIdInSessionStorage();
             }
+
+            reloadInClose = true; // Variável que fará a página recarregar ao fechamento do modal.
         }
     });
 }
