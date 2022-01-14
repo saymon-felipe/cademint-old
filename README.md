@@ -1,4 +1,4 @@
-# SCRUM CADEMINT
+# CADEMINT
 (by Rabsystems)
 
 App web Cademint.
