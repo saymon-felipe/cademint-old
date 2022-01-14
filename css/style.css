@@ -117,6 +117,10 @@ html, body {
     transform: rotate(180deg);
 }
 
+.opacity-1 {
+    opacity: 1!important;
+}
+
 .profile-more-options-container {
     position: absolute;
     top: 105%;

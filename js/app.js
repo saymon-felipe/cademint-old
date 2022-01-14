@@ -10,10 +10,21 @@ if($(document).length) { // Início da execução.
     };
 
     $(".go-to-user-profile-inner").on("click", () => { // Cria a função que fará a rotação do ícone do menu ao clicar.
+        if ($(".profile-more-options-container").is(":visible")) {
+            $("#profile-more-options").toggleClass("rotate");
+            $(".profile-more-options-container").toggleClass("opacity-1");
+            
+            setTimeout(() => {
+                $(".profile-more-options-container").hide();
+            }, 400);
+
+            return;
+        }
+
         $(".profile-more-options-container").show();
         setTimeout(() => {
-            $(".profile-more-options-container").toggleClass("opacity-1");
             $("#profile-more-options").toggleClass("rotate");
+            $(".profile-more-options-container").toggleClass("opacity-1");
         }, 10);
     });
 
