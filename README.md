@@ -1,5 +1,5 @@
 # SCRUM CADEMINT
 (by Rabsystems)
 
-SCRUM para desenvolvimento da plataforma CADEMINT.
+App web Cademint.
 [Acesse o site](https://saymon-felipe.github.io/scrum-cademint/)
