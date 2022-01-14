@@ -34,11 +34,11 @@ function changeAppAmbient(test_or_prod) { //Função irá trocar automaticamente
 // 1 - Ambiente de produção
 // 
 // ==============================
-   changeAppAmbient(1);
+   changeAppAmbient(0);
 // ==============================
 //
 // ALIMENTAÇÃO DA VERSÃO
-   app_version = "v " + "1.0.4";
+   app_version = "v " + "1.0.5";
 //
 //
 
