@@ -13,7 +13,7 @@ if($(document).length) { // Início da execução.
         if ($(".profile-more-options-container").is(":visible")) {
             $("#profile-more-options").toggleClass("rotate");
             $(".profile-more-options-container").toggleClass("opacity-1");
-            
+
             setTimeout(() => {
                 $(".profile-more-options-container").hide();
             }, 400);
@@ -1093,6 +1093,10 @@ function generateNumberOs(number) { // Função para gerar número completo da O
     if (number > 99) {
         let numberDivision = Math.round(number / 100);
         let finalNumber = number - (numberDivision + "00");
+
+        if (finalNumber < 10) {
+            finalNumber = "0" + finalNumber;
+        }
 
         month += numberDivision;
         numberOs = finalNumber;
