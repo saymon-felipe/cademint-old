@@ -965,6 +965,7 @@ function createNewProjectFromModal(object) { // Cria um novo projeto a partir do
 }
 
 function createNewProjectFromRegister(user_id) { // Cria um novo projeto quando um usuário se registra, o projeto é criado como: "Projeto de {nome do usuário}".
+    
     let name = requireUser(user_id).nome;
     let group_name = "Projeto de " + name;
 
@@ -1714,7 +1715,7 @@ if ($(".login").length) { // Funções para tela de login.
                             if (joined_group != null) { // Se vier o parametro joined_group do registro, o login redireciona para a index e passa esse parâmetro para a exibição do modal.
                                 window.location.href = app_name + "/index.html?joined_group=true";
                             } else {
-                                window.location.href = app_name + "/index.html";
+                               window.location.href = app_name + "/index.html";
                             }
                         },
                         error: (xhr) => {
@@ -1822,8 +1823,12 @@ if ($(".register").length) { // Funções para tela de registro
     let group_id = url.searchParams.get("gid"); // Pega todos os parâmetros da URL e armazena em variáveis.
     let token = url.searchParams.get("tk");
     let email = url.searchParams.get("email");
+    let name = url.searchParams.get("name");
 
-    $("#register-form #user").val(email); // Coloca o email no input do usuário se o mesmo for passado na URL.
+    if (email != undefined || name != undefined) {
+        $("#register-form #user").val(email).attr("disabled", "disabled"); // Coloca o email no input do usuário se o mesmo for passado na URL.
+        $("#register-form #name").val(name).attr("disabled", "disabled"); // Coloca o nome no input se ele for passado na url.
+    }
 
     $("#register-form").on("submit", (e) => { // Funções quando dá o submit do formulário de registro.
         e.preventDefault();
@@ -1836,10 +1841,14 @@ if ($(".register").length) { // Funções para tela de registro
         let repeatPassword = $("#confirm_password").val();
         
         if (matchPassword(password, repeatPassword)) { // Se as duas senhas forem iguais, prossegue para o registro do usuário.
-            let data = $("#register-form").serializeArray().reduce(function (obj, item) { // Pega todos os dados do formulário e coloca em um objeto
+            let data = $("#register-form").serializeArray().reduce(function (obj, item) { // Pega todos os dados do formulário e coloca em um objeto.
                 obj[item.name] = item.value;
                 return obj;
             }, {});
+
+            data["beta_hash"] = url.searchParams.get("beta_hash") != null ? url.searchParams.get("beta_hash") : "";
+            data["email"] = $("#register-form #user").val();
+            data["nome"] = $("#register-form #name").val();
     
             $("#register-form").find(".form-input").attr("disabled", "disabled");
             $("#register-form").find(".loading").show();
@@ -1858,13 +1867,17 @@ if ($(".register").length) { // Funções para tela de registro
                             addUserToGroup(group_id, token, res.response.usuario_criado.id_usuario, email);
                         }
                     }, 100);
+
+                    $("#register-form").find(".response").addClass("success");
+                    $("#register-form").find(".response").html("Usuário cadastrado!");
+                    $("#register-form").find(".response").show();
                 },
                 error: (xhr) => {
                     let error;
                     if (xhr.responseJSON != undefined) {
                         error = xhr.responseJSON.mensagem;
                     } else {
-                        error = "Erro";
+                        error = "Ocorreu um erro durante o cadastro";
                     }
                     $("#register-form").find('.response').html(error);
                     $("#register-form").find('.response').show();
@@ -1873,9 +1886,6 @@ if ($(".register").length) { // Funções para tela de registro
                 complete: () => {
                     var url_os = new URL(system_url + "/login.html");
 
-                    $("#register-form").find(".response").addClass("success");
-                    $("#register-form").find(".response").html("Usuário cadastrado!");
-                    $("#register-form").find(".response").show();
                     $("#register-form").find(".form-input").attr("disabled", false);
                     $("#register-form").find(".loading").hide();
 
@@ -1885,6 +1895,11 @@ if ($(".register").length) { // Funções para tela de registro
                         }
                         window.location.href = url_os;
                     }, 100);
+                },
+                failed: () => {
+                    $("#register-form").find(".response").addClass("error");
+                    $("#register-form").find(".response").html("Ocorreu um erro durante o cadastro!");
+                    $("#register-form").find(".response").show();
                 }
             });
         } else {
