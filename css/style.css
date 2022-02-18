@@ -60,7 +60,7 @@ a:hover {
 
 html, body {
     height: 100vh;
-    overflow-x: hidden;
+    overflow: hidden;
     width: 100vw;
     font-family: Arial, Helvetica, sans-serif;
 }
@@ -886,6 +886,9 @@ html, body {
 
 .kanban {
     margin-top: 4.7rem;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: calc(100vh - 74px);
 }
 
 .kanban-title-container {
