@@ -425,8 +425,16 @@ if ($(".enter-group-invitation").length) { // Função para a página enter-grou
                         user_groups = user.user_groups.split(",");
                     }
 
-                    if (user_groups.indexOf(groupIdParam) == -1) { // Se não existir o grupo solicidado na lista de grupos do usuário, o mesmo é adicionado no grupo, caso contrario aparece uma mensagem informativa e depois de 5 segundos é redirecionado para o login.
+                    if (user_groups.indexOf(groupIdParam) == -1) { // Se não existir o grupo solicitado na lista de grupos do usuário, o mesmo é adicionado no grupo, caso contrario aparece uma mensagem informativa e depois de 5 segundos é redirecionado para o login.
                         addUserToGroup(groupIdParam, tokenParam, user.id_usuario, emailParam);
+
+                        $(".enter-group-container .response").addClass("success").html("Você entrou no grupo com sucesso!");
+                        $(".enter-group-container .response").show();
+                        setTemporaryEmail(emailParam);
+
+                        setTimeout(() => {
+                            window.location.href = "/login.html";
+                        }, 1000);
                     } else {
                         $(".enter-group-container .response").html("Você já faz parte desse grupo!");
                         $(".enter-group-container .response").show();
@@ -449,11 +457,6 @@ function addUserToGroup(group_id, token, user_id, user_email) { // Função adic
             email_requested: user_email,
             user_id: user_id,
             group_id: group_id
-        },
-        success: () => { 
-            var url = new URL(system_url + "/login.html"); // Se der certo, é direcionado para o login com o parametro joined_group que servirá para abrir o modal.
-            url.searchParams.append("joined_group", true);
-            window.location.href = url;
         },
         error: (xhr) => {
             $(".enter-group-container .response").html(xhr.responseJSON.message); // Se der erro, o mesmo é exibido e depois de 5 segundos é feito o redirecionamento para o login.
@@ -1835,10 +1838,13 @@ if ($(".register").length) { // Funções para tela de registro
     let email = url.searchParams.get("email");
     let name = url.searchParams.get("name");
 
-    if (email != undefined || name != undefined) {
-        $("#register-form #user").val(email).attr("disabled", "disabled"); // Coloca o email no input do usuário se o mesmo for passado na URL.
-        $("#register-form #name").val(name).attr("disabled", "disabled"); // Coloca o nome no input se ele for passado na url.
-    }
+    if (email != undefined) {
+        $("#register-form #user").val(email).attr("disabled", "disabled"); // Desabilita o input e coloca o valor que vem da url.
+    } 
+
+    if (name != undefined) {
+        $("#register-form #name").val(name).attr("disabled", "disabled"); // Desabilita o input e coloca o valor que vem da url.
+    } 
 
     $("#register-form").on("submit", (e) => { // Funções quando dá o submit do formulário de registro.
         e.preventDefault();
@@ -1846,6 +1852,7 @@ if ($(".register").length) { // Funções para tela de registro
         removeCurrentProjectIdInSessionStorage(); // Antes de registrar o usuário, desloga o usuário atual (se houver).
         removeOsListFromSessionStorage();
         removeUserIdInLocalStorage();
+        removeJwtFromLocalStorage("from_register");
 
         let password = $("#password").val();
         let repeatPassword = $("#confirm_password").val();
@@ -1881,6 +1888,17 @@ if ($(".register").length) { // Funções para tela de registro
                     $("#register-form").find(".response").addClass("success");
                     $("#register-form").find(".response").html("Usuário cadastrado!");
                     $("#register-form").find(".response").show();
+
+                    var url_os = new URL(system_url + "/login.html");
+
+                    if (group_id != null && token != null && email != null) { // Se houver esses parâmetros, é direcionado para o login repassando o parâmetro joined_group.
+                        url_os.searchParams.append("joined_group", true);
+                    }
+                    url_os.searchParams.append("email", data["email"]);
+                    
+                    setTimeout(() => {
+                        window.location.href = url_os;
+                    }, 200);
                 },
                 error: (xhr) => {
                     let error;
@@ -1894,17 +1912,8 @@ if ($(".register").length) { // Funções para tela de registro
                     $("#register-form").find(".loading").hide();
                 },
                 complete: () => {
-                    var url_os = new URL(system_url + "/login.html");
-
                     $("#register-form").find(".form-input").attr("disabled", false);
                     $("#register-form").find(".loading").hide();
-
-                    setTimeout(() => {
-                        if (group_id != null && token != null && email != null) { // Se houver esses parâmetros, é direcionado para o login repassando o parâmetro joined_group.
-                            url_os.searchParams.append("joined_group", true);
-                        }
-                        window.location.href = url_os;
-                    }, 100);
                 },
                 failed: () => {
                     $("#register-form").find(".response").addClass("error");

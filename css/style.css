@@ -66,6 +66,10 @@ html, body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+.success {
+    color: #56b335!important;
+}
+
 .avatar-p {
     width: 35px;
     height: 35px;
