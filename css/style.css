@@ -33,16 +33,16 @@
 }
 
 ::-webkit-scrollbar {
-    width: 5px;
+    width: 6px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--gray-high-2);
-    border-radius: 2px;
+    background: var(--blue);
+    border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--gray-high);
+    background: var(--blue-low);
 }
 
 h5 {
@@ -61,7 +61,6 @@ a:hover {
 html, body {
     height: 100vh;
     overflow-x: hidden;
-    overflow-y: scroll;
     width: 100vw;
     font-family: Arial, Helvetica, sans-serif;
 }
