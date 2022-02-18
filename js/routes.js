@@ -38,7 +38,7 @@ function changeAppAmbient(test_or_prod) { //Função irá trocar automaticamente
 // ==============================
 //
 // ALIMENTAÇÃO DA VERSÃO
-   app_version = "v " + "1.0.11";
+   app_version = "v " + "1.0.12";
 //
 //
 
@@ -62,13 +62,16 @@ function getJwtFromLocalStorage() { //Pega o token jwt que está armazenado no s
 function removeJwtFromLocalStorage(from_login = "") { //Remove o token JWT de session storage e envia para o login passando parametro na URL.
     localStorage.removeItem("jwt_token");
 
-    if (from_login == "from_login") {
-        login_url.searchParams.append("msg", "time-out");
-    } else if (from_login == "from_maintenance") {
-        return;
+    switch (from_login) {
+        case "from_login":
+            login_url.searchParams.append("msg", "time-out");
+            break;
+        case "from_maintenance":
+            window.location.href = login_url;
+            break;
+        case "from_register":
+            return;
     }
-
-    window.location.href = login_url;
 }
 
 function removeCurrentProjectIdInSessionStorage() {
