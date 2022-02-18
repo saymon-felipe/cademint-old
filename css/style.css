@@ -993,9 +993,9 @@ html, body {
     width: 80%;
 }
 
-.priority-container h6 {
-    margin: .2rem 0;
-}
+    .priority-container h6 {
+        margin: .2rem 0;
+    }
 
 .os-description {
     overflow: hidden;
@@ -1670,10 +1670,15 @@ nav .container a {
     border-radius: 20px;
     width: 60vw;
     height: 75vh;
+    max-height: 780px;
     max-width: 1000px;
     margin-top: 7rem;
     box-shadow: 0 0 10px rgba(0,0,0,0.3);
-    padding: 70px 25px;
+    padding: 80px 25px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 @media (max-width: 1040px) {
@@ -1690,9 +1695,13 @@ nav .container a {
 }
 
 .update-profile-header {
-    margin: 0 1.5rem 4rem;
     display: flex;
     align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 2rem;
+    left: 0;
+    right: 0;
 }
 
     .update-profile-header h4 {

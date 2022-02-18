@@ -1177,12 +1177,12 @@ function getAllOs(fill = false) { // Função recupera a lista de OS do banco de
                 setOsInSessionStorage(mainArrayOs); // Insere o array de OS em session storage para facilitar a consulta.
                 loadOs(mainArrayOs);
                 if (!fill) {
-                    setTimeout(getAllOs, 9000); // Chamada recursiva da requisição a cada 9 segundos.
+                    //setTimeout(getAllOs, 9000); // Chamada recursiva da requisição a cada 9 segundos.
                 }
             }
         });
     } else {
-        setTimeout(getAllOs, 9000); //Chamada recursiva da requisição se estiver arrastando uma OS.
+        //setTimeout(getAllOs, 9000); //Chamada recursiva da requisição se estiver arrastando uma OS.
     }
 };
 
@@ -1282,7 +1282,7 @@ function turnFieldDropable() { // Torna os campos do kanban aptos à aceitar OS 
             for (let i in os_array) { // Faz o preenchimento do array de OS modificado antes da requisição para diminuir o delay e não causar bug visual.
                 if (os_array[i].id_complete == current_os_id){
                     os_array[i].status_os = current_field;
-                    loadOs(os_array);
+                    //loadOs(os_array);
                 }
             }
 
