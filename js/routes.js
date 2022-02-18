@@ -38,7 +38,7 @@ function changeAppAmbient(test_or_prod) { //Função irá trocar automaticamente
 // ==============================
 //
 // ALIMENTAÇÃO DA VERSÃO
-   app_version = "v " + "1.0.12";
+   app_version = "v " + "1.0.13";
 //
 //
 
