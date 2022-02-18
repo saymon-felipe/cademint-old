@@ -409,7 +409,7 @@ if ($(".enter-group-invitation").length) { // Função para a página enter-grou
             },
             success: (res) => { 
                 if (res.response.usuario == 0) { // Se o usuário informado não estiver cadastrado, o mesmo é redirecionado para o registro passando os parametros group_id, token e email na URL.
-                    window.location.href = `/register.html?gid=${groupIdParam}&tk=${tokenParam}&email=${emailParam}`;
+                    window.location.href = app_name + `/register.html?gid=${groupIdParam}&tk=${tokenParam}&email=${emailParam}`;
                 } else {
                     localStorage.removeItem("jwt"); // Se o usuário for cadastrado, o eventual usuário atual é deslogado, é feito o redirecionamento para o login e o email do usuário convidado é preenchido no input.
                     removeUserIdInLocalStorage();
@@ -1866,7 +1866,7 @@ if ($(".register").length) { // Funções para tela de registro
             data["beta_hash"] = url.searchParams.get("beta_hash") != null ? url.searchParams.get("beta_hash") : "";
             data["email"] = $("#register-form #user").val();
             data["nome"] = $("#register-form #name").val();
-    
+
             $("#register-form").find(".form-input").attr("disabled", "disabled");
             $("#register-form").find(".loading").show();
             
