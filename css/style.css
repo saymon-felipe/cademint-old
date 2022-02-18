@@ -1353,11 +1353,6 @@ nav .container a {
         height: 5px;
     }
 
-    html, body {
-        overflow-y: auto;
-        overflow-x: hidden;
-    }
-
     .kanban-title {
         width: 100%;
         border-top: 1px solid #dee2e6!important;
