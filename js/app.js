@@ -1525,6 +1525,8 @@ if ($(".edit-os").length) { // Funções que rodam a partir do momento que entra
                     $("#sponsor").append(`<option value="${current_group_user.nome}">${current_group_user.nome}</option>`);
                     $("#owner").append(`<option value="${current_group_user.nome}">${current_group_user.nome}</option>`);
                 }
+                sortElements("#sponsor", "option");
+                sortElements("#owner", "option");
             },
             error: () => {
                 removeCurrentProjectIdInSessionStorage();
@@ -1619,6 +1621,14 @@ if ($(".edit-os").length) { // Funções que rodam a partir do momento que entra
         });
     } 
 };
+
+function sortElements(elementParent, elementChild) { // Função re-ordena os elementos da lista de países.
+    let sortElements = $(elementParent + " " + elementChild);
+    sortElements.sort((a, b) => {
+        return ($(a).val() > $(b).val()) ? 1 : (($(b).val() > $(a).val()) ? -1 : 0);
+    });
+    $(elementParent).html(sortElements);
+}
 
 function showPasswordToggleClass(element, older_class, new_class) { // Mostra ou esconde a senha.
     if ($(element).hasClass(older_class)) {
