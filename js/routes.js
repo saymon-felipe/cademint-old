@@ -37,10 +37,22 @@ function changeAppAmbient(test_or_prod) { //Função irá trocar automaticamente
    changeAppAmbient(1);
 // ==============================
 //
+//
 // ALIMENTAÇÃO DA VERSÃO
-   app_version = "v " + "1.0.13";
+   loadSystemVersion();
 //
 //
+
+function loadSystemVersion() {
+    $.ajax({
+        url: url_api + "/system",
+        type: "GET",
+        async: false,
+        success: (res) => {
+            app_version = res.response.system_version;
+        }
+    })
+};
 
 // INÍCIO DA APLICAÇÃO
 let login_url = new URL(window.location);
