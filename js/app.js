@@ -2,6 +2,7 @@ let in_drag = false; // Variável de controle para verificar se o usuário está
 let reloadInClose = false; // Variável que testa se foi feita uma alteração nos grupos ao fechar o modal Manage groups.
 
 if($(document).length) { // Início da execução.
+    console.log(navigator.userAgentData);
     if (window.location.pathname != app_name + "/login.html" && window.location.pathname != app_name + "/register.html" && window.location.pathname != app_name + "/enter_group_invitation.html") { //Se cair aqui significa que o usuário não está na tela de login, registro ou para entrar em um grupo, e as funções deverão ser executadas.
         fillUserImage(); // Carrega imagem do usuário.
         getAllOs(); // Inicia a execução das requisições de OS.
