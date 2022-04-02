@@ -6,10 +6,10 @@ let system_url; // Url da aplicação WEB
 
 function changeAppAmbient(test_or_prod) { //Função irá trocar automaticamente o ambiente do aplicativo conforme o parâmetro passado na função.
     const dev_name = ""; //Nome da aplicação em desenvolvimento.
-    const production_name = "/cademint" //Nome da aplicação em produção.
+    const production_name = "/cademint-old" //Nome da aplicação em produção.
     const dev_environment = "http://localhost:3000"; //Ambiente de desenvolvimento.
     const production_environment = "https://scrum-cademint-api.herokuapp.com"; //Ambiente de produção.
-    const app_url_production = "https://saymon-felipe.github.io/cademint"; //Url do aplicativo web em produção
+    const app_url_production = "https://saymon-felipe.github.io/cademint-old"; //Url do aplicativo web em produção
     const app_url_test = "http://127.0.0.1:5501"; //Url do aplicativo web em teste
 
     switch (test_or_prod) {
